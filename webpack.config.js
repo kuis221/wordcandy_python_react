@@ -8,7 +8,7 @@ module.exports = {
         loaders: [{
                 loader: "babel-loader",
                 include: [
-                    path.resolve(__dirname, "assets/src"),
+                    path.resolve(__dirname, "static/src"),
                 ],
                 test: /\.jsx?$/,
                 query: {
@@ -39,7 +39,7 @@ module.exports = {
         ]
     },
     output: {
-        path: path.resolve('./assets/bundles/'),
+        path: path.resolve('./static/bundles/'),
         filename: "bundle.js",
     },
     plugins: [
@@ -67,7 +67,7 @@ module.exports = {
     entry: [
         'babel-polyfill',
         'bootstrap-loader',
-        './assets/src/router.js',
-        'bootstrap-sass!./assets/config/bootstrap-sass.config.js'
+        './static/src/router.js',
+        'bootstrap-sass!./static/config/bootstrap-sass.config.js'
     ]
 };

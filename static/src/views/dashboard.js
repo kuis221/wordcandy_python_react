@@ -34,7 +34,7 @@ export default class Dashboard extends Component {
             antonyms: [],
             stats: [],
             loaded: true,
-            url: 'http://0.0.0.0:8000'
+            url: 'https://polar-hamlet-18270.herokuapp.com/'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);

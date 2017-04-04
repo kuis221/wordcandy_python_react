@@ -34,7 +34,7 @@ export default class Dashboard extends Component {
             antonyms: [],
             stats: [],
             loaded: true,
-            url: 'https://polar-hamlet-18270.herokuapp.com/'
+            url: 'http://0.0.0.0:8000'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);
@@ -69,22 +69,11 @@ export default class Dashboard extends Component {
             axios.get(format('{0}/v1/dashboard/antonyms/', _.state.url), data).then(function(response) {
                 _.setState({antonyms: response.data['antonyms']});
                 axios.get(format('{0}/v1/dashboard/keywordtool/', _.state.url), data).then(function(response) {
-                    var stats = [];
-                    Object.keys(response.data.results).forEach(function(key, index) {
-                        if (index > 0) {
-                            (response.data.results[key]).forEach(function(element) {
-                                if (element.volume) {
-                                    stats.push({'name': element.string, 'volume': element.volume})
-                                }
-                            });
-                        }
-                    });
-                    _.setState({stats: stats})
+                    _.setState({stats: response.data['keywords']})
                     _.setState({loaded: true})
                 }).catch(function(error) {
                     console.log(error);
                 });
-
             }).catch(function(error) {
                 console.log(error);
             });

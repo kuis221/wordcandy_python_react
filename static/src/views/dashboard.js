@@ -21,7 +21,6 @@ import axios from 'axios';
 import Loader from 'react-loader';
 import format from 'string-format';
 
-import 'react-tagsinput/react-tagsinput.css';
 
 export default class Dashboard extends Component {
 
@@ -29,11 +28,11 @@ export default class Dashboard extends Component {
         super(props);
         this.state = {
             tags: [],
-            thumbnail: 'https://react-bootstrap.github.io/assets/thumbnail.png',
             synonyms: [],
             antonyms: [],
             stats: [],
             loaded: true,
+            thumbnail: '/static/images/dashboard/photo.png',
             url: 'https://wordcandy.herokuapp.com'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
@@ -84,123 +83,118 @@ export default class Dashboard extends Component {
 
     render() {
         return (
-            <Grid>
+            <Grid className="dashboard-page" fluid={true}>
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#">WORDCANDY.IO</a>
+                            <a href="#">WORDCANDY.IO</a> <span> - KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
                 </Navbar>
                 <Row>
                     <Col md={3}>
                         <Panel className="text-center" style={{
-                            'paddingTop': '42px'
+                            'paddingTop': '22px'
                         }}>
-                            <p>
-                                <Image src={this.state.thumbnail} width={171} height={180} rounded/>
+                            <p style={{
+                                'paddingBottom': '22px'
+                            }}>
+                                <Image src={this.state.thumbnail} width={171} height={180}/>
                             </p>
                             <Dropzone onDrop={this.onUploadImage} multiple={false} rejectStyle>
-                                <Button block>Upload image (.jpg / .png)</Button>
+                                <Button bsStyle="success" block>Upload image (.jpg / .png)</Button>
                             </Dropzone>
                         </Panel>
                     </Col>
                     <Col md={6}>
-                        <Row>
-                            <Col>
-                                <Panel header="What keywords descript this t-shirt?">
-                                    <Form inline>
-                                        <Row>
-                                            <Col md={9}>
-                                                <FormGroup controlId="formControlsTextarea">
-                                                    <TagsInput value={this.state.tags} onChange={:: this.handleChangeTags}/>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md={3}>
-                                                <Button onClick={this.calculate}>
-                                                    Calculate
-                                                </Button>
-                                            </Col>
-                                        </Row>
-                                    </Form>
-                                </Panel>
-                            </Col>
-                            <Col>
-                                <Loader loaded={this.state.loaded}>
-                                    <Panel header="Amazon keywords auto suggest">
-                                        {this.state.stats.length == 0
-                                            ? <div>Empty</div>
-                                            : null}
-                                        <ul className="fixed-panel">
-                                            {this.state.stats.map(function(item, i) {
-                                                return <li>{item.name}
-                                                    - {item.volume}</li>
-                                            }, this)}
-                                        </ul>
-                                    </Panel>
-                                </Loader>
-                            </Col>
-                        </Row>
+
+                        <Panel header="What keywords descript this t-shirt?">
+                            <Form inline>
+                                <Row>
+                                    <Col md={9}>
+                                        <FormGroup controlId="formControlsTextarea">
+                                            <TagsInput value={this.state.tags} onChange={:: this.handleChangeTags}/>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={3}>
+                                        <Button bsStyle="success" onClick={this.calculate}>
+                                            Calculate
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Panel>
+
+                        <Loader loaded={this.state.loaded}>
+                            <Panel header="Amazon keywords auto suggest">
+                                {this.state.stats.length == 0
+                                    ? <div>Empty</div>
+                                    : null}
+                                <ul className="fixed-panel">
+                                    {this.state.stats.map(function(item, i) {
+                                        return <li>{item.name}
+                                            - {item.volume}</li>
+                                    }, this)}
+                                </ul>
+                            </Panel>
+                        </Loader>
+
                     </Col>
                     <Col md={3}>
-                        <Panel className="text-center" header="Analytics">
-                            <p>
-                                <Image src="https://react-bootstrap.github.io/assets/thumbnail.png" rounded/>
+                        <Panel header="Analytics">
+                            <p className="text-center">
+                                <Image src={'/static/images/dashboard/analytics.png'} width={183} height={183}/>
                             </p>
-                            <Button block>View Analytics</Button>
+                            <Button bsStyle="success" disabled block>View Analytics</Button>
                         </Panel>
                     </Col>
                 </Row>
                 <Row>
                     <Col md={9}>
-                        <Row>
-                            <Col>
-                                <Panel>
-                                    <Nav bsStyle="tabs" activeKey="1">
-                                        <NavItem eventKey="1">Amazon</NavItem>
-                                        <NavItem eventKey="2">TeePublic</NavItem>
-                                        <NavItem eventKey="3">TeeSpring</NavItem>
-                                        <NavItem eventKey="4">RedBuble</NavItem>
-                                    </Nav>
-                                    <h5>Temapltes</h5>
-                                    <ul className="list-inline">
-                                        <li>
-                                            <Button disabled>None</Button>
-                                        </li>
-                                        <li>
-                                            <Button>Summertime T-shirt</Button>
-                                        </li>
-                                        <li>
-                                            <Button>Holiday T-shirt</Button>
-                                        </li>
-                                        <li>
-                                            <Button>Tropical T-shirt</Button>
-                                        </li>
-                                    </ul>
-                                    <br/>
-                                    <Row>
-                                        <Col md={12}>
-                                            <FormGroup>
-                                                <FormControl type="text" placeholder="Enter prodcut title"/>
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <br/>
-                                    <Row>
-                                        <Col md={6}>
-                                            <FormGroup>
-                                                <FormControl type="text" placeholder="Add description"/>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md={6}>
-                                            <FormGroup>
-                                                <FormControl type="text" placeholder="Add description"/>
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                </Panel>
-                            </Col>
-                        </Row>
+                        <Panel style={{
+                            'paddingBottom': '50px'
+                            }}>
+                            <Nav bsStyle="tabs" activeKey="1">
+                                <NavItem eventKey="1">Amazon</NavItem>
+                                <NavItem eventKey="2">TeePublic</NavItem>
+                                <NavItem eventKey="3">TeeSpring</NavItem>
+                                <NavItem eventKey="4">RedBuble</NavItem>
+                            </Nav>
+                            <h5>Temapltes</h5>
+                            <ul className="list-inline">
+                                <li>
+                                    <Button disabled>None</Button>
+                                </li>
+                                <li>
+                                    <Button>Summertime T-shirt</Button>
+                                </li>
+                                <li>
+                                    <Button>Holiday T-shirt</Button>
+                                </li>
+                                <li>
+                                    <Button>Tropical T-shirt</Button>
+                                </li>
+                            </ul>
+                            <br/>
+                            <Row>
+                                <Col md={12}>
+                                    <FormGroup>
+                                        <FormControl type="text" placeholder="Enter prodcut title"/>
+                                    </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <FormControl type="text" placeholder="Add description"/>
+                                    </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <FormControl type="text" placeholder="Add description"/>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        </Panel>
+
                     </Col>
                     <Col md={3}>
                         <Loader loaded={this.state.loaded}>
@@ -231,13 +225,12 @@ export default class Dashboard extends Component {
                         </Loader>
                     </Col>
                 </Row>
-                <br/>
                 <hr/>
                 <div id="footer">
                     <Row>
                         <Col md={2}></Col>
                         <Col md={8} className="text-right">
-                            <Button onClick={this.exportData}>
+                            <Button bsStyle="success" onClick={this.exportData}>
                                 Export data
                             </Button>
                         </Col>

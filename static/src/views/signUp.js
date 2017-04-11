@@ -16,7 +16,7 @@ import {
 import {Link, browserHistory} from 'react-router';
 import React, {Component} from 'react';
 
-export default class Main extends Component {
+export default class SignUp extends Component {
 
     constructor(props) {
         super(props);
@@ -55,6 +55,7 @@ export default class Main extends Component {
                       <p>A complete eCommerce keyword dashboard for your Merch designs and beyond.</p>
                       <p>Strategy and creativity all rolled into one solution to help you 10X your sales!</p>
                   </Col>
+                  <Col md={2}></Col>
                 </Row>
                 <Row>
                     <Col md={4}></Col>

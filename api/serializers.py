@@ -23,7 +23,7 @@ class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
         exclude = ()
-        fields = ('teamplates', 'name')
+        fields = ('id', 'teamplates', 'name')
 
     def is_teamplates(self, obj):
         templates = Template.objects.filter(shop=obj)

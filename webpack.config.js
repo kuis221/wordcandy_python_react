@@ -30,10 +30,10 @@ module.exports = {
                 test: /.woff2?(\?v=\d+.\d+.\d+)?$/,
                 loader: "url?limit=10000&minetype=application/font-woff"
             }, {
-                test: /\.(woff|woff2)?(\?v=\d+.\d+.\d+)?$/,
-                loader: 'url-loader?limit=10000&minetype=application/font-wof'
+                test: /\.(png|jpg|svg|woff|woff2)?(\?v=\d+.\d+.\d+)?$/,
+                loader: 'url-loader?limit=8192'
             }, {
-                test: /\.(png|jpg|eot|ttf|svg|gif)$/,
+                test: /\.(eot|ttf)$/,
                 loader: 'file-loader'
             }
         ]

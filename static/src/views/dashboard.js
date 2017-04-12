@@ -43,6 +43,15 @@ export default class Dashboard extends Component {
         this.setState({tags})
     }
 
+    componentDidMount() {
+      axios.get(format('{0}/v1/dashboard/templates/', this.state.url)).then(function(response) {
+        console.log(response)
+      }).catch(function(error) {
+        console.log(error);
+      });
+    }
+
+
     onUploadImage(files) {
         this.setState({thumbnail: files[0]['preview']
         });

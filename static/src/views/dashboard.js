@@ -37,7 +37,7 @@ export default class Dashboard extends Component {
             activeShop: 0,
             loaded: true,
             thumbnail: '/static/images/dashboard/photo.png',
-            url: 'http://0.0.0.0:8000'
+            url: 'https://wordcandy.herokuapp.com'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);

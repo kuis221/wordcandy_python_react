@@ -14,6 +14,7 @@ import {
     FormControl
 } from 'react-bootstrap';
 
+import {Link, browserHistory} from 'react-router';
 import React, {Component} from 'react';
 import TagsInput from 'react-tagsinput';
 import Dropzone from 'react-dropzone';
@@ -168,6 +169,15 @@ export default class Dashboard extends Component {
                             <span>{' '} - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
+                    <Nav pullRight>
+                      <NavItem href="/profile" className="profile-header">
+                        <ul className="list-inline">
+                          <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png" /></li>
+                          <li>Tomas Anderson</li>
+                          <li><i className="icon ion-chevron-down"></i></li>
+                        </ul>
+                      </NavItem>
+                    </Nav>
                 </Navbar>
                 <Row>
                     <Col md={3}>

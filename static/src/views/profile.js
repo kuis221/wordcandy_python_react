@@ -5,6 +5,8 @@ import {
     Navbar,
     Panel,
     Checkbox,
+    NavItem,
+    Nav,
     Form,
     FormGroup,
     FormControl,
@@ -34,6 +36,15 @@ export default class Profile extends Component {
                                 - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
+                    <Nav pullRight>
+                      <NavItem href="/profile" className="profile-header">
+                        <ul className="list-inline">
+                          <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png" /></li>
+                          <li>Tomas Anderson</li>
+                          <li><i className="icon ion-chevron-down"></i></li>
+                        </ul>
+                      </NavItem>
+                    </Nav>
                 </Navbar>
                 <Row>
                     <Col md={2}></Col>
@@ -54,7 +65,7 @@ export default class Profile extends Component {
                                             </div>
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Cancel</a>
+                                            <a href="#">Change</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -77,7 +88,7 @@ export default class Profile extends Component {
                                             </div>
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Cancel</a>
+                                            <a href="#">Change</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -104,7 +115,7 @@ export default class Profile extends Component {
                                             </div>
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Cancel</a>
+                                            <a href="#">Change</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -124,7 +135,7 @@ export default class Profile extends Component {
                                             </div>
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Cancel</a>
+                                            <a href="#">Change</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -142,7 +153,7 @@ export default class Profile extends Component {
                                             </div>
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Cancel</a>
+                                            <a href="#">Change</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -211,7 +222,15 @@ export default class Profile extends Component {
                 <div id="footer">
                     <Row>
                         <Col md={2}></Col>
-                        <Col md={8} className="text-right">
+                          <Col md={4} className="text-left">
+                              <Button className="back-button">
+                                <Link to="/dashboard">
+                                  <i className="icon ion-android-arrow-back"></i>
+                                  Back
+                                </Link>
+                              </Button>
+                          </Col>
+                        <Col md={4} className="text-right">
                             <Button bsStyle="success" onClick={this.exportData}>
                                 <i className="icon ion-checkmark-circled"></i>
                                 Done

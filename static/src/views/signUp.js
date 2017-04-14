@@ -83,12 +83,15 @@ export default class SignUp extends Component {
 
                                 <FormGroup>
                                     <Col md={12} className="text-center">
-                                        <Link to="/dashboard"><Button block bsStyle="success" onClick={this.signIn}>
+                                        <Link to="/dashboard"><Button block bsStyle="secondary" onClick={this.signIn}>
                                             Create account
                                         </Button></Link>
                                     </Col>
                                 </FormGroup>
                             </Form>
+                            <div className="login-redirect">
+                              <Link to="/sign-in">Already have an account? <b>Login</b></Link>
+                            </div>
                         </Panel>
                     </Col>
                     <Col md={4}></Col>

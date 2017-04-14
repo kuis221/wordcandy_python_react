@@ -22,7 +22,22 @@ export default class Profile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            name: 'Jonathan Andreson',
+            activeName: false,
+            email: 'JonathanAndreson@gmail.com',
+            activeEmail: false
+        };
+        this.handleName = this.handleName.bind(this);
+        this.handleEmail = this.handleEmail.bind(this);
+    }
+
+    handleName(event) {
+        this.setState({name: event.target.value});
+    }
+
+    handleEmail(event) {
+        this.setState({name: event.target.value});
     }
 
     render() {
@@ -37,13 +52,15 @@ export default class Profile extends Component {
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight>
-                      <NavItem href="/profile" className="profile-header">
-                        <ul className="list-inline">
-                          <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png" /></li>
-                          <li>Tomas Anderson</li>
-                          <li><i className="icon ion-chevron-down"></i></li>
-                        </ul>
-                      </NavItem>
+                        <NavItem href="/profile" className="profile-header">
+                            <ul className="list-inline">
+                                <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png"/></li>
+                                <li>Tomas Anderson</li>
+                                <li>
+                                    <i className="icon ion-chevron-down"></i>
+                                </li>
+                            </ul>
+                        </NavItem>
                     </Nav>
                 </Navbar>
                 <Row>
@@ -51,7 +68,7 @@ export default class Profile extends Component {
                     <Col md={8}>
                         <Panel>
                             <Row>
-                                <Col md={3}>
+                                <Col md={3} className="profile-title">
                                     Information
                                 </Col>
                                 <Col md={9}>
@@ -60,12 +77,31 @@ export default class Profile extends Component {
                                             User Name
                                         </Col>
                                         <Col md={7}>
-                                            <div>
-                                                <b>Jonathan Andreson</b>
-                                            </div>
+                                            {this.state.activeName
+                                                ? <div>
+                                                        <FormGroup>
+                                                            <FormControl type="text" placeholder="FirstName LastName" onChange={this.handleName} value={this.state.name}/>
+                                                        </FormGroup>
+                                                        <FormGroup className="text-right">
+                                                            <Button className="primary" onClick={() => this.setState({activeName: false})}>
+                                                                Change Name
+                                                            </Button>
+                                                        </FormGroup>
+                                                    </div>
+                                                : null}
+                                            {this.state.activeName == false
+                                                ? <div>
+                                                        <b>{this.state.name}</b>
+                                                    </div>
+                                                : null}
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Change</a>
+                                            {this.state.activeName
+                                                ? <a href="#" onClick={() => this.setState({activeName: false})}>Cancel</a>
+                                                : null}
+                                            {this.state.activeName == false
+                                                ? <a href="#" onClick={() => this.setState({activeName: true})}>Change</a>
+                                                : null}
                                         </Col>
                                     </Row>
                                 </Col>
@@ -78,17 +114,38 @@ export default class Profile extends Component {
                                             Email
                                         </Col>
                                         <Col md={7}>
-                                            <div>
-                                                <b>JonathanAndreson@gmail.com</b>
-                                            </div>
-                                            <div>
-                                                <Checkbox inline>
-                                                    Send me news and notifications
-                                                </Checkbox>
-                                            </div>
+                                            {this.state.activeEmail
+                                                ? <div>
+                                                        <FormGroup>
+                                                            <FormControl type="email" placeholder="example@mail.com" onChange={this.handleEmail} value={this.state.email}/>
+                                                        </FormGroup>
+                                                        <FormGroup className="text-right">
+                                                            <Button className="primary" onClick={() => this.setState({activeEmail: false})}>
+                                                                Change Email
+                                                            </Button>
+                                                        </FormGroup>
+                                                    </div>
+                                                : null}
+                                            {this.state.activeEmail == false
+                                                ? <div>
+                                                        <div>
+                                                            <b>{this.state.email}</b>
+                                                        </div>
+                                                        <div>
+                                                            <Checkbox inline>
+                                                                Send me news and notifications
+                                                            </Checkbox>
+                                                        </div>
+                                                    </div>
+                                                : null}
                                         </Col>
                                         <Col md={2} className="text-right">
-                                            <a href="#">Change</a>
+                                            {this.state.activeEmail
+                                                ? <a href="#" onClick={() => this.setState({activeEmail: false})}>Cancel</a>
+                                                : null}
+                                            {this.state.activeEmail == false
+                                                ? <a href="#" onClick={() => this.setState({activeEmail: true})}>Change</a>
+                                                : null}
                                         </Col>
                                     </Row>
                                 </Col>
@@ -121,7 +178,7 @@ export default class Profile extends Component {
                                 </Col>
                             </Row>
                             <Row className="border-top">
-                                <Col md={3}>
+                                <Col md={3} className="profile-title">
                                     Subscription
                                 </Col>
                                 <Col md={9}>
@@ -159,7 +216,7 @@ export default class Profile extends Component {
                                 </Col>
                             </Row>
                             <Row className="border-top">
-                                <Col md={3}>
+                                <Col md={3} className="profile-title">
                                     Connect Accounts
                                 </Col>
                                 <Col md={9}>
@@ -187,7 +244,7 @@ export default class Profile extends Component {
                                 </Col>
                             </Row>
                             <Row className="border-top">
-                                <Col md={3}>
+                                <Col md={3} className="profile-title">
                                     Add Team Member
                                 </Col>
                                 <Col md={9}>
@@ -200,7 +257,7 @@ export default class Profile extends Component {
                                                 }}>
                                                     <FormControl style={{
                                                         'width': '100%'
-                                                    }} type="text" type="email" placeholder="example@mail.com"/>
+                                                    }} type="email" placeholder="example@mail.com"/>
                                                 </FormGroup>
                                                 <FormGroup style={{
                                                     'width': '15%'
@@ -222,14 +279,14 @@ export default class Profile extends Component {
                 <div id="footer">
                     <Row>
                         <Col md={2}></Col>
-                          <Col md={4} className="text-left">
-                              <Button className="back-button">
+                        <Col md={4} className="text-left">
+                            <Button className="back-button">
                                 <Link to="/dashboard">
-                                  <i className="icon ion-android-arrow-back"></i>
-                                  Back
+                                    <i className="icon ion-android-arrow-back"></i>
+                                    Back
                                 </Link>
-                              </Button>
-                          </Col>
+                            </Button>
+                        </Col>
                         <Col md={4} className="text-right">
                             <Button bsStyle="success" onClick={this.exportData}>
                                 <i className="icon ion-checkmark-circled"></i>

@@ -165,8 +165,7 @@ export default class Dashboard extends Component {
                     <Navbar.Header>
                         <Navbar.Brand>
                             <a href="#">WORDCANDY.IO</a>
-                            <span>
-                                - KEYWORD APP</span>
+                            <span>{' '} - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
                 </Navbar>

@@ -144,7 +144,7 @@ export default class Landing extends Component {
                                         <FormGroup style={{
                                             'width': '10%'
                                         }}>
-                                            <Button type="submit" bsStyle="success">
+                                            <Button type="submit" disabled bsStyle="success">
                                                 Submit
                                             </Button>
                                         </FormGroup>

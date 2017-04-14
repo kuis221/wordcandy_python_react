@@ -49,8 +49,7 @@ module.exports = {
             $: "jquery",
             jquery: "jquery",
             "window.jQuery": "jquery",
-            jQuery: "jquery",
-            slick: "slick"
+            jQuery: "jquery"
         }),
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
@@ -67,6 +66,7 @@ module.exports = {
     entry: [
         'babel-polyfill',
         'bootstrap-loader',
+        './node_modules/bootstrap-validator/dist/validator.min.js',
         './static/src/router.js',
         'bootstrap-sass!./static/config/bootstrap-sass.config.js'
     ]

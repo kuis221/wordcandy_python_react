@@ -37,7 +37,7 @@ export default class Profile extends Component {
     }
 
     handleEmail(event) {
-        this.setState({name: event.target.value});
+        this.setState({email: event.target.value});
     }
 
     render() {

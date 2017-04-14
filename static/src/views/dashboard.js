@@ -162,23 +162,26 @@ export default class Dashboard extends Component {
     render() {
         return (
             <Grid className="dashboard-page" fluid={true}>
-                <Navbar>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <a href="#">WORDCANDY.IO</a>
-                            <span>{' '} - {' '}KEYWORD APP</span>
-                        </Navbar.Brand>
-                    </Navbar.Header>
-                    <Nav pullRight>
+              <Navbar>
+                  <Navbar.Header>
+                      <Navbar.Brand>
+                          <a href="#">WORDCANDY.IO</a>
+                          <span>{' '}
+                              - {' '}KEYWORD APP</span>
+                      </Navbar.Brand>
+                  </Navbar.Header>
+                  <Nav pullRight>
                       <NavItem href="/profile" className="profile-header">
-                        <ul className="list-inline">
-                          <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png" /></li>
-                          <li>Tomas Anderson</li>
-                          <li><i className="icon ion-chevron-down"></i></li>
-                        </ul>
+                          <ul className="list-inline">
+                              <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png"/></li>
+                              <li>Tomas Anderson</li>
+                              <li>
+                                  <i className="icon ion-chevron-down"></i>
+                              </li>
+                          </ul>
                       </NavItem>
-                    </Nav>
-                </Navbar>
+                  </Nav>
+              </Navbar>
                 <Row>
                     <Col md={3}>
                         <Panel className="text-center" style={{

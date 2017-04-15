@@ -35,7 +35,6 @@ class Forms extends Component {
 
     signIn(e) {
         var _ = this;
-        alert(1);
         $('form').validator().on('submit', function(e) {
             if (e.isDefaultPrevented()) {} else {
                 let data = {};

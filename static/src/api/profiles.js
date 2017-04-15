@@ -21,7 +21,7 @@ exports.apiProfiles = {
     },
     subscribe: function(data) {
         return axios({
-                url: url + "subscribe/",
+                url: url + "/dashboard/subscribe/",
                 method: 'post',
                 responseType: 'json',
                 headers: {

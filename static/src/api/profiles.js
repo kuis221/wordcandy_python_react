@@ -19,6 +19,22 @@ exports.apiProfiles = {
                 return error;
             });
     },
+    signIn: function(data) {
+        return axios({
+                url: url + "login/",
+                method: 'post',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data
+            })
+            .then(response => {
+                return response.data;
+            }).catch(function(error) {
+                return error;
+            });
+    },
     subscribe: function(data) {
         return axios({
                 url: url + "dashboard/subscribe/",

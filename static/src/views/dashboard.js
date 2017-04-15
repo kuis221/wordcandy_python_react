@@ -358,7 +358,7 @@ export default class Dashboard extends MixinAuth {
                     <Row>
                         <Col md={2}></Col>
                         <Col md={8} className="text-right">
-                            <Button bsStyle="success" disabled>
+                            <Button bsStyle="success" onClick={this.exportData}>
                                 <i className="icon ion-arrow-down-c"></i>
                                 Export data
                             </Button>

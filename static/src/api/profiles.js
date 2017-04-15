@@ -19,9 +19,9 @@ exports.apiProfiles = {
                 return error;
             });
     },
-    signIn: function(data) {
+    subscribe: function(data) {
         return axios({
-                url: url + "login/",
+                url: url + "subscribe/",
                 method: 'post',
                 responseType: 'json',
                 headers: {

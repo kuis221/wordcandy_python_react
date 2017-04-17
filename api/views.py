@@ -91,7 +91,7 @@ class KeywordToolView(APIView):
                         except Exception as e:
                             pass
             except Exception as e:
-                pass 
+                pass
 
 
         return Response(result)

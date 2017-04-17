@@ -55,22 +55,14 @@ INSTALLED_APPS = [
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_OkXxUFJ2RjarNh7bOb94IRLC")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_M9WMTgLbO0bpGhrGbJh9UOTs")
 
-DJSTRIPE_PLANS = {
-    "monthly": {
-        "stripe_plan_id": "pro-monthly",
-        "name": "Web App Pro ($24.99/month)",
-        "description": "The monthly subscription plan to WebApp",
-        "price": 2499,  # $24.99
-        "currency": "usd",
-        "interval": "month"
-    },
-    "yearly": {
-        "stripe_plan_id": "pro-yearly",
-        "name": "Web App Pro ($199/year)",
-        "description": "The annual subscription plan to WebApp",
-        "price": 19900,  # $199.00
-        "currency": "usd",
-        "interval": "year"
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'da4clbe9966ba3',
+        'USER': 'ffsltlsfxfwxlb',
+        'PASSWORD': '7c7f3eb2e98fe5fe99be9670e2dbdc2926f57c556dfd5a2dd266de657ba2ffbd',
+        'HOST': 'ec2-23-21-220-188.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
@@ -130,13 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -171,8 +156,8 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]

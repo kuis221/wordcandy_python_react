@@ -5,6 +5,7 @@ from rest_framework import status
 
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.cache import cache
 
 import requests
 from datetime import datetime
@@ -78,21 +79,23 @@ class KeywordToolView(APIView):
                 'metrics_location': '2840',
                 'metrics_language': 'en'
             }
-            data = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
-            try:
-                for item in data.json()['results']:
-                    for sub_item in data.json()['results'][item]:
-                        try:
-                            if sub_item['volume']:
-                                result['keywords'].append({
-                                    'name': sub_item['string'],
-                                    'volume': sub_item['volume']
-                                })
-                        except Exception as e:
-                            pass
-            except Exception as e:
-                pass
 
+            if cache.get(word, None):
+                results = cache.get(word)
+            else:
+                data = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
+                try:
+                    results = data.json()['results']
+                    cache.set(str(word), results)
+                except Exception as e:
+                    results = []
+
+            for item in results:
+                for sub_item in results[item]:
+                    if volume in sub_item:
+                        result['keywords'].append({
+                            'name': sub_item['string'],
+                            'volume': sub_item['volume']})
 
         return Response(result)
 

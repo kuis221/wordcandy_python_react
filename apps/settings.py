@@ -139,6 +139,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
 }
 
+REST_SESSION_LOGIN = False
+
 SITE_ID = 1
 
 WEBPACK_LOADER = {

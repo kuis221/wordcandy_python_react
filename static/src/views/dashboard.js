@@ -42,7 +42,7 @@ export default class Dashboard extends MixinAuth {
             loaded: true,
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/photo.png',
-            url: 'http://0.0.0.0:8000'
+            url: 'http://www.wordcandy.io'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);

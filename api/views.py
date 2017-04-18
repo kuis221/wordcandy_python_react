@@ -11,7 +11,7 @@ import requests
 from datetime import datetime
 
 from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer, TemplateSerializer, SubscribeSerializer
-from .models import Shop, Subscribe
+from .models import Shop, Subscribe, Word
 
 from openpyxl.writer.excel import save_virtual_workbook
 from openpyxl import Workbook
@@ -80,22 +80,24 @@ class KeywordToolView(APIView):
                 'metrics_language': 'en'
             }
 
-            if cache.get(word, None):
-                results = cache.get(word)
-            else:
-                data = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
-                try:
-                    results = data.json()['results']
-                    cache.set(str(word), results)
-                except Exception as e:
-                    results = []
+            word_result = Word.objects.filter(name=word).first()
 
-            for item in results:
-                for sub_item in results[item]:
-                    if volume in sub_item:
-                        result['keywords'].append({
-                            'name': sub_item['string'],
-                            'volume': sub_item['volume']})
+            if word_result:
+                data = word_result.results
+            else:
+                try:
+                    data_keywordtool = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
+                    results = data_keywordtool.json()
+                    created_word = Word.objects.create(name=word, results=results)
+                    data = created_word.results
+                except Exception as e:
+                    data = False
+
+            if data:
+                for item in data['results']:
+                    for sub_item in data['results'][item]:
+                        if 'volume' in sub_item and 'string' in sub_item:
+                            result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
 
         return Response(result)
 

@@ -42,7 +42,7 @@ export default class Dashboard extends MixinAuth {
             loaded: true,
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/photo.png',
-            url: 'http://www.wordcandy.io'
+            url: 'http://0.0.0.0:8000'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);
@@ -210,7 +210,7 @@ export default class Dashboard extends MixinAuth {
                                 <Row>
                                     <Col md={9}>
                                         <FormGroup controlId="formControlsTextarea" style={{'width': '100%'}}>
-                                            <TagsInput value={this.state.tags} onChange={:: this.handleChangeTags}/>
+                                            <TagsInput maxTags={4} value={this.state.tags} onChange={:: this.handleChangeTags}/>
                                         </FormGroup>
                                     </Col>
                                     <Col md={3} className="text-center">

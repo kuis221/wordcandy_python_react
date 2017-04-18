@@ -15,6 +15,7 @@ from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer,
 from .models import Shop, Subscribe, Word
 
 from openpyxl import Workbook
+from openpyxl.drawing.image import Image
 
 from rest_framework_tracking.mixins import LoggingMixin
 
@@ -118,9 +119,18 @@ class ExcelView(LoggingMixin, GenericAPIView):
             serializer.save()
             wb = Workbook()
             ws = wb.active
-            ws['A1'] = 42
-            ws.append([1, 2, 3])
-            ws['A2'] = 13
+            ws['A1'] = 'TEE SHIRT DESIGN'
+            if serializer.data['photo']:
+                img = Image('{0}{1}'.format(settings.WEBSITE, serializer.data['photo']))
+                ws.add_image(img, 'A2')
+            ws['B1'] = 'PRODUCT TITLE'
+            ws['B2'] = serializer.data['product_name']
+            ws['C1'] = 'BULLET POINT ONE'
+            ws['C2'] = serializer.data['first_description']
+            ws['D1'] = 'BULET POINT TWO'
+            ws['D2'] = serializer.data['second_description']
+            ws['E1'] = 'SELECTED KEYWORDS FROM WC'
+            ws['E2'] = serializer.data['keywords']
             timestamp = int(time.time())
             wb.save('{0}/exel/{1}.xlsx'.format(settings.MEDIA_ROOT, timestamp))
             result = {

@@ -217,7 +217,7 @@ export default class Dashboard extends MixinAuth {
                                         <Row>
                                           <Col md={2}></Col>
                                           <Col md={8}>
-                                            <Button bsStyle="primary" block onClick={this.calculate}>
+                                            <Button disabled={this.state.tags.length == 0} bsStyle="primary" block onClick={this.calculate}>
                                                 <i className="icon ion-calculator"></i>
                                                 Calculate
                                             </Button>

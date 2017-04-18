@@ -121,7 +121,7 @@ class ExcelView(LoggingMixin, GenericAPIView):
             ws = wb.active
             ws['A1'] = 'TEE SHIRT DESIGN'
             if serializer.data['photo']:
-                img = Image('{0}{1}'.format(settings.WEBSITE, serializer.data['photo']))
+                img = Image('{0}{1}'.format(settings.MEDIA_ROOT[:-6], serializer.data['photo']))
                 ws.add_image(img, 'A2')
             ws['B1'] = 'PRODUCT TITLE'
             ws['B2'] = serializer.data['product_name']

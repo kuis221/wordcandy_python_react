@@ -35,4 +35,4 @@ stripe==1.51.0
 uritemplate==3.0.0
 django-cors-headers==2.0.2
 jsonfield==2.0.1
-Pillow==2.1.0
+PIL==1.1.6

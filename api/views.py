@@ -68,36 +68,37 @@ class KeywordToolView(APIView):
             'keywords': []
         }
 
-        for word in keywords.split(','):
-            payload = {
-                'apikey': settings.KEYWORDTOOL,
-                'keyword': '[{0}]'.format(word),
-                'output': 'json',
-                'country': 'us',
-                'language': 'en',
-                'metrics': 'true',
-                'metrics_location': '2840',
-                'metrics_language': 'en'
-            }
+        if keywords != '':
+            for word in keywords.split(','):
+                payload = {
+                    'apikey': settings.KEYWORDTOOL,
+                    'keyword': '[{0}]'.format(word),
+                    'output': 'json',
+                    'country': 'us',
+                    'language': 'en',
+                    'metrics': 'true',
+                    'metrics_location': '2840',
+                    'metrics_language': 'en'
+                }
 
-            word_result = Word.objects.filter(name=word).first()
+                word_result = Word.objects.filter(name=word).first()
 
-            if word_result:
-                data = word_result.results
-            else:
-                try:
-                    data_keywordtool = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
-                    results = data_keywordtool.json()
-                    created_word = Word.objects.create(name=word, results=results)
-                    data = created_word.results
-                except Exception as e:
-                    data = False
+                if word_result:
+                    data = word_result.results
+                else:
+                    try:
+                        data_keywordtool = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
+                        results = data_keywordtool.json()
+                        created_word = Word.objects.create(name=word, results=results)
+                        data = created_word.results
+                    except Exception as e:
+                        data = False
 
-            if data:
-                for item in data['results']:
-                    for sub_item in data['results'][item]:
-                        if 'volume' in sub_item and 'string' in sub_item:
-                            result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
+                if data:
+                    for item in data['results']:
+                        for sub_item in data['results'][item]:
+                            if 'volume' in sub_item and 'string' in sub_item:
+                                result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
 
         return Response(result)
 

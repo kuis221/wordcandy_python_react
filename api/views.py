@@ -117,7 +117,10 @@ class ExcelView(LoggingMixin, GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             wb = Workbook()
-            ws = wb.create_sheet()
+            ws = wb.active
+            ws['A1'] = 42
+            ws.append([1, 2, 3])
+            ws['A2'] = 13
             timestamp = int(time.time())
             wb.save('{0}/exel/{1}.xlsx'.format(settings.MEDIA_ROOT, timestamp))
             result = {

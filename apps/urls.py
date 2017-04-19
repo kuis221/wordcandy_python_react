@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^docs/$', schema_view),
     url(r'^v1/', include('rest_auth.urls')),
     url(r'^v1/registration/', include('rest_auth.registration.urls')),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', name='password_reset_confirm'),
     url(r'^v1/dashboard/', include('api.urls')),
 ]
 

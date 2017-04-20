@@ -114,7 +114,7 @@ export default class Dashboard extends MixinAuth {
         });
 
         apiProfiles.getUser().then(function(response) {
-          localStorage.setItem("user", JSON.stringify(response))
+            localStorage.setItem("user", JSON.stringify(response))
         }).catch(function(error) {
             console.log(error);
         });
@@ -125,9 +125,7 @@ export default class Dashboard extends MixinAuth {
         var file = files[0]
         const reader = new FileReader();
         reader.onload = (event) => {
-          _.setState({
-            imageBase64: event.target.result
-          })
+            _.setState({imageBase64: event.target.result})
         };
         reader.readAsDataURL(file);
 
@@ -145,7 +143,7 @@ export default class Dashboard extends MixinAuth {
             'keywords': this.state.tags.toString()
         }
         if (this.state.imageBase64.length > 0) {
-          data['photo'] = this.state.imageBase64;
+            data['photo'] = this.state.imageBase64;
         }
         apiDashboard.export(data).then(function(response) {
             _.setState({loadedExport: true});
@@ -189,7 +187,9 @@ export default class Dashboard extends MixinAuth {
 
     render() {
         return (
-            <Grid className="dashboard-page" fluid={true}>
+            <Grid className="dashboard-page" style={{
+                paddingBottom: '50px'
+              }} fluid={true}>
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
@@ -212,202 +212,196 @@ export default class Dashboard extends MixinAuth {
                 </Navbar>
                 <div className="dashboard-content">
                     <Row>
-                        <Col md={3}>
-                            <Panel className="text-center" style={{
-                                height: 320
-                            }}>
-                                <p>
-                                    <Image src={this.state.thumbnail} width={250} height={250}/>
-                                </p>
-                                <Dropzone onDrop={this.onUploadImage} multiple={false} rejectStyle>
-                                    <Button bsStyle="primary" block>
-                                        <i className="icon ion-arrow-up-c"></i>
-                                        Upload image (.jpg / .png)</Button>
-                                </Dropzone>
-                            </Panel>
-                        </Col>
-                        <Col md={6}>
-
-                            <Panel header="What keywords descript this t-shirt?" style={{
-                                height: 155
-                            }}>
-                                <Form inline>
+                        <Col md={9}>
+                            <Row>
+                                <Col md={4}>
+                                    <Panel className="photo-block text-center" style={{
+                                        height: '335px'
+                                    }}>
+                                        <p>
+                                            <Image src={this.state.thumbnail} width={250} height={250}/>
+                                        </p>
+                                        <Dropzone onDrop={this.onUploadImage} multiple={false} rejectStyle>
+                                            <Button bsStyle="primary" block>
+                                                <i className="icon ion-arrow-up-c"></i>
+                                                Upload image (.jpg / .png)</Button>
+                                        </Dropzone>
+                                    </Panel>
+                                </Col>
+                                <Col md={8}>
                                     <Row>
-                                        <Col md={9}>
-                                            <FormGroup controlId="formControlsTextarea" style={{
-                                                'width': '100%'
+                                        <Col md={12}>
+                                            <Panel header="What keywords descript this t-shirt?" style={{
+                                                height: 155
                                             }}>
-                                                <TagsInput maxTags={4} value={this.state.tags} onChange={:: this.handleChangeTags}/>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md={3} className="text-center">
-                                            <Row>
-                                                <Col md={2}></Col>
-                                                <Col md={8}>
-                                                    <Button disabled={this.state.tags.length == 0} bsStyle="primary" block onClick={this.calculate}>
-                                                        <i className="icon ion-calculator"></i>
-                                                        Calculate
-                                                    </Button>
-                                                </Col>
-                                                <Col md={2}></Col>
-                                            </Row>
-                                            <Row style={{
-                                                paddingTop: '5px'
-                                            }}>
-                                                <Col md={2}></Col>
-                                                <Col md={8}>
-                                                    <Button bsStyle="primary" block onClick={this.reset}>
-                                                        <i className="icon ion-android-refresh"></i>
-                                                        Reset
-                                                    </Button>
-                                                </Col>
-                                                <Col md={2}></Col>
-                                            </Row>
+                                                <Form inline>
+                                                    <Row>
+                                                        <Col md={9}>
+                                                            <FormGroup controlId="formControlsTextarea" style={{
+                                                                'width': '100%'
+                                                            }}>
+                                                                <TagsInput maxTags={4} value={this.state.tags} onChange={:: this.handleChangeTags}/>
+                                                            </FormGroup>
+                                                        </Col>
+                                                        <Col md={3} className="text-center">
+                                                            <Row>
+                                                                <Col md={12}>
+                                                                    <p>
+                                                                        <Button disabled={this.state.tags.length == 0} bsStyle="primary" block onClick={this.calculate}>
+                                                                            <i className="icon ion-calculator"></i>
+                                                                            Calculate
+                                                                        </Button>
+                                                                    </p>
+                                                                </Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col md={12}>
+                                                                    <p>
+                                                                        <Button bsStyle="primary" block onClick={this.reset}>
+                                                                            <i className="icon ion-android-refresh"></i>
+                                                                            Reset
+                                                                        </Button>
+                                                                    </p>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>
+                                                    </Row>
+
+                                                </Form>
+                                            </Panel>
                                         </Col>
                                     </Row>
-                                </Form>
-                            </Panel>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Panel header="Synonyms" style={{
+                                                height: 170,
+                                                marginRight: '-10px'
+                                            }}>
+                                                <Loader loaded={this.state.loaded}>
+                                                    {this.state.synonyms.length == 0
+                                                        ? <div>Empty</div>
+                                                        : null}
+                                                    <Row className="scroll-block">
+                                                        {this.state.synonyms.map(function(item, i) {
+                                                            return <Col md={6} style={{
+                                                                cursor: 'pointer'
+                                                            }} onClick={this.addWord} data-word={item}>{item}</Col>
+                                                        }, this)}
 
-                            <Panel header="Amazon keywords auto suggest" style={{
-                                height: 155
+                                                    </Row>
+                                                </Loader>
+                                            </Panel>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Panel header="Antonyms" style={{
+                                                height: 170,
+                                                marginLeft: '-10px'
+                                            }}>
+                                                <Loader loaded={this.state.loaded}>
+                                                    {this.state.antonyms.length == 0
+                                                        ? <div>Empty</div>
+                                                        : null}
+                                                    <Row className="scroll-block">
+                                                        {this.state.antonyms.map(function(item, i) {
+                                                            return <Col md={6} style={{
+                                                                cursor: 'pointer'
+                                                            }} onClick={this.addWord} data-word={item}>{item}</Col>
+                                                        }, this)}
+
+                                                    </Row>
+                                                </Loader>
+                                            </Panel>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row style={{
+                                paddingBottom: 10
+                            }}>
+                                <Col md={12}>
+                                    <Panel style={{
+                                        height: '355px'
+                                    }}>
+                                        <Row>
+                                            <Col md={12} className="templates-list">
+                                                <Nav bsStyle="tabs" activeKey={this.state.activeShop} onSelect={this.handleShop}>
+                                                    {this.state.shops.map(function(item, i) {
+                                                        return <NavItem eventKey={i}>{item.name}</NavItem>
+                                                    }, this)}
+                                                </Nav>
+                                            </Col>
+                                        </Row>
+
+                                        <Row>
+                                            <Col md={12}>
+                                                <div className="templates">
+                                                    <b>Templates</b>
+                                                </div>
+                                                <ul className="list-inline">
+                                                    {this.state.templates.map(function(item, i) {
+                                                        return <li>
+                                                            <Button onClick={this.handleTemplate} data-id={i} disabled={i == this.state.activeTemplate}>{item.name}</Button>
+                                                        </li>
+                                                    }, this)}
+                                                </ul>
+                                            </Col>
+                                            <Col md={12}>
+                                                <FormGroup>
+                                                    <ControlLabel>Title</ControlLabel>
+                                                    <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <ControlLabel>Description</ControlLabel>
+                                                    <FormControl type="text" placeholder="Dref description of work to get your audience all excited" onChange={this.handleFirstDescription} value={this.state.template.first_description}/>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <ControlLabel>Tags</ControlLabel>
+                                                    <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleSecondDescription} value={this.state.template.second_description}/>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                    </Panel>
+
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col md={3}>
+                            <Panel header="Amazon keywords auto suggest" className="suggestions-block" style={{
+                                height: '700px'
                             }}>
                                 <Loader loaded={this.state.loaded}>
                                     {this.state.stats.length == 0
-                                        ? <div>Empty</div>
+                                        ? <div className="empty-result">Empty</div>
                                         : null}
-                                    <Row className="scroll-block suggestions">
+                                    <div className="scroll-block-suggestions suggestions">
                                         {this.state.stats.map(function(item, i) {
-                                            return <Col md={6}>
-                                                <Row>
-                                                    <Col md={1}>
-                                                        <span className="index">{i + 1}.</span>
-                                                    </Col>
-                                                    <Col md={7}>
-                                                        <p className="name">{item.name}</p>
-                                                    </Col>
-                                                    <Col md={3} className="text-right">
-                                                        <span className="volume">{item.volume}</span>
-                                                    </Col>
-                                                    <Col md={1} className="text-right">
-                                                        <i onClick={this.addWord} style={{
-                                                            cursor: 'cursor'
-                                                        }} data-word={item.name} className="icon ion-android-add-circle"></i>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
+                                            return <Row>
+                                                <Col md={1}>
+                                                    <span className="index">{i + 1}.</span>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <p className="name">{item.name}</p>
+                                                </Col>
+                                                <Col md={3} className="text-right">
+                                                    <span className="volume">{item.volume}</span>
+                                                </Col>
+                                                <Col md={1} className="text-left">
+                                                    <i onClick={this.addWord} style={{
+                                                        cursor: 'cursor'
+                                                    }} data-word={item.name} className="icon ion-android-add-circle"></i>
+                                                </Col>
+                                            </Row>
                                         }, this)}
-                                    </Row>
+                                    </div>
                                 </Loader>
                             </Panel>
-
-                        </Col>
-                        <Col md={3}>
-                            <Panel header="Analytics" style={{
-                                height: 320
-                            }}>
-                                <p className="text-center" style={{
-                                    paddingBottom: 30,
-                                    paddingTop: 30
-                                }}>
-                                    <Image src={'/static/images/dashboard/analytics.png'} height={'150px'} width={'150px'}/>
-                                </p>
-                                <Button disabled block>View Analytics</Button>
-                            </Panel>
-                        </Col>
-                    </Row>
-                    <Row style={{
-                        paddingBottom: 10
-                    }}>
-                        <Col md={9}>
-                            <Panel style={{
-                                height: 350
-                            }}>
-                                <Row>
-                                    <Col md={12} className="templates-list">
-                                        <Nav bsStyle="tabs" activeKey={this.state.activeShop} onSelect={this.handleShop}>
-                                            {this.state.shops.map(function(item, i) {
-                                                return <NavItem eventKey={i}>{item.name}</NavItem>
-                                            }, this)}
-                                        </Nav>
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col md={12}>
-                                        <div className="templates">
-                                            <b>Templates</b>
-                                        </div>
-                                        <ul className="list-inline">
-                                            {this.state.templates.map(function(item, i) {
-                                                return <li>
-                                                    <Button onClick={this.handleTemplate} data-id={i} disabled={i == this.state.activeTemplate}>{item.name}</Button>
-                                                </li>
-                                            }, this)}
-                                        </ul>
-                                    </Col>
-                                    <Col md={12}>
-                                        <FormGroup>
-                                            <ControlLabel>Title</ControlLabel>
-                                            <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <ControlLabel>Description</ControlLabel>
-                                            <FormControl type="text" placeholder="Dref description of work to get your audience all excited" onChange={this.handleFirstDescription} value={this.state.template.first_description}/>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <ControlLabel>Tags</ControlLabel>
-                                            <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleSecondDescription} value={this.state.template.second_description}/>
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                            </Panel>
-
-                        </Col>
-                        <Col md={3}>
-                            <Panel header="Synonyms" style={{
-                                height: 170
-                            }}>
-                                <Loader loaded={this.state.loaded}>
-                                    {this.state.synonyms.length == 0
-                                        ? <div>Empty</div>
-                                        : null}
-                                    <Row className="scroll-block">
-                                        {this.state.synonyms.map(function(item, i) {
-                                            return <Col md={6} style={{
-                                                cursor: 'pointer'
-                                            }} onClick={this.addWord} data-word={item}>{item}</Col>
-                                        }, this)}
-
-                                    </Row>
-                                </Loader>
-                            </Panel>
-
-                            <Panel header="Antonyms" style={{
-                                height: 170
-                            }}>
-                                <Loader loaded={this.state.loaded}>
-                                    {this.state.antonyms.length == 0
-                                        ? <div>Empty</div>
-                                        : null}
-                                    <Row className="scroll-block">
-                                        {this.state.antonyms.map(function(item, i) {
-                                            return <Col md={6} style={{
-                                                cursor: 'pointer'
-                                            }} onClick={this.addWord} data-word={item}>{item}</Col>
-                                        }, this)}
-
-                                    </Row>
-                                </Loader>
-                            </Panel>
-
                         </Col>
                     </Row>
                 </div>
-                <hr/>
                 <div id="footer">
                     <Row>
                         <Col md={2}></Col>

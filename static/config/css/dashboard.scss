@@ -2,33 +2,56 @@
     color: #56576c;
     background-color: #56576c;
 
-    .ion-android-add-circle {
-        color: #dbb1bc;
-        cursor: pointer;
-    }
-
     .dashboard-content {
-        padding-left: 30px;
-        padding-right: 30px;
 
-        .suggestions {
-            .row {
-                margin-left: -5px;
-                margin-right: -5px;
+        .photo-block {
+          margin-right: -20px;
+        }
+
+
+        .suggestions-block {
+            margin-left: -20px;
+
+            .panel-body {
+                padding: 0;
             }
 
-            .index {
-                color: #afafbd;
+            .empty-result {
+                padding-left: 15px;
             }
 
-            .name {
-                width: 190px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                font-weight: 700;
-                padding-left: 10px;
-                font-weight: bold;
+            .suggestions {
+                .row {
+                    border-bottom: 1px solid #edecec;
+                    padding-top: 5px;
+
+                    .index {
+                        padding-left: 5px;
+                        color: #afafbd;
+                        font-size: 12px;
+                    }
+
+                    .name {
+                        font-weight: bold;
+                        padding-left: 5px;
+                        font-size: 12px;
+                    }
+
+                    .volume {
+                        font-size: 12px;
+                    }
+
+                    .ion-android-add-circle {
+                        color: #dbb1bc;
+                        cursor: pointer;
+                        position: absolute;
+                        left: 0;
+                    }
+
+                    .icon {
+                        padding: 2px;
+                    }
+                }
             }
         }
     }
@@ -39,9 +62,10 @@
         margin-top: -10px;
     }
 
-    [class*="col-"] {
-        padding-left: 5px;
-        padding-right: 5px;
+    .scroll-block-suggestions {
+        overflow-y: scroll;
+        height: 650px;
+        overflow-x: hidden;
     }
 
     .panel {

@@ -24,6 +24,7 @@ import format from 'string-format';
 
 import MixinAuth from '../mixins/auth';
 import {apiDashboard} from '../api/dashboard';
+import {apiProfiles} from '../api/profiles';
 
 export default class Dashboard extends MixinAuth {
 
@@ -108,6 +109,12 @@ export default class Dashboard extends MixinAuth {
         var _ = this;
         axios.get(format('{0}/v1/dashboard/templates/', this.state.url)).then(function(response) {
             _.setState({shops: response.data, templates: response.data[0].templates, template: response.data[0].templates[0]});
+        }).catch(function(error) {
+            console.log(error);
+        });
+
+        apiProfiles.getUser().then(function(response) {
+          localStorage.setItem("user", JSON.stringify(response))
         }).catch(function(error) {
             console.log(error);
         });

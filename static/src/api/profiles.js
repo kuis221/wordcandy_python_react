@@ -12,8 +12,8 @@ exports.apiProfiles = {
                     'Content-Type': 'application/json'
                 },
                 data: data,
-                validateStatus: function (status) {
-                  return status;
+                validateStatus: function(status) {
+                    return status;
                 }
             })
             .then(response => {
@@ -31,8 +31,8 @@ exports.apiProfiles = {
                     'Content-Type': 'application/json'
                 },
                 data: data,
-                validateStatus: function (status) {
-                  return status;
+                validateStatus: function(status) {
+                    return status;
                 }
             })
             .then(response => {
@@ -51,8 +51,8 @@ exports.apiProfiles = {
                     'Content-Type': 'application/json'
                 },
                 data: data,
-                validateStatus: function (status) {
-                  return status;
+                validateStatus: function(status) {
+                    return status;
                 }
             })
             .then(response => {
@@ -61,6 +61,39 @@ exports.apiProfiles = {
                 return error;
             });
 
+    },
+    getUser: function() {
+        return axios({
+                url: url + "dashboard/user/",
+                method: 'get',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('key')
+                }
+            })
+            .then(response => {
+                return response.data;
+            }).catch(function(error) {
+                return error;
+            });
+    },
+    updateUser: function(data) {
+        return axios({
+                url: url + "dashboard/user/",
+                method: 'patch',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('key')
+                },
+                data: data
+            })
+            .then(response => {
+                return response.data;
+            }).catch(function(error) {
+                return error;
+            });
     },
     resetConfirm: function(data) {
         return axios({
@@ -71,8 +104,8 @@ exports.apiProfiles = {
                     'Content-Type': 'application/json'
                 },
                 data: data,
-                validateStatus: function (status) {
-                  return status;
+                validateStatus: function(status) {
+                    return status;
                 }
             })
             .then(response => {

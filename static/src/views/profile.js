@@ -16,37 +16,83 @@ import {
 } from 'react-bootstrap';
 
 import MaskedFormControl from 'react-bootstrap-maskedinput';
-
+import Loader from 'react-loader';
 import {Link, browserHistory} from 'react-router';
 import React, {Component} from 'react';
 
 import MixinAuth from '../mixins/auth';
-
+import {apiProfiles} from '../api/profiles';
 
 export default class Profile extends MixinAuth {
 
     constructor(props) {
         super(props);
+        var user = JSON.parse(localStorage.getItem("user"));
         this.state = {
-            name: localStorage.getItem('username'),
+            user: user,
             activeName: false,
-            email: 'Hidden email',
+            loaded: true,
+            email: user['email'],
             activeEmail: false,
             activePassword: false,
             activePlan: false,
             activePayment: false,
-            username: localStorage.getItem('username'),
+            username: user['username']
         };
-        this.handleName = this.handleName.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
+        this.cancelEmail = this.cancelEmail.bind(this);
+        this.changeEmail = this.changeEmail.bind(this);
+
+        this.handleUsername = this.handleUsername.bind(this);
+        this.cancelUsername = this.cancelUsername.bind(this);
+        this.changeUsername = this.changeUsername.bind(this);
+
+        this.updateProfile = this.updateProfile.bind(this);
     }
 
-    handleName(event) {
-        this.setState({name: event.target.value});
+    updateProfile() {
+        var _ = this;
+        _.setState({loaded: false});
+        var data = {
+            'username': this.state.username,
+            'email': this.state.email
+        };
+        apiProfiles.updateUser(data).then(function(response) {
+            _.setState({
+              loaded: true,
+            });
+            localStorage.setItem('username', response['username']);
+        });
+    }
+
+    cancelEmail(event) {
+        var user = this.state.user;
+        this.setState({activeEmail: false, email: user.email});
+    }
+
+    changeEmail(event) {
+        var user = this.state.user;
+        user.email = this.state.email;
+        this.setState({activeEmail: false, user: user});
+    }
+
+    cancelUsername(event) {
+        var user = this.state.user;
+        this.setState({activeName: false, username: user.username});
+    }
+
+    changeUsername(event) {
+        var user = this.state.user;
+        user.username = this.state.username;
+        this.setState({activeName: false, user: user});
     }
 
     handleEmail(event) {
         this.setState({email: event.target.value});
+    }
+
+    handleUsername(event) {
+        this.setState({username: event.target.value});
     }
 
     render() {
@@ -89,10 +135,10 @@ export default class Profile extends MixinAuth {
                                             {this.state.activeName
                                                 ? <div>
                                                         <FormGroup>
-                                                            <FormControl type="text" placeholder="FirstName LastName" onChange={this.handleName} value={this.state.name}/>
+                                                            <FormControl type="text" placeholder="FirstName LastName" onChange={this.handleUsername} value={this.state.username}/>
                                                         </FormGroup>
                                                         <FormGroup className="text-right">
-                                                            <Button className="primary" onClick={() => this.setState({activeName: false})}>
+                                                            <Button disabled={this.state.username == ''} className="primary" onClick={this.changeUsername}>
                                                                 Change Name
                                                             </Button>
                                                         </FormGroup>
@@ -100,16 +146,16 @@ export default class Profile extends MixinAuth {
                                                 : null}
                                             {this.state.activeName == false
                                                 ? <div>
-                                                        <b>{this.state.name}</b>
+                                                        <b>{this.state.username}</b>
                                                     </div>
                                                 : null}
                                         </Col>
                                         <Col md={2} className="text-right">
                                             {this.state.activeName
-                                                ? <a href="#" onClick={() => this.setState({activeName: false})}>Cancel</a>
+                                                ? <a href="#" onClick={this.cancelUsername}>Cancel</a>
                                                 : null}
                                             {this.state.activeName == false
-                                                ? <a href="#" onClick={() => this.setState({activeName: false})}>Change</a>
+                                                ? <a href="#" onClick={() => this.setState({activeName: true})}>Change</a>
                                                 : null}
                                         </Col>
                                     </Row>
@@ -129,7 +175,7 @@ export default class Profile extends MixinAuth {
                                                             <FormControl type="email" placeholder="example@mail.com" onChange={this.handleEmail} value={this.state.email}/>
                                                         </FormGroup>
                                                         <FormGroup className="text-right">
-                                                            <Button className="primary" onClick={() => this.setState({activeEmail: false})}>
+                                                            <Button disabled={this.state.email == ''} className="primary" onClick={this.changeEmail}>
                                                                 Change Email
                                                             </Button>
                                                         </FormGroup>
@@ -150,10 +196,10 @@ export default class Profile extends MixinAuth {
                                         </Col>
                                         <Col md={2} className="text-right">
                                             {this.state.activeEmail
-                                                ? <a href="#" onClick={() => this.setState({activeEmail: false})}>Cancel</a>
+                                                ? <a href="#" onClick={this.cancelEmail}>Cancel</a>
                                                 : null}
                                             {this.state.activeEmail == false
-                                                ? <a href="#" onClick={() => this.setState({activeEmail: false})}>Change</a>
+                                                ? <a href="#" onClick={() => this.setState({activeEmail: true})}>Change</a>
                                                 : null}
                                         </Col>
                                     </Row>
@@ -180,7 +226,7 @@ export default class Profile extends MixinAuth {
                                                             <FormControl type="email" placeholder="New password repeat"/>
                                                         </FormGroup>
                                                         <FormGroup className="text-right">
-                                                            <Button className="primary" onClick={() => this.setState({activePassword: false})}>
+                                                            <Button disabled className="primary" onClick={() => this.setState({activePassword: false})}>
                                                                 Change password
                                                             </Button>
                                                         </FormGroup>
@@ -206,7 +252,7 @@ export default class Profile extends MixinAuth {
                                                 ? <a href="#" onClick={() => this.setState({activePassword: false})}>Cancel</a>
                                                 : null}
                                             {this.state.activePassword == false
-                                                ? <a href="#" onClick={() => this.setState({activePassword: false})}>Change</a>
+                                                ? <a href="#" onClick={() => this.setState({activePassword: true})}>Change</a>
                                                 : null}
                                         </Col>
                                     </Row>
@@ -225,14 +271,14 @@ export default class Profile extends MixinAuth {
                                         <Col md={7}>
                                             {this.state.activePlan == false
                                                 ? <div>
-                                                        <b>Free</b>
+                                                        <b>VIP</b>
                                                     </div>
                                                 : null}
                                             {this.state.activePlan
                                                 ? <div>
                                                         <FormGroup controlId="formControlsSelect">
                                                             <FormControl componentClass="select" placeholder="Free">
-                                                                <option value="select">Free</option>
+                                                                <option value="select">VIP</option>
                                                             </FormControl>
                                                         </FormGroup>
                                                         <FormGroup className="text-right">
@@ -248,7 +294,7 @@ export default class Profile extends MixinAuth {
                                                 ? <a href="#" onClick={() => this.setState({activePlan: false})}>Cancel</a>
                                                 : null}
                                             {this.state.activePlan == false
-                                                ? <a href="#" onClick={() => this.setState({activePlan: false})}>Change</a>
+                                                ? <a href="#" onClick={() => this.setState({activePlan: true})}>Change</a>
                                                 : null}
                                         </Col>
                                     </Row>
@@ -273,7 +319,7 @@ export default class Profile extends MixinAuth {
                                                             <MaskedFormControl type='text' name='payment' mask='1111-1111-1111-1111'/>
                                                         </FormGroup>
                                                         <FormGroup className="text-right">
-                                                            <Button className="primary" onClick={() => this.setState({activePayment: false})}>
+                                                            <Button disabled className="primary" onClick={() => this.setState({activePayment: false})}>
                                                                 Change number
                                                             </Button>
                                                         </FormGroup>
@@ -285,7 +331,7 @@ export default class Profile extends MixinAuth {
                                                 ? <a href="#" onClick={() => this.setState({activePayment: false})}>Cancel</a>
                                                 : null}
                                             {this.state.activePayment == false
-                                                ? <a href="#" onClick={() => this.setState({activePayment: false})}>Change</a>
+                                                ? <a href="#" onClick={() => this.setState({activePayment: true})}>Change</a>
                                                 : null}
                                         </Col>
                                     </Row>
@@ -364,10 +410,12 @@ export default class Profile extends MixinAuth {
                             </Button>
                         </Col>
                         <Col md={4} className="text-right">
-                            <Button bsStyle="success" disabled>
-                                <i className="icon ion-checkmark-circled"></i>
-                                Done
-                            </Button>
+                            <Loader loaded={this.state.loaded}>
+                                <Button bsStyle="success" onClick={this.updateProfile}>
+                                    <i className="icon ion-checkmark-circled"></i>
+                                    Done
+                                </Button>
+                            </Loader>
                         </Col>
                         <Col md={2}></Col>
                     </Row>

@@ -1,7 +1,8 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
+from rest_auth.serializers import UserDetailsSerializer
 
 from django.http import HttpResponse
 from django.conf import settings
@@ -109,6 +110,7 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
 
 class ExcelView(LoggingMixin, GenericAPIView):
     serializer_class = ExportSerializer
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         """
@@ -174,3 +176,28 @@ class SubscribeView(LoggingMixin, GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetailsView(RetrieveUpdateAPIView):
+    """
+    Reads and updates UserModel fields
+    Accepts GET, PUT, PATCH methods.
+
+    Default accepted fields: username, first_name, last_name
+    Default display fields: pk, username, email, first_name, last_name
+    Read-only fields: pk, email
+
+    Returns UserModel fields.
+    """
+    serializer_class = UserDetailsSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def get_queryset(self):
+        """
+        Adding this method since it is sometimes called when using
+        django-rest-swagger
+        https://github.com/Tivix/django-rest-auth/issues/275
+        """
+        return get_user_model().objects.none()

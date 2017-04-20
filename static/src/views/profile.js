@@ -58,9 +58,7 @@ export default class Profile extends MixinAuth {
             'email': this.state.email
         };
         apiProfiles.updateUser(data).then(function(response) {
-            _.setState({
-              loaded: true,
-            });
+            _.setState({loaded: true});
             localStorage.setItem('username', response['username']);
         });
     }
@@ -270,9 +268,9 @@ export default class Profile extends MixinAuth {
                                         </Col>
                                         <Col md={7}>
                                             {this.state.activePlan == false
-                                                ? <div>
-                                                        <b>VIP</b>
-                                                    </div>
+                                                ? <ul className="list-inline">
+                                                        <li><Image width={'32px'} height={'32px'} src="/static/images/dashboard/vip.png"/></li>
+                                                    </ul>
                                                 : null}
                                             {this.state.activePlan
                                                 ? <div>

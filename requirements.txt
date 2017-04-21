@@ -36,3 +36,7 @@ django-cors-headers==2.0.2
 jsonfield==2.0.1
 Pillow==4.1.0
 easy-thumbnails==2.4.1
+django-storages==1.5.2
+boto==2.46.1
+boto3==1.4.4
+urllib3==1.20

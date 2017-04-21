@@ -11,12 +11,18 @@ from django.core.cache import cache
 import time
 import requests
 from datetime import datetime
+import boto3
+from cStringIO import StringIO
+import io
+import urllib3
 
 from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer, TemplateSerializer, SubscribeSerializer, ExportSerializer
 from .models import Shop, Subscribe, Word
 
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
+from openpyxl.writer.excel import save_virtual_workbook
+
 
 from rest_framework_tracking.mixins import LoggingMixin
 
@@ -92,9 +98,11 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                     data = word_result.results
                 else:
                     try:
-                        data_keywordtool = requests.get('http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
+                        data_keywordtool = requests.get(
+                            'http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
                         results = data_keywordtool.json()
-                        created_word = Word.objects.create(name=word, results=results)
+                        created_word = Word.objects.create(
+                            name=word, results=results)
                         data = created_word.results
                     except Exception as e:
                         data = False
@@ -103,12 +111,13 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                     for item in data['results']:
                         for sub_item in data['results'][item]:
                             if 'volume' in sub_item and 'string' in sub_item:
-                                result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
+                                result['keywords'].append(
+                                    {'name': sub_item['string'], 'volume': sub_item['volume']})
 
         return Response(result)
 
 
-class ExcelView(LoggingMixin, GenericAPIView):
+class ExcelView(GenericAPIView):
     serializer_class = ExportSerializer
 
     def post(self, request, format=None):
@@ -122,7 +131,10 @@ class ExcelView(LoggingMixin, GenericAPIView):
             ws = wb.active
             ws['A1'] = 'TEE SHIRT DESIGN'
             if serializer.data['photo']:
-                img = Image('{0}{1}'.format(settings.MEDIA_ROOT[:-6], serializer.data['xls_photo']))
+                http = urllib3.PoolManager()
+                r = http.request('GET', serializer.data['xls_photo'])
+                image_file = io.BytesIO(r.data)
+                img = Image(image_file)
                 ws.add_image(img, 'A2')
             ws['B1'] = 'PRODUCT TITLE'
             ws['B2'] = serializer.data['product_name']
@@ -140,15 +152,20 @@ class ExcelView(LoggingMixin, GenericAPIView):
             ws.column_dimensions["E"].width = 60
             ws.row_dimensions[2].height = 100
 
-            timestamp = int(time.time())
-            wb.save('{0}/exel/{1}.xlsx'.format(settings.MEDIA_ROOT, timestamp))
+            filename = int(time.time())
+            s3c = boto3.client('s3',
+                               aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                               aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+            handle_xls = StringIO(save_virtual_workbook(wb))
+            xls_file = s3c.put_object(Bucket='wordcandy', Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
             result = {
-                'file': '{0}{1}exel/{2}.xlsx'.format(settings.WEBSITE, settings.MEDIA_URL, timestamp),
-                'data': serializer.data
+                'data': serializer.data,
+                'file': '{0}exel/{1}.xlsx'.format(settings.AWS_S3_ROOT, filename)
             }
-            return Response(result, status=status.HTTP_201_CREATED)
+            return Response(result)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ShopList(LoggingMixin, GenericAPIView):
     serializer_class = ShopSerializer

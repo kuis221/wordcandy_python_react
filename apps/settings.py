@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'djstripe',
     'api',
+    'storages',
     'easy_thumbnails'
 ]
 
@@ -172,13 +173,17 @@ WEBPACK_LOADER = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-WEBSITE = 'http://www.wordcandy.io'
-
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AWS_STORAGE_BUCKET_NAME = "wordcandy"
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+THUMBNAIL_DEFAULT_STORAGE ='storages.backends.s3boto.S3BotoStorage'
+THUMBNAIL_BASEDIR = '_miniaturas/'
+AWS_S3_ROOT = 'https://s3-us-west-1.amazonaws.com/wordcandy/'
+MEDIA_URL = 'https://{0}.s3.amazonaws.com/'.format('wordcandy')
+MEDIA_ROOT = ''
+AWS_ACCESS_KEY_ID = "AKIAIQBYGICC4NB4EYEQ"
+AWS_SECRET_ACCESS_KEY = "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"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

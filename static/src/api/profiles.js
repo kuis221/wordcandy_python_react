@@ -70,10 +70,13 @@ exports.apiProfiles = {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Token ' + localStorage.getItem('key')
+                },
+                validateStatus: function(status) {
+                    return status;
                 }
             })
             .then(response => {
-                return response.data;
+                return response;
             }).catch(function(error) {
                 return error;
             });

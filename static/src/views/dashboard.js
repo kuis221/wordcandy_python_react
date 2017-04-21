@@ -107,16 +107,21 @@ export default class Dashboard extends MixinAuth {
 
     componentDidMount() {
         var _ = this;
+        apiProfiles.getUser().then(function(response) {
+            switch (response.status) {
+                case 200:
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                    break;
+                case 401:
+                    browserHistory.push('/sign-in');
+                    break;
+            }
+
+        }).catch(function(error) {
+        });
         axios.get(format('{0}/v1/dashboard/templates/', this.state.url)).then(function(response) {
             _.setState({shops: response.data, templates: response.data[0].templates, template: response.data[0].templates[0]});
         }).catch(function(error) {
-            console.log(error);
-        });
-
-        apiProfiles.getUser().then(function(response) {
-            localStorage.setItem("user", JSON.stringify(response))
-        }).catch(function(error) {
-            console.log(error);
         });
     }
 
@@ -189,7 +194,7 @@ export default class Dashboard extends MixinAuth {
         return (
             <Grid className="dashboard-page" style={{
                 paddingBottom: '50px'
-              }} fluid={true}>
+            }} fluid={true}>
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>

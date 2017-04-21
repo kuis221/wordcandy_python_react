@@ -110,7 +110,6 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
 
 class ExcelView(LoggingMixin, GenericAPIView):
     serializer_class = ExportSerializer
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         """

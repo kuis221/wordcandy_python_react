@@ -167,12 +167,8 @@ export default class Dashboard extends MixinAuth {
         };
 
         apiDashboard.keywordtool(data).then(function(response) {
-            response.data.keywords.forEach(function(element) {
-                if (parseInt(element['volume']) > 0) {
-                    _.state.stats.push({'name': element['name'], 'active': false, 'volume': element['volume']});
-                    _.setState({stats: _.state.stats})
-                }
-            });
+            var stats = (_.state.stats).concat(response.data.keywords);
+            _.setState({stats: stats})
             _.setState({loadedKeywords: true});
             i++;
             if (i < _.state.tags.length) {

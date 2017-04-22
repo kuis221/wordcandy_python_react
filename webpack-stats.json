@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"bundle.js","path":"/Users/dmitry/Work/byte-up/django/wordcandy/static/bundles/bundle.js"}]},"error":"ModuleBuildError","file":"/Users/dmitry/Work/byte-up/django/wordcandy/static/src/views/dashboard.js","message":"Module build failed: SyntaxError: Unexpected token, expected ; (162:23)\n\n  160 | \n  161 |     calculate() {\n> 162 |         keywordtool(i) {\n      |                        ^\n  163 |             console.log(i);\n  164 |             var data = {\n  165 |                 'params': {\n"}
+{"status":"compiling"}

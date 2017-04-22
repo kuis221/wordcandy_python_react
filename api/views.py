@@ -107,11 +107,13 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                     except Exception as e:
                         data = False
 
+                list_keywords = []
                 if data:
                     for item in data['results']:
                         for sub_item in data['results'][item]:
                             if 'volume' in sub_item and 'string' in sub_item:
-                                if sub_item['volume'] > 300:
+                                if sub_item['volume'] > 300 and not sub_item['string'] in list_keywords:
+                                    list_keywords.append(sub_item['string'])
                                     result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
 
         return Response(result)

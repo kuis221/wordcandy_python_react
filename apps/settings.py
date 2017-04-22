@@ -186,8 +186,8 @@ MEDIA_ROOT = ''
 AWS_ACCESS_KEY_ID = "AKIAIQBYGICC4NB4EYEQ"
 AWS_SECRET_ACCESS_KEY = "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"
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]

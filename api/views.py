@@ -100,10 +100,13 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                     try:
                         data_keywordtool = requests.get(
                             'http://api.keywordtool.io/v2/search/suggestions/amazon', params=payload)
-                        results = data_keywordtool.json()
-                        created_word = Word.objects.create(
-                            name=word, results=results)
-                        data = created_word.results
+                        if data_keywordtool.status_code == 200:
+                            results = data_keywordtool.json()
+                            created_word = Word.objects.create(
+                                name=word, results=results)
+                            data = created_word.results
+                        else:
+                            data = False
                     except Exception as e:
                         data = False
 

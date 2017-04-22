@@ -158,6 +158,30 @@ export default class Dashboard extends MixinAuth {
         });
     }
 
+    keywordtool(_, i) {
+        var data = {
+            'params': {
+                'tags': _.state.tags[i],
+                'format': 'json'
+            }
+        };
+
+        apiDashboard.keywordtool(data).then(function(response) {
+            response.data.keywords.forEach(function(element) {
+                if (parseInt(element['volume']) > 0) {
+                    _.state.stats.push({'name': element['name'], 'active': false, 'volume': element['volume']});
+                    _.setState({stats: _.state.stats})
+                }
+            });
+            _.setState({loadedKeywords: true});
+            i++;
+            if (i < _.state.tags.length) {
+                _.keywordtool(_, i);
+            }
+        });
+
+    }
+
     calculate() {
         var _ = this;
         var data = {
@@ -168,42 +192,20 @@ export default class Dashboard extends MixinAuth {
         }
 
         _.setState({loadedSynonyms: false});
-        apiDashboard.synonyms(data).then(function(response) {
-          _.setState({synonyms: response.data.synonyms})
-          _.setState({loadedSynonyms: true});
-        });
-
         _.setState({loadedAntonyms: false});
-        apiDashboard.antonyms(data).then(function(response) {
-          _.setState({antonyms: response.data.antonyms});
-          _.setState({loadedAntonyms: true});
-        });
+        _.setState({loadedKeywords: false});
 
+        apiDashboard.synonyms(data).then(function(response) {
+            _.setState({synonyms: response.data.synonyms})
+            _.setState({loadedSynonyms: true});
 
-        _.setState({loadedKeywords: false})
-        _.state.tags.forEach(function(element) {
-
-          var data = {
-              'params': {
-                  'tags': element,
-                  'format': 'json'
-              }
-          };
-          _.setState({stats: []})
-          apiDashboard.keywordtool(data).then(function(response) {
-            response.data.keywords.forEach(function(element) {
-                if (parseInt(element['volume']) > 0) {
-                  _.state.stats.push({'name': element['name'], 'active': false, 'volume': element['volume']});
-                  _.setState({stats: _.state.stats})
-                }
+            apiDashboard.antonyms(data).then(function(response) {
+                _.setState({antonyms: response.data.antonyms});
+                _.setState({loadedAntonyms: true});
+                _.setState({stats: []});
+                _.keywordtool(_, 0);
             });
-            _.setState({loadedKeywords: true})
-          });
-
         });
-
-
-
     }
 
     render() {

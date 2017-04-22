@@ -111,8 +111,8 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                     for item in data['results']:
                         for sub_item in data['results'][item]:
                             if 'volume' in sub_item and 'string' in sub_item:
-                                result['keywords'].append(
-                                    {'name': sub_item['string'], 'volume': sub_item['volume']})
+                                if sub_item['volume'] > 300:
+                                    result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
 
         return Response(result)
 

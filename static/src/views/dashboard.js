@@ -40,7 +40,9 @@ export default class Dashboard extends MixinAuth {
             template: [],
             activeTemplate: 0,
             activeShop: 0,
-            loaded: true,
+            loadedSynonyms: true,
+            loadedAntonyms: true,
+            loadedKeywords: true,
             imageBase64: '',
             loadedExport: true,
             username: localStorage.getItem('username'),
@@ -117,12 +119,12 @@ export default class Dashboard extends MixinAuth {
                     break;
             }
 
-        }).catch(function(error) {
-        });
-        axios.get(format('{0}/v1/dashboard/templates/', this.state.url)).then(function(response) {
+        }).catch(function(error) {});
+
+        apiDashboard.templates().then(function(response) {
             _.setState({shops: response.data, templates: response.data[0].templates, template: response.data[0].templates[0]});
-        }).catch(function(error) {
-        });
+        }).catch(function(error) {});
+
     }
 
     onUploadImage(files) {
@@ -158,7 +160,6 @@ export default class Dashboard extends MixinAuth {
 
     calculate() {
         var _ = this;
-        _.setState({loaded: false})
         var data = {
             'params': {
                 'tags': (_.state.tags).toString(),
@@ -166,28 +167,43 @@ export default class Dashboard extends MixinAuth {
             }
         }
 
-        axios.get(format('{0}/v1/dashboard/synonyms/', _.state.url), data).then(function(response) {
-            _.setState({synonyms: response.data['synonyms']})
-            axios.get(format('{0}/v1/dashboard/antonyms/', _.state.url), data).then(function(response) {
-                _.setState({antonyms: response.data['antonyms']});
-                axios.get(format('{0}/v1/dashboard/keywordtool/', _.state.url), data).then(function(response) {
-                    var stats = [];
-                    response.data['keywords'].forEach(function(element) {
-                        if (parseInt(element['volume']) > 0) {
-                            stats.push({'name': element['name'], 'active': false, 'volume': element['volume']})
-                        }
-                    });
-                    _.setState({stats: stats})
-                    _.setState({loaded: true})
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            }).catch(function(error) {
-                console.log(error);
-            });
-        }).catch(function(error) {
-            console.log(error);
+        _.setState({loadedSynonyms: false});
+        apiDashboard.synonyms(data).then(function(response) {
+          _.setState({synonyms: response.data.synonyms})
+          _.setState({loadedSynonyms: true});
         });
+
+        _.setState({loadedAntonyms: false});
+        apiDashboard.antonyms(data).then(function(response) {
+          _.setState({antonyms: response.data.antonyms});
+          _.setState({loadedAntonyms: true});
+        });
+
+
+        _.setState({loadedKeywords: false})
+        _.state.tags.forEach(function(element) {
+
+          var data = {
+              'params': {
+                  'tags': element,
+                  'format': 'json'
+              }
+          };
+          _.setState({stats: []})
+          apiDashboard.keywordtool(data).then(function(response) {
+            response.data.keywords.forEach(function(element) {
+                if (parseInt(element['volume']) > 0) {
+                  _.state.stats.push({'name': element['name'], 'active': false, 'volume': element['volume']});
+                  _.setState({stats: _.state.stats})
+                }
+            });
+            _.setState({loadedKeywords: true})
+          });
+
+        });
+
+
+
     }
 
     render() {
@@ -282,7 +298,7 @@ export default class Dashboard extends MixinAuth {
                                                 height: 170,
                                                 marginRight: '-10px'
                                             }}>
-                                                <Loader loaded={this.state.loaded}>
+                                                <Loader loaded={this.state.loadedSynonyms}>
                                                     {this.state.synonyms.length == 0
                                                         ? <div>Empty</div>
                                                         : null}
@@ -302,7 +318,7 @@ export default class Dashboard extends MixinAuth {
                                                 height: 170,
                                                 marginLeft: '-10px'
                                             }}>
-                                                <Loader loaded={this.state.loaded}>
+                                                <Loader loaded={this.state.loadedAntonyms}>
                                                     {this.state.antonyms.length == 0
                                                         ? <div>Empty</div>
                                                         : null}
@@ -378,7 +394,7 @@ export default class Dashboard extends MixinAuth {
                             <Panel header="Amazon keywords auto suggest" className="suggestions-block" style={{
                                 height: '700px'
                             }}>
-                                <Loader loaded={this.state.loaded}>
+                                <Loader loaded={this.state.loadedKeywords}>
                                     {this.state.stats.length == 0
                                         ? <div className="empty-result">Empty</div>
                                         : null}

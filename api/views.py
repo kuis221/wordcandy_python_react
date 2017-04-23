@@ -161,7 +161,7 @@ class ExcelView(GenericAPIView):
                                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
             handle_xls = StringIO(save_virtual_workbook(wb))
-            xls_file = s3c.put_object(Bucket='wordcandy', Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
+            xls_file = s3c.put_object(Bucket='wordcandyapp', Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
             result = {
                 'data': serializer.data,
                 'file': '{0}exel/{1}.xlsx'.format(settings.AWS_S3_ROOT, filename)

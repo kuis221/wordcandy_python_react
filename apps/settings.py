@@ -176,15 +176,15 @@ WEBPACK_LOADER = {
 
 STATIC_URL = '/static/'
 
-AWS_STORAGE_BUCKET_NAME = "wordcandy"
+AWS_STORAGE_BUCKET_NAME = "wordcandyapp"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 THUMBNAIL_DEFAULT_STORAGE ='storages.backends.s3boto.S3BotoStorage'
 THUMBNAIL_BASEDIR = '_miniaturas/'
-AWS_S3_ROOT = 'https://s3-us-west-1.amazonaws.com/wordcandy/'
-MEDIA_URL = 'https://{0}.s3.amazonaws.com/'.format('wordcandy')
+AWS_S3_ROOT = 'https://s3-us-west-1.amazonaws.com/{0}/'.format(AWS_STORAGE_BUCKET_NAME)
+MEDIA_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
 MEDIA_ROOT = ''
-AWS_ACCESS_KEY_ID = "AKIAIQBYGICC4NB4EYEQ"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_ACCESS_KEY_ID = "AKIAIOCAEG4U53J2G2KA"
+AWS_SECRET_ACCESS_KEY = "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"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

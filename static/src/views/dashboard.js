@@ -32,16 +32,14 @@ export default class Dashboard extends MixinAuth {
         super(props);
         this.state = {
             tags: [],
-            synonyms: [],
-            antonyms: [],
+            similars: [],
             stats: [],
             shops: [],
             templates: [],
             template: [],
             activeTemplate: 0,
             activeShop: 0,
-            loadedSynonyms: true,
-            loadedAntonyms: true,
+            loadedSimilars: true,
             loadedKeywords: true,
             imageBase64: '',
             loadedExport: true,
@@ -192,12 +190,12 @@ export default class Dashboard extends MixinAuth {
         _.setState({loadedKeywords: false});
 
         apiDashboard.synonyms(data).then(function(response) {
-            _.setState({synonyms: response.data.synonyms})
-            _.setState({loadedSynonyms: true});
-
+            var similars = response.data.synonyms;
+            _.setState({similars: similars})
             apiDashboard.antonyms(data).then(function(response) {
-                _.setState({antonyms: response.data.antonyms});
-                _.setState({loadedAntonyms: true});
+                similars.concat(response.data.antonyms);
+                _.setState({similars: similars});
+                _.setState({loadedSimilars: true});
                 _.setState({stats: []});
                 _.keywordtool(_, 0);
             });
@@ -289,44 +287,20 @@ export default class Dashboard extends MixinAuth {
                                                 </Form>
                                             </Panel>
                                         </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col md={6}>
-                                            <Panel header="Synonyms" style={{
+                                        <Col md={12}>
+                                            <Panel header="Synonyms / Antonyms" style={{
                                                 height: 170,
-                                                marginRight: '-10px'
                                             }}>
-                                                <Loader loaded={this.state.loadedSynonyms}>
-                                                    {this.state.synonyms.length == 0
+                                                <Loader loaded={this.state.loadedSimilars}>
+                                                    {this.state.similars.length == 0
                                                         ? <div>Empty</div>
                                                         : null}
                                                     <Row className="scroll-block">
-                                                        {this.state.synonyms.map(function(item, i) {
+                                                        {this.state.similars.map(function(item, i) {
                                                             return <Col md={6} style={{
                                                                 cursor: 'pointer'
-                                                            }} onClick={this.addWord} data-word={item}>{item}</Col>
+                                                            }} onClick={this.addWord} data-word={item}><i className="icon ion-android-add-circle"></i>{' '}{item}</Col>
                                                         }, this)}
-
-                                                    </Row>
-                                                </Loader>
-                                            </Panel>
-                                        </Col>
-                                        <Col md={6}>
-                                            <Panel header="Antonyms" style={{
-                                                height: 170,
-                                                marginLeft: '-10px'
-                                            }}>
-                                                <Loader loaded={this.state.loadedAntonyms}>
-                                                    {this.state.antonyms.length == 0
-                                                        ? <div>Empty</div>
-                                                        : null}
-                                                    <Row className="scroll-block">
-                                                        {this.state.antonyms.map(function(item, i) {
-                                                            return <Col md={6} style={{
-                                                                cursor: 'pointer'
-                                                            }} onClick={this.addWord} data-word={item}>{item}</Col>
-                                                        }, this)}
-
                                                     </Row>
                                                 </Loader>
                                             </Panel>

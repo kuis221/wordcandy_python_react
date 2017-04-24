@@ -41,13 +41,6 @@
                         font-size: 12px;
                     }
 
-                    .ion-android-add-circle {
-                        color: #dbb1bc;
-                        cursor: pointer;
-                        position: absolute;
-                        left: 0;
-                    }
-
                     .icon {
                         padding: 2px;
                     }
@@ -60,6 +53,7 @@
         overflow-y: scroll;
         height: 100px;
         margin-top: -10px;
+        padding-left: 10px;
     }
 
     .scroll-block-suggestions {

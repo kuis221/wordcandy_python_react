@@ -61,7 +61,7 @@ export default class Dashboard extends MixinAuth {
     }
 
     reset() {
-        this.setState({tags: [], synonyms: [], antonyms: [], stats: [], thumbnail: '/static/images/dashboard/photo.png'});
+        this.setState({tags: [], similars:[], stats: [], thumbnail: '/static/images/dashboard/photo.png'});
     }
 
     addWord(event) {

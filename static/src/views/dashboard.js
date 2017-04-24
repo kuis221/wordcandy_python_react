@@ -277,7 +277,7 @@ export default class Dashboard extends MixinAuth {
                                                                     <p>
                                                                         <Button bsStyle="primary" block onClick={this.reset}>
                                                                             <i className="icon ion-android-refresh"></i>
-                                                                            Reset
+                                                                            Start Over
                                                                         </Button>
                                                                     </p>
                                                                 </Col>

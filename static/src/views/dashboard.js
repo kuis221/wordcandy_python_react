@@ -298,10 +298,10 @@ export default class Dashboard extends MixinAuth {
                                                         : null}
                                                     <Row className="scroll-block">
                                                         {this.state.similars.map(function(item, i) {
-                                                            return <Col md={6} style={{
-                                                                cursor: 'pointer'
-                                                            }} onClick={this.addWord} data-word={item}>
-                                                                <i className="icon ion-android-add-circle"></i>{' '}{item}</Col>
+                                                            return <Col md={6}>
+                                                                <i style={{
+                                                                    cursor: 'pointer'
+                                                                }} onClick={this.addWord} data-word={item} className="icon ion-android-add-circle"></i>{' '}{item}</Col>
                                                         }, this)}
                                                     </Row>
                                                 </Loader>

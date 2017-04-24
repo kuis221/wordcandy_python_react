@@ -187,8 +187,7 @@ export default class Dashboard extends MixinAuth {
             }
         }
 
-        _.setState({loadedSynonyms: false});
-        _.setState({loadedAntonyms: false});
+        _.setState({loadedSimilars: false});
         _.setState({loadedKeywords: false});
 
         apiDashboard.synonyms(data).then(function(response) {

@@ -21,6 +21,7 @@ import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import Loader from 'react-loader';
 import format from 'string-format';
+import lodash from 'lodash';
 
 import MixinAuth from '../mixins/auth';
 import {apiDashboard} from '../api/dashboard';
@@ -166,6 +167,7 @@ export default class Dashboard extends MixinAuth {
 
         apiDashboard.keywordtool(data).then(function(response) {
             var stats = (_.state.stats).concat(response.data.keywords);
+            stats = lodash.sortBy(stats, 'volume').reverse();
             _.setState({stats: stats})
             _.setState({loadedKeywords: true});
             i++;
@@ -289,7 +291,7 @@ export default class Dashboard extends MixinAuth {
                                         </Col>
                                         <Col md={12}>
                                             <Panel header="Synonyms / Antonyms" style={{
-                                                height: 170,
+                                                height: 170
                                             }}>
                                                 <Loader loaded={this.state.loadedSimilars}>
                                                     {this.state.similars.length == 0
@@ -299,7 +301,8 @@ export default class Dashboard extends MixinAuth {
                                                         {this.state.similars.map(function(item, i) {
                                                             return <Col md={6} style={{
                                                                 cursor: 'pointer'
-                                                            }} onClick={this.addWord} data-word={item}><i className="icon ion-android-add-circle"></i>{' '}{item}</Col>
+                                                            }} onClick={this.addWord} data-word={item}>
+                                                                <i className="icon ion-android-add-circle"></i>{' '}{item}</Col>
                                                         }, this)}
                                                     </Row>
                                                 </Loader>

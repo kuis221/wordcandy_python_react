@@ -22,6 +22,7 @@ import axios from 'axios';
 import Loader from 'react-loader';
 import format from 'string-format';
 import lodash from 'lodash';
+import Toggle from 'react-toggle';
 
 import MixinAuth from '../mixins/auth';
 import {apiDashboard} from '../api/dashboard';
@@ -44,8 +45,10 @@ export default class Dashboard extends MixinAuth {
             loadedKeywords: true,
             imageBase64: '',
             loadedExport: true,
+            thumbnailStatus: false,
             username: localStorage.getItem('username'),
-            thumbnail: '/static/images/dashboard/photo.png',
+            thumbnail: '/static/images/dashboard/shirt.png',
+            thumbnailBackground: '#e1e0f0',
             url: 'http://www.wordcandy.io'
         };
         this.onUploadImage = this.onUploadImage.bind(this);
@@ -58,10 +61,22 @@ export default class Dashboard extends MixinAuth {
         this.handleTitle = this.handleTitle.bind(this);
         this.handleSecondDescription = this.handleSecondDescription.bind(this);
         this.handleFirstDescription = this.handleFirstDescription.bind(this);
+        this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
+    }
+
+    handleThumbnailChange() {
+        this.setState({
+            thumbnailStatus: !this.state.thumbnailStatus
+        });
+        if (this.state.thumbnailStatus) {
+            this.setState({thumbnailBackground: '#e1e0f0'});
+        } else {
+            this.setState({thumbnailBackground: '#56576c'});
+        }
     }
 
     reset() {
-        this.setState({tags: [], similars:[], stats: [], thumbnail: '/static/images/dashboard/photo.png'});
+        this.setState({tags: [], similars: [], stats: [], thumbnail: '/static/images/dashboard/shirt.png'});
     }
 
     addWord(event) {
@@ -236,7 +251,10 @@ export default class Dashboard extends MixinAuth {
                                     <Panel className="photo-block text-center" style={{
                                         height: '335px'
                                     }}>
-                                        <p>
+                                        <Toggle defaultChecked={this.state.thumbnailStatus} onChange={this.handleThumbnailChange} icons={false}/>
+                                        <p style={{
+                                            backgroundColor: this.state.thumbnailBackground
+                                        }}>
                                             <Image src={this.state.thumbnail} width={250} height={250}/>
                                         </p>
                                         <Dropzone onDrop={this.onUploadImage} multiple={false} rejectStyle>

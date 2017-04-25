@@ -61,6 +61,7 @@ export default class Dashboard extends MixinAuth {
         this.handleTitle = this.handleTitle.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
         this.handleTags = this.handleTags.bind(this);
+        this.handleMainTags = this.handleMainTags.bind(this);
         this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
     }
 
@@ -82,8 +83,9 @@ export default class Dashboard extends MixinAuth {
     addWord(event) {
         var template = this.state.template;
         template.title = template.title.replace('{}', event.target.getAttribute('data-word'));
-        template.first_description = template.first_description.replace('{}', event.target.getAttribute('data-word'));
-        template.second_description = template.second_description.replace('{}', event.target.getAttribute('data-word'));
+        template.description = template.description.replace('{}', event.target.getAttribute('data-word'));
+        template.tags = template.tags.replace('{}', event.target.getAttribute('data-word'));
+        template.main_tags = template.main_tags.replace('{}', event.target.getAttribute('data-word'));
 
         this.setState({template: template});
     }
@@ -92,6 +94,12 @@ export default class Dashboard extends MixinAuth {
         var template = this.state.template;
         template.title = event.target.value
         this.setState({template: template});
+    }
+
+    handleMainTags(event) {
+      var template = this.state.template;
+      template.main_tags = event.target.value
+      this.setState({template: template});
     }
 
     handleTags(event) {
@@ -333,7 +341,7 @@ export default class Dashboard extends MixinAuth {
                             }}>
                                 <Col md={12}>
                                     <Panel style={{
-                                        height: '355px'
+                                        height: '400px'
                                     }}>
                                         <Row>
                                             <Col md={12} className="templates-list">
@@ -367,14 +375,22 @@ export default class Dashboard extends MixinAuth {
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <ControlLabel>Description</ControlLabel>
-                                                    <FormControl type="text" placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.first_description}/>
+                                                    <FormControl componentClass="textarea" rows={6} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
-                                                <FormGroup>
-                                                    <ControlLabel>Tags</ControlLabel>
-                                                    <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
-                                                </FormGroup>
+                                                {this.state.template.shop != 2 ?
+                                                  <FormGroup>
+                                                      <ControlLabel>Tags</ControlLabel>
+                                                      <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                  </FormGroup>
+                                                : null}
+                                                {this.state.template.shop == 4 ?
+                                                  <FormGroup>
+                                                      <ControlLabel>Main tags</ControlLabel>
+                                                      <FormControl type="text" placeholder="What one tag would I search to find your design?"  onChange={this.handleMainTags} value={this.state.template.main_tags} />
+                                                  </FormGroup>
+                                                : null}
                                             </Col>
                                         </Row>
                                     </Panel>
@@ -384,7 +400,7 @@ export default class Dashboard extends MixinAuth {
                         </Col>
                         <Col md={3}>
                             <Panel header="Amazon keywords auto suggest" className="suggestions-block" style={{
-                                height: '700px'
+                                height: '745px'
                             }}>
                                 <Loader loaded={this.state.loadedKeywords}>
                                     {this.state.stats.length == 0

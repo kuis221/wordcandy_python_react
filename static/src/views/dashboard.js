@@ -49,7 +49,19 @@ export default class Dashboard extends MixinAuth {
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
             thumbnailBackground: '#e1e0f0',
-            url: 'http://www.wordcandy.io'
+            url: 'http://www.wordcandy.io',
+            validate: {
+                title: 90,
+                description: 180,
+                tags: 60,
+                main_tags: 60
+            },
+            data: {
+                title: 90,
+                description: 180,
+                tags: 60,
+                main_tags: 60
+            }
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);
@@ -91,31 +103,75 @@ export default class Dashboard extends MixinAuth {
     }
 
     handleTitle(event) {
-        var template = this.state.template;
-        template.title = event.target.value
-        this.setState({template: template});
+        if (this.state.validate.title - event.target.value.length >= 0) {
+            var template = this.state.template;
+            template.title = event.target.value
+            this.setState({template: template});
+
+            var data = this.state.data;
+            data.title = this.state.validate.title - event.target.value.length;
+        } else {
+            var data = this.state.data;
+            data.title = 0;
+        }
+        this.setState({data: data});
     }
 
     handleMainTags(event) {
-      var template = this.state.template;
-      template.main_tags = event.target.value
-      this.setState({template: template});
+        if (this.state.validate.main_tags - event.target.value.length >= 0) {
+            var template = this.state.template;
+            template.main_tags = event.target.value
+            this.setState({template: template});
+
+            var data = this.state.data;
+            data.main_tags = this.state.validate.main_tags - event.target.value.length;
+        } else {
+            var data = this.state.data;
+            data.main_tags = 0;
+        }
+        this.setState({data: data});
     }
 
     handleTags(event) {
-        var template = this.state.template;
-        template.tags = event.target.value
-        this.setState({template: template});
+        if (this.state.validate.tags - event.target.value.length >= 0) {
+            var template = this.state.template;
+            template.tags = event.target.value
+            this.setState({template: template});
+
+            var data = this.state.data;
+            data.tags = this.state.validate.tags - event.target.value.length;
+        } else {
+            var data = this.state.data;
+            data.tags = 0;
+        }
+        this.setState({data: data});
     }
 
     handleDescription(event) {
-        var template = this.state.template;
-        template.description = event.target.value
-        this.setState({template: template});
+      if (this.state.validate.description - event.target.value.length >= 0) {
+          var template = this.state.template;
+          template.description = event.target.value
+          this.setState({template: template});
+
+          var data = this.state.data;
+          data.description = this.state.validate.description - event.target.value.length;
+      } else {
+          var data = this.state.data;
+          data.description = 0;
+      }
+      this.setState({data: data});
     }
 
     handleShop(index) {
         this.setState({activeShop: index, templates: this.state.shops[index].templates, activeTemplate: 0, template: this.state.shops[index].templates[0]})
+
+        var template = this.state.shops[index].templates[0];
+        var data = this.state.data;
+        data.title = this.state.validate.title - template.title.length;
+        data.description = this.state.validate.description - template.description.length;
+        data.tags = this.state.validate.tags - template.tags.length;
+        data.main_tags = this.state.validate.main_tags - template.main_tags.length;
+        this.setState({data: data});
     }
 
     handleTemplate(event) {
@@ -123,6 +179,14 @@ export default class Dashboard extends MixinAuth {
             activeTemplate: event.target.getAttribute('data-id'),
             template: this.state.templates[event.target.getAttribute('data-id')]
         });
+
+        var template = this.state.templates[event.target.getAttribute('data-id')];
+        var data = this.state.data;
+        data.title = this.state.validate.title - template.title.length;
+        data.description = this.state.validate.description - template.description.length;
+        data.tags = this.state.validate.tags - template.tags.length;
+        data.main_tags = this.state.validate.main_tags - template.main_tags.length;
+        this.setState({data: data});
     }
 
     handleChangeTags(tags) {
@@ -353,7 +417,7 @@ export default class Dashboard extends MixinAuth {
                                             </Col>
                                         </Row>
 
-                                        <Row>
+                                        <Row className="templates">
                                             <Col md={12}>
                                                 <div className="templates">
                                                     <b>Templates</b>
@@ -368,29 +432,33 @@ export default class Dashboard extends MixinAuth {
                                             </Col>
                                             <Col md={12}>
                                                 <FormGroup>
+                                                    <div className="title"><b>{this.state.data.title}</b>{' '}characters</div>
                                                     <ControlLabel>Title</ControlLabel>
                                                     <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
+                                                    <div className="description"><b>{this.state.data.description}</b>{' '}characters</div>
                                                     <ControlLabel>Description</ControlLabel>
-                                                    <FormControl componentClass="textarea" rows={6} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
+                                                    <FormControl componentClass="textarea" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
-                                                {this.state.template.shop != 2 ?
-                                                  <FormGroup>
-                                                      <ControlLabel>Tags</ControlLabel>
-                                                      <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
-                                                  </FormGroup>
-                                                : null}
-                                                {this.state.template.shop == 4 ?
-                                                  <FormGroup>
-                                                      <ControlLabel>Main tags</ControlLabel>
-                                                      <FormControl type="text" placeholder="What one tag would I search to find your design?"  onChange={this.handleMainTags} value={this.state.template.main_tags} />
-                                                  </FormGroup>
-                                                : null}
+                                                {this.state.template.shop != 2
+                                                    ? <FormGroup>
+                                                            <div className="tags"><b>{this.state.data.tags}</b>{' '}characters</div>
+                                                            <ControlLabel>Tags</ControlLabel>
+                                                            <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                        </FormGroup>
+                                                    : null}
+                                                {this.state.template.shop == 4
+                                                    ? <FormGroup>
+                                                            <div className="main-tags"><b>{this.state.data.main_tags}</b>{' '}characters</div>
+                                                            <ControlLabel>Main tags</ControlLabel>
+                                                            <FormControl type="text" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
+                                                        </FormGroup>
+                                                    : null}
                                             </Col>
                                         </Row>
                                     </Panel>

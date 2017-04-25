@@ -89,7 +89,7 @@ class ExportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Export
-        fields = ('photo', 'xls_photo', 'product_name', 'first_description', 'second_description', 'keywords')
+        fields = ('photo', 'xls_photo', 'title', 'description', 'tags', 'keywords')
 
 
 

@@ -59,8 +59,8 @@ export default class Dashboard extends MixinAuth {
         this.reset = this.reset.bind(this);
         this.addWord = this.addWord.bind(this);
         this.handleTitle = this.handleTitle.bind(this);
-        this.handleSecondDescription = this.handleSecondDescription.bind(this);
-        this.handleFirstDescription = this.handleFirstDescription.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
+        this.handleTags = this.handleTags.bind(this);
         this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
     }
 
@@ -94,15 +94,15 @@ export default class Dashboard extends MixinAuth {
         this.setState({template: template});
     }
 
-    handleSecondDescription(event) {
+    handleTags(event) {
         var template = this.state.template;
-        template.second_description = event.target.value
+        template.tags = event.target.value
         this.setState({template: template});
     }
 
-    handleFirstDescription(event) {
+    handleDescription(event) {
         var template = this.state.template;
-        template.first_description = event.target.value
+        template.description = event.target.value
         this.setState({template: template});
     }
 
@@ -367,13 +367,13 @@ export default class Dashboard extends MixinAuth {
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <ControlLabel>Description</ControlLabel>
-                                                    <FormControl type="text" placeholder="Dref description of work to get your audience all excited" onChange={this.handleFirstDescription} value={this.state.template.first_description}/>
+                                                    <FormControl type="text" placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.first_description}/>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <ControlLabel>Tags</ControlLabel>
-                                                    <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleSecondDescription} value={this.state.template.second_description}/>
+                                                    <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
                                                 </FormGroup>
                                             </Col>
                                         </Row>

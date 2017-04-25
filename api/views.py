@@ -141,11 +141,11 @@ class ExcelView(GenericAPIView):
                 img = Image(image_file)
                 ws.add_image(img, 'A2')
             ws['B1'] = 'PRODUCT TITLE'
-            ws['B2'] = serializer.data['product_name']
+            ws['B2'] = serializer.data['title']
             ws['C1'] = 'BULLET POINT ONE'
-            ws['C2'] = serializer.data['first_description']
+            ws['C2'] = serializer.data['description']
             ws['D1'] = 'BULET POINT TWO'
-            ws['D2'] = serializer.data['second_description']
+            ws['D2'] = serializer.data['tags']
             ws['E1'] = 'SELECTED KEYWORDS FROM WC'
             ws['E2'] = serializer.data['keywords']
 

@@ -158,9 +158,9 @@ export default class Dashboard extends MixinAuth {
         var _ = this;
         _.setState({loadedExport: false});
         var data = {
-            'product_name': this.state.template.title,
-            'first_description': this.state.template.first_description,
-            'second_description': this.state.template.second_description,
+            'title': this.state.template.title,
+            'description': this.state.template.description,
+            'tags': this.state.template.tags,
             'keywords': this.state.tags.toString()
         }
         if (this.state.imageBase64.length > 0) {

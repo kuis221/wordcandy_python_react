@@ -253,6 +253,7 @@ export default class Dashboard extends MixinAuth {
 
     exportKeywords() {
       var _ = this;
+      _.setState({loadedExport: false});
       var data = {
         'keywords': JSON.stringify(_.state.stats)
       };

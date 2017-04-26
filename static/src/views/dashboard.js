@@ -12,7 +12,11 @@ import {
     FormGroup,
     ControlLabel,
     FormControl,
-    InputGroup
+    InputGroup,
+    OverlayTrigger,
+    Popover,
+    ButtonToolbar,
+    ButtonGroup
 } from 'react-bootstrap';
 
 import {Link, browserHistory} from 'react-router';
@@ -52,7 +56,6 @@ export default class Dashboard extends MixinAuth {
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
             thumbnailBackground: '#e1e0f0',
-            url: 'http://www.wordcandy.io',
             validate: {
                 title: 90,
                 description: 180,
@@ -68,7 +71,7 @@ export default class Dashboard extends MixinAuth {
         };
         this.onUploadImage = this.onUploadImage.bind(this);
         this.calculate = this.calculate.bind(this);
-        this.exportData = this.exportData.bind(this);
+        this.exportTemplates = this.exportTemplates.bind(this);
         this.handleShop = this.handleShop.bind(this);
         this.handleTemplate = this.handleTemplate.bind(this);
         this.reset = this.reset.bind(this);
@@ -78,6 +81,7 @@ export default class Dashboard extends MixinAuth {
         this.handleTags = this.handleTags.bind(this);
         this.handleMainTags = this.handleMainTags.bind(this);
         this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
+        this.exportKeywords = this.exportKeywords.bind(this);
     }
 
     handleThumbnailChange() {
@@ -229,7 +233,7 @@ export default class Dashboard extends MixinAuth {
         });
     }
 
-    exportData() {
+    exportTemplates() {
         var _ = this;
         _.setState({loadedExport: false});
         var data = {
@@ -241,10 +245,21 @@ export default class Dashboard extends MixinAuth {
         if (this.state.imageBase64.length > 0) {
             data['photo'] = this.state.imageBase64;
         }
-        apiDashboard.export(data).then(function(response) {
+        apiDashboard.exportTemplates(data).then(function(response) {
             _.setState({loadedExport: true});
             window.location = response.data['file'];
         });
+    }
+
+    exportKeywords() {
+      var _ = this;
+      var data = {
+        'keywords': JSON.stringify(_.state.stats)
+      };
+      apiDashboard.exportKeywords(data).then(function(response) {
+          _.setState({loadedExport: true});
+          window.location = response.data['file'];
+      });
     }
 
     keywordtool(_, i) {
@@ -294,10 +309,17 @@ export default class Dashboard extends MixinAuth {
     }
 
     render() {
+        const exportWindow = (
+          <Popover className="export-list">
+            <ul className="list-inline">
+              <li><Button bsStyle="primary"  onClick={this.exportKeywords}>Keywords</Button></li>
+              <li><Button bsStyle="primary" onClick={this.exportTemplates}>Templates</Button></li>
+            </ul>
+          </Popover>
+        );
+
         return (
-            <Grid className="dashboard-page" style={{
-                paddingBottom: '50px'
-            }} fluid={true}>
+            <Grid className="dashboard-page" fluid={true}>
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
@@ -535,10 +557,12 @@ export default class Dashboard extends MixinAuth {
                         <Col md={2}></Col>
                         <Col md={8} className="text-right">
                             <Loader loaded={this.state.loadedExport}>
-                                <Button bsStyle="success" disabled={this.state.tags.length == 0} onClick={this.exportData}>
-                                    <i className="icon ion-arrow-down-c"></i>
-                                    Export data
-                                </Button>
+                                <OverlayTrigger trigger="click" placement="top" overlay={exportWindow}>
+                                  <Button bsStyle="success" disabled={this.state.tags.length == 0}>
+                                      <i className="icon ion-arrow-down-c"></i>
+                                      Export
+                                  </Button>
+                                </OverlayTrigger>
                             </Loader>
                         </Col>
                         <Col md={2}></Col>

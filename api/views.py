@@ -121,7 +121,7 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
         return Response(result)
 
 
-class ExcelView(GenericAPIView):
+class ExportTemplatesView(GenericAPIView):
     serializer_class = ExportSerializer
 
     def post(self, request, format=None):
@@ -161,7 +161,7 @@ class ExcelView(GenericAPIView):
                                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
             handle_xls = StringIO(save_virtual_workbook(wb))
-            xls_file = s3c.put_object(Bucket='wordcandyapp', Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
+            xls_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
             result = {
                 'data': serializer.data,
                 'file': '{0}exel/{1}.xlsx'.format(settings.AWS_S3_ROOT, filename)
@@ -169,6 +169,22 @@ class ExcelView(GenericAPIView):
             return Response(result)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ExportKeywordsView(GenericAPIView):
+
+    def post(self, request, format=None):
+        filename = int(time.time())
+        s3c = boto3.client('s3',
+                            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        print request.data.get('keywords', '')
+        handle_txt = StringIO(request.data.get('keywords', ''))
+        txt_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key='txt/{0}.txt'.format(filename), Body=handle_txt.read())
+        result = {
+            'file': '{0}txt/{1}.txt'.format(settings.AWS_S3_ROOT, filename)
+        }
+        return Response(result)
 
 
 class ShopList(LoggingMixin, GenericAPIView):

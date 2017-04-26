@@ -3,9 +3,28 @@ import axios from 'axios';
 export let url = 'http://www.wordcandy.io/v1/';
 
 exports.apiDashboard = {
-    export: function(data) {
+    exportTemplates: function(data) {
         return axios({
-                url: url + "dashboard/excel/",
+                url: url + "dashboard/export/templates/",
+                method: 'post',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data,
+                validateStatus: function(status) {
+                    return status;
+                }
+            })
+            .then(response => {
+                return response;
+            }).catch(function(error) {
+                return error;
+            });
+    },
+    exportKeywords: function(data) {
+        return axios({
+                url: url + "dashboard/export/keywords/",
                 method: 'post',
                 responseType: 'json',
                 headers: {

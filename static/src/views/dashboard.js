@@ -11,7 +11,8 @@ import {
     Form,
     FormGroup,
     ControlLabel,
-    FormControl
+    FormControl,
+    InputGroup
 } from 'react-bootstrap';
 
 import {Link, browserHistory} from 'react-router';
@@ -23,6 +24,7 @@ import Loader from 'react-loader';
 import format from 'string-format';
 import lodash from 'lodash';
 import Toggle from 'react-toggle';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 import MixinAuth from '../mixins/auth';
 import {apiDashboard} from '../api/dashboard';
@@ -43,6 +45,7 @@ export default class Dashboard extends MixinAuth {
             activeShop: 0,
             loadedSimilars: true,
             loadedKeywords: true,
+            copied: false,
             imageBase64: '',
             loadedExport: true,
             thumbnailStatus: false,
@@ -434,14 +437,28 @@ export default class Dashboard extends MixinAuth {
                                                 <FormGroup>
                                                     <div className="title"><b>{this.state.data.title}</b>{' '}characters</div>
                                                     <ControlLabel>Title</ControlLabel>
-                                                    <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
-                                                </FormGroup>
+                                                    <InputGroup>
+                                                      <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
+                                                      <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
+                                                        <InputGroup.Addon>
+                                                          <span className="ion-clipboard"></span>
+                                                        </InputGroup.Addon>
+                                                      </CopyToClipboard>
+                                                    </InputGroup>
+                                              </FormGroup>
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <div className="description"><b>{this.state.data.description}</b>{' '}characters</div>
                                                     <ControlLabel>Description</ControlLabel>
-                                                    <FormControl componentClass="textarea" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
+                                                      <InputGroup>
+                                                        <FormControl componentClass="textarea" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
+                                                        <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
+                                                          <InputGroup.Addon>
+                                                            <span className="ion-clipboard"></span>
+                                                          </InputGroup.Addon>
+                                                        </CopyToClipboard>
+                                                      </InputGroup>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
@@ -449,14 +466,28 @@ export default class Dashboard extends MixinAuth {
                                                     ? <FormGroup>
                                                             <div className="tags"><b>{this.state.data.tags}</b>{' '}characters</div>
                                                             <ControlLabel>Tags</ControlLabel>
-                                                            <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                            <InputGroup>
+                                                              <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                              <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                  <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                              </CopyToClipboard>
+                                                            </InputGroup>
                                                         </FormGroup>
                                                     : null}
                                                 {this.state.template.shop == 4
                                                     ? <FormGroup>
                                                             <div className="main-tags"><b>{this.state.data.main_tags}</b>{' '}characters</div>
                                                             <ControlLabel>Main tags</ControlLabel>
-                                                            <FormControl type="text" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
+                                                            <InputGroup>
+                                                              <FormControl type="text" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
+                                                              <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                  <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                              </CopyToClipboard>
+                                                            </InputGroup>
                                                         </FormGroup>
                                                     : null}
                                             </Col>

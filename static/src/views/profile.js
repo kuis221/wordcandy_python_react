@@ -270,13 +270,14 @@ export default class Profile extends MixinAuth {
                                             {this.state.activePlan == false
                                                 ? <ul className="list-inline">
                                                         <li><Image width={'32px'} height={'32px'} src="/static/images/dashboard/vip.png"/></li>
+                                                        <li>Founding LIFETIME Member</li>
                                                     </ul>
                                                 : null}
                                             {this.state.activePlan
                                                 ? <div>
                                                         <FormGroup controlId="formControlsSelect">
                                                             <FormControl componentClass="select" placeholder="Free">
-                                                                <option value="select">VIP</option>
+                                                                <option value="select">Founding LIFETIME Member</option>
                                                             </FormControl>
                                                         </FormGroup>
                                                         <FormGroup className="text-right">

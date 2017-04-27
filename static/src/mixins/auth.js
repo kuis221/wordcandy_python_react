@@ -8,8 +8,5 @@ export default class MixinAuth extends Component {
     }
 
     componentDidMount() {
-        if (!localStorage.hasOwnProperty('key')) {
-            browserHistory.push('/sign-in');
-        }
     }
 }

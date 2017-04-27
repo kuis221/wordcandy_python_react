@@ -103,17 +103,27 @@
     }
 
     #footer {
-        padding: 3px;
-    }
+        padding: 0px !important;
+        position: absolute;
+        bottom: 0px;
+        height: 50px;
+        width: 100%;
 
-    .back-button {
-        background: transparent;
-        border: none;
-        font-size: 14px;
-        font-weight: bold;
+        .navbar {
+            position: relative;
+            min-height: 50px;
+            margin-bottom: 0;
+            border: 0;
+            border-radius: 0;
+            background-color: #fff;
 
-        a {
-            color: #56576c;
+            .back-button a {
+                background: transparent;
+                border: none;
+                font-weight: bold;
+                font-size: 14px !important;
+                color: #56576c;
+            }
         }
     }
 }

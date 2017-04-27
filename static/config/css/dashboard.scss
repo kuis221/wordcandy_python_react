@@ -3,11 +3,9 @@
     background-color: #56576c;
 
     .dashboard-content {
-
         .photo-block {
-          margin-right: -20px;
+            margin-right: -20px;
         }
-
 
         .suggestions-block {
             margin-left: -20px;
@@ -65,7 +63,8 @@
     font-style: normal;
     font-variant: normal;
 
-    input, textarea {
+    input,
+    textarea {
         background-color: #f5f6fc;
         border-color: #dbd9ed;
     }
@@ -149,24 +148,35 @@
     }
 
     .templates {
-      .title, .description, .tags, .main-tags {
-        position: absolute;
-        right: 20px;
-        color: #ccc;
-        font-size: 13px;
-      }
+        .description,
+        .main-tags,
+        .tags,
+        .title {
+            position: absolute;
+            right: 20px;
+            color: #ccc;
+            font-size: 13px;
+        }
 
-      .input-group-addon {
-        background-color: #fff;
-        cursor: pointer;
-        color: #839ff9;
-      }
+        .input-group-addon {
+            background-color: #fff;
+            cursor: pointer;
+            color: #839ff9;
+        }
+    }
+
+    #footer {
+        .navbar {
+            border: none;
+            border-radius: 0px;
+            margin-bottom: 0px;
+        }
     }
 }
 
 .popover-content {
-  .btn-primary {
-      background-color: #839ff9;
-      border-color: #839ff9;
-  }
+    .btn-primary {
+        background-color: #839ff9;
+        border-color: #839ff9;
+    }
 }

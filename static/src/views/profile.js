@@ -17,7 +17,7 @@ import {
 
 import MaskedFormControl from 'react-bootstrap-maskedinput';
 import Loader from 'react-loader';
-import {Link, browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import React, {Component} from 'react';
 
 import MixinAuth from '../mixins/auth';
@@ -27,6 +27,9 @@ export default class Profile extends MixinAuth {
 
     constructor(props) {
         super(props);
+        if (localStorage.getItem("user") == null) {
+          browserHistory.push('/sign-in');
+        }
         var user = JSON.parse(localStorage.getItem("user"));
         this.state = {
             user: user,

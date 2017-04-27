@@ -16,7 +16,9 @@ import {
     OverlayTrigger,
     Popover,
     ButtonToolbar,
-    ButtonGroup
+    ButtonGroup,
+    Tabs,
+    Tab
 } from 'react-bootstrap';
 
 import {Link, browserHistory} from 'react-router';
@@ -50,8 +52,10 @@ export default class Dashboard extends MixinAuth {
             loadedSimilars: true,
             loadedKeywords: true,
             copied: false,
+            keywords: [],
             imageBase64: '',
             loadedExport: true,
+            suggestIndex: 0,
             thumbnailStatus: false,
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
@@ -82,6 +86,14 @@ export default class Dashboard extends MixinAuth {
         this.handleMainTags = this.handleMainTags.bind(this);
         this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
         this.exportKeywords = this.exportKeywords.bind(this);
+        this.handleSuggests = this.handleSuggests.bind(this);
+    }
+
+
+    handleSuggests(key) {
+      this.setState({
+        suggestIndex: key
+      });
     }
 
     handleThumbnailChange() {
@@ -272,6 +284,11 @@ export default class Dashboard extends MixinAuth {
         };
 
         apiDashboard.keywordtool(data).then(function(response) {
+            var keywords = _.state.keywords;
+            var sortKeywords = lodash.sortBy(response.data.keywords, 'volume').reverse();
+            keywords.push(sortKeywords);
+            _.setState({keywords: keywords});
+
             var stats = (_.state.stats).concat(response.data.keywords);
             stats = lodash.sortBy(stats, 'volume').reverse();
             _.setState({stats: stats})
@@ -281,7 +298,6 @@ export default class Dashboard extends MixinAuth {
                 _.keywordtool(_, i);
             }
         });
-
     }
 
     calculate() {
@@ -295,6 +311,8 @@ export default class Dashboard extends MixinAuth {
 
         _.setState({loadedSimilars: false});
         _.setState({loadedKeywords: false});
+        _.setState({suggestIndex: 0});
+
 
         apiDashboard.synonyms(data).then(function(response) {
             var similars = response.data.synonyms;
@@ -536,26 +554,34 @@ export default class Dashboard extends MixinAuth {
                                     {this.state.stats.length == 0
                                         ? <div className="empty-result">Empty</div>
                                         : null}
-                                    <div className="scroll-block-suggestions suggestions">
-                                        {this.state.stats.map(function(item, i) {
-                                            return <Row>
-                                                <Col md={1}>
-                                                    <span className="index">{i + 1}.</span>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <p className="name">{item.name}</p>
-                                                </Col>
-                                                <Col md={3} className="text-right">
-                                                    <span className="volume">{item.volume}</span>
-                                                </Col>
-                                                <Col md={1} className="text-left">
-                                                    <i onClick={this.addWord} style={{
-                                                        cursor: 'cursor'
-                                                    }} data-word={item.name} className="icon ion-android-add-circle"></i>
-                                                </Col>
-                                            </Row>
-                                        }, this)}
-                                    </div>
+                                    {this.state.stats.length > 0 ?
+                                      <div className="scroll-block-suggestions suggestions">
+                                          <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
+                                          {this.state.keywords.map(function(keyword, i) {
+                                              return <Tab eventKey={i} title={this.state.tags[i]}>
+                                                {this.state.keywords[i].map(function(item, j) {
+                                                  return <Row>
+                                                            <Col md={1}>
+                                                                <span className="index">{j + 1}.</span>
+                                                            </Col>
+                                                            <Col md={6}>
+                                                                <p className="name">{item.name}</p>
+                                                            </Col>
+                                                            <Col md={3} className="text-right">
+                                                                <span className="volume">{item.volume}</span>
+                                                            </Col>
+                                                            <Col md={1} className="text-left">
+                                                                <i onClick={this.addWord} style={{
+                                                                    cursor: 'cursor'
+                                                                }} data-word={item.name} className="icon ion-android-add-circle"></i>
+                                                            </Col>
+                                                        </Row>
+                                                }, this)}
+                                              </Tab>
+                                          }, this)}
+                                          </Tabs>
+                                      </div>
+                                    : null}
                                 </Loader>
                             </Panel>
                         </Col>

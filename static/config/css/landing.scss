@@ -46,8 +46,21 @@ $landing-bakcground: #f3f7fd;
             color: #616277;
         }
 
-        .video .img-responsive {
-            margin: 0 auto;
+        .video {
+            width: 100%;
+            float: left;
+            text-align: center;
+            padding-bottom: 50px;
+            padding-top: 50px;
+
+            iframe {
+                border: none;
+                outline: none;
+                overflow: hidden;
+                width: 600px;
+                height: 460px;
+                margin: 0 auto;
+            }
         }
     }
 
@@ -58,10 +71,11 @@ $landing-bakcground: #f3f7fd;
         }
 
         .panel {
-          border: none;
-          .panel-body {
-            padding: 15px 15px 0px 15px;
-          }
+            border: none;
+
+            .panel-body {
+                padding: 15px 15px 0;
+            }
         }
 
         .wave {
@@ -96,10 +110,10 @@ $landing-bakcground: #f3f7fd;
         background-color: $landing-bakcground;
 
         .panel-heading {
-          font-size: 20px;
-          color: #3c434d;
-          font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-          font-weight: 100;
+            font-size: 20px;
+            color: #3c434d;
+            font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+            font-weight: 100;
         }
 
         .tariff-description {
@@ -174,9 +188,10 @@ $landing-bakcground: #f3f7fd;
                     right: -7px;
                 }
             }
+
             .tariff-body-background {
-              background: url(/static/images/landing/background-tariff.png) no-repeat;
-              background-position: 280px 100px;
+                background: url("/static/images/landing/background-tariff.png") no-repeat;
+                background-position: 280px 100px;
             }
         }
 

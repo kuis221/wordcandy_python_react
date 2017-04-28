@@ -22,6 +22,26 @@ import React, {Component} from 'react';
 
 import {apiProfiles} from '../api/profiles';
 
+
+class Vimeo extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            videoSrc: "https://player.vimeo.com/video/" + this.props.video
+        };
+    }
+
+    render() {
+        return (
+            <div>
+                <iframe width={this.props.width} height={this.props.height} src={this.state.videoSrc} frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+        );
+    }
+}
+
+
 class Subscribe extends Component {
     componentDidMount() {
 
@@ -145,9 +165,7 @@ export default class Landing extends Component {
                     </Col>
                     <Col md={2}></Col>
                     <Col md={12} className="video">
-                        <br/>
-                        <Image src="/static/images/landing/example.png" responsive width={'600px'} height={'460px'}/>
-                        <br/>
+                        <Vimeo video="215130910" height="460px" width="600px" />
                     </Col>
                 </Row>
                 <Row className="price">

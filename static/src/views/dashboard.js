@@ -54,6 +54,7 @@ export default class Dashboard extends MixinAuth {
             loadedKeywords: true,
             copied: false,
             keywords: [],
+            keywordsTitle: [],
             imageBase64: '',
             loadedExport: true,
             suggestIndex: 0,
@@ -282,6 +283,11 @@ export default class Dashboard extends MixinAuth {
                 'format': 'json'
             }
         };
+        var keywordsTitle = _.state.keywordsTitle;
+        keywordsTitle.push(_.state.tags[i])
+        _.setState({
+          keywordsTitle: keywordsTitle
+        })
 
         apiDashboard.keywordtool(data).then(function(response) {
             var keywords = _.state.keywords;
@@ -319,11 +325,14 @@ export default class Dashboard extends MixinAuth {
             }
         }
 
-        _.setState({progress: 20});
-        _.setState({progressShow: true});
-        _.setState({loadedSimilars: false});
-        _.setState({loadedKeywords: false});
-        _.setState({suggestIndex: 0});
+        _.setState({
+          keywordsTitle: [],
+          progress: 20,
+          progressShow: true,
+          loadedSimilars: false,
+          loadedKeywords: false,
+          suggestIndex: 0
+        });
 
         apiDashboard.synonyms(data).then(function(response) {
             var similars = response.data.synonyms;
@@ -572,7 +581,7 @@ export default class Dashboard extends MixinAuth {
                                                     : null}
                                                 <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
                                                     {this.state.keywords.map(function(keyword, i) {
-                                                        return <Tab eventKey={i} title={this.state.tags[i]}>
+                                                        return <Tab eventKey={i} title={this.state.keywordsTitle[i]}>
                                                             {this.state.keywords[i].map(function(item, j) {
                                                                 return <Row>
                                                                     <Col md={1}>

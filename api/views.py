@@ -22,7 +22,7 @@ from .models import Shop, Subscribe, Word
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 from openpyxl.writer.excel import save_virtual_workbook
-
+from trademark import marker
 
 from rest_framework_tracking.mixins import LoggingMixin
 
@@ -75,7 +75,8 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
         """
         keywords = request.GET.get('tags', '')
         result = {
-            'keywords': []
+            'keywords': [],
+            'trademark': 0
         }
 
         if keywords != '':
@@ -117,6 +118,14 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                                 if sub_item['volume'] > 300 and not sub_item['string'] in list_keywords:
                                     list_keywords.append(sub_item['string'])
                                     result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
+
+            params = {
+                    'username': settings.TRADEMARK_USERNAME,
+                    'password': settings.TRADEMARK_PASSWORD,
+                    'search': word
+                  }
+            trademark = marker.API(params)
+            result['trademark'] = trademark.result()['count']
 
         return Response(result)
 

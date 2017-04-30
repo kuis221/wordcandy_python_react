@@ -3,6 +3,14 @@
     background-color: #56576c;
 
     .dashboard-content {
+        .progress {
+            margin-bottom: 0;
+
+            .progress-bar {
+                background-color: #839ff9;
+            }
+        }
+
         .photo-block {
             margin-right: -20px;
         }
@@ -37,6 +45,32 @@
 
                     .volume {
                         font-size: 12px;
+                    }
+                }
+
+                .nav-tabs {
+                    border-bottom: 1px solid #ddd;
+                    padding: 10px;
+
+                    li.active > a,
+                    li.active > a:focus,
+                    li.active > a:hover {
+                        background-color: #dbdaed;
+                        border-color: #dbdaed;
+                        color: #555555;
+                    }
+
+                    li > a {
+                        color: #fff;
+                        border: 1px solid #ddd;
+                        color: #555555;
+                    }
+
+                    li > a:focus,
+                    li > a:hover {
+                        background-color: #dbdaed;
+                        border-color: #dbdaed;
+                        color: #555555;
                     }
                 }
             }
@@ -168,8 +202,8 @@
     #footer {
         .navbar {
             border: none;
-            border-radius: 0px;
-            margin-bottom: 0px;
+            border-radius: 0;
+            margin-bottom: 0;
         }
     }
 }

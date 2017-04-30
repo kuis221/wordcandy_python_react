@@ -18,7 +18,8 @@ import {
     ButtonToolbar,
     ButtonGroup,
     Tabs,
-    Tab
+    Tab,
+    ProgressBar
 } from 'react-bootstrap';
 
 import {Link, browserHistory} from 'react-router';
@@ -56,6 +57,7 @@ export default class Dashboard extends MixinAuth {
             imageBase64: '',
             loadedExport: true,
             suggestIndex: 0,
+            progress: 20,
             thumbnailStatus: false,
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
@@ -89,11 +91,8 @@ export default class Dashboard extends MixinAuth {
         this.handleSuggests = this.handleSuggests.bind(this);
     }
 
-
     handleSuggests(key) {
-      this.setState({
-        suggestIndex: key
-      });
+        this.setState({suggestIndex: key});
     }
 
     handleThumbnailChange() {
@@ -293,6 +292,9 @@ export default class Dashboard extends MixinAuth {
             stats = lodash.sortBy(stats, 'volume').reverse();
             _.setState({stats: stats})
             _.setState({loadedKeywords: true});
+            _.setState({
+                progress: (100 / (_.state.tags.length - i))
+            });
             i++;
             if (i < _.state.tags.length) {
                 _.keywordtool(_, i);
@@ -309,10 +311,10 @@ export default class Dashboard extends MixinAuth {
             }
         }
 
+        _.setState({progress: 20});
         _.setState({loadedSimilars: false});
         _.setState({loadedKeywords: false});
         _.setState({suggestIndex: 0});
-
 
         apiDashboard.synonyms(data).then(function(response) {
             var similars = response.data.synonyms;
@@ -554,34 +556,37 @@ export default class Dashboard extends MixinAuth {
                                     {this.state.stats.length == 0
                                         ? <div className="empty-result">Empty</div>
                                         : null}
-                                    {this.state.stats.length > 0 ?
-                                      <div className="scroll-block-suggestions suggestions">
-                                          <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
-                                          {this.state.keywords.map(function(keyword, i) {
-                                              return <Tab eventKey={i} title={this.state.tags[i]}>
-                                                {this.state.keywords[i].map(function(item, j) {
-                                                  return <Row>
-                                                            <Col md={1}>
-                                                                <span className="index">{j + 1}.</span>
-                                                            </Col>
-                                                            <Col md={6}>
-                                                                <p className="name">{item.name}</p>
-                                                            </Col>
-                                                            <Col md={3} className="text-right">
-                                                                <span className="volume">{item.volume}</span>
-                                                            </Col>
-                                                            <Col md={1} className="text-left">
-                                                                <i onClick={this.addWord} style={{
-                                                                    cursor: 'cursor'
-                                                                }} data-word={item.name} className="icon ion-android-add-circle"></i>
-                                                            </Col>
-                                                        </Row>
-                                                }, this)}
-                                              </Tab>
-                                          }, this)}
-                                          </Tabs>
-                                      </div>
-                                    : null}
+                                    {this.state.stats.length > 0
+                                        ? <div className="scroll-block-suggestions suggestions">
+                                                {this.state.progress < 100 ?
+                                                  <ProgressBar active now={this.state.progress} />
+                                                : null}
+                                                <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
+                                                    {this.state.keywords.map(function(keyword, i) {
+                                                        return <Tab eventKey={i} title={this.state.tags[i]}>
+                                                            {this.state.keywords[i].map(function(item, j) {
+                                                                return <Row>
+                                                                    <Col md={1}>
+                                                                        <span className="index">{j + 1}.</span>
+                                                                    </Col>
+                                                                    <Col md={6}>
+                                                                        <p className="name">{item.name}</p>
+                                                                    </Col>
+                                                                    <Col md={3} className="text-right">
+                                                                        <span className="volume">{item.volume}</span>
+                                                                    </Col>
+                                                                    <Col md={1} className="text-left">
+                                                                        <i onClick={this.addWord} style={{
+                                                                            cursor: 'cursor'
+                                                                        }} data-word={item.name} className="icon ion-android-add-circle"></i>
+                                                                    </Col>
+                                                                </Row>
+                                                            }, this)}
+                                                        </Tab>
+                                                    }, this)}
+                                                </Tabs>
+                                            </div>
+                                        : null}
                                 </Loader>
                             </Panel>
                         </Col>
@@ -592,7 +597,7 @@ export default class Dashboard extends MixinAuth {
                         <Navbar>
                             <Nav style={{
                                 paddingRight: '20%'
-                              }} pullRight>
+                            }} pullRight>
                                 <NavItem>
                                     <Loader loaded={this.state.loadedExport}>
                                         <OverlayTrigger trigger="click" placement="top" overlay={exportWindow}>

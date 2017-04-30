@@ -293,7 +293,7 @@ export default class Dashboard extends MixinAuth {
             _.setState({stats: stats})
             _.setState({loadedKeywords: true});
             _.setState({
-                progress: (100 / (_.state.tags.length - i))
+                progress: Math.round(100 / (_.state.tags.length - i))
             });
             i++;
             if (i < _.state.tags.length) {
@@ -559,7 +559,7 @@ export default class Dashboard extends MixinAuth {
                                     {this.state.stats.length > 0
                                         ? <div className="scroll-block-suggestions suggestions">
                                                 {this.state.progress < 100 ?
-                                                  <ProgressBar active now={this.state.progress} />
+                                                  <ProgressBar active now={this.state.progress} label={`${this.state.progress}%`}  />
                                                 : null}
                                                 <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
                                                     {this.state.keywords.map(function(keyword, i) {

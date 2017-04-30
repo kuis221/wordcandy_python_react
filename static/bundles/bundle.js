@@ -69761,6 +69761,7 @@
 	            loadedExport: true,
 	            suggestIndex: 0,
 	            progress: 20,
+	            progressShow: true,
 	            thumbnailStatus: false,
 	            username: localStorage.getItem('username'),
 	            thumbnail: '/static/images/dashboard/shirt.png',
@@ -70014,6 +70015,13 @@
 	                _.setState({
 	                    progress: Math.round(100 / (_.state.tags.length - i))
 	                });
+
+	                if (_.state.progress > 99) {
+	                    setTimeout(function () {
+	                        _.setState({ progressShow: false });
+	                    }, 2000);
+	                }
+
 	                i++;
 	                if (i < _.state.tags.length) {
 	                    _.keywordtool(_, i);
@@ -70032,6 +70040,7 @@
 	            };
 
 	            _.setState({ progress: 20 });
+	            _.setState({ progressShow: true });
 	            _.setState({ loadedSimilars: false });
 	            _.setState({ loadedKeywords: false });
 	            _.setState({ suggestIndex: 0 });
@@ -70530,7 +70539,7 @@
 	                                    this.state.stats.length > 0 ? _react2.default.createElement(
 	                                        'div',
 	                                        { className: 'scroll-block-suggestions suggestions' },
-	                                        this.state.progress < 100 ? _react2.default.createElement(_reactBootstrap.ProgressBar, { active: true, now: this.state.progress, label: this.state.progress + '%' }) : null,
+	                                        this.state.progressShow ? _react2.default.createElement(_reactBootstrap.ProgressBar, { active: true, now: this.state.progress, label: this.state.progress + '%' }) : null,
 	                                        _react2.default.createElement(
 	                                            _reactBootstrap.Tabs,
 	                                            { activeKey: this.state.suggestIndex, animation: false, onSelect: this.handleSuggests },

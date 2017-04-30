@@ -58,6 +58,7 @@ export default class Dashboard extends MixinAuth {
             loadedExport: true,
             suggestIndex: 0,
             progress: 20,
+            progressShow: true,
             thumbnailStatus: false,
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
@@ -295,6 +296,13 @@ export default class Dashboard extends MixinAuth {
             _.setState({
                 progress: Math.round(100 / (_.state.tags.length - i))
             });
+
+            if (_.state.progress > 99) {
+                setTimeout(function() {
+                    _.setState({progressShow: false});
+                }, 2000);
+            }
+
             i++;
             if (i < _.state.tags.length) {
                 _.keywordtool(_, i);
@@ -312,6 +320,7 @@ export default class Dashboard extends MixinAuth {
         }
 
         _.setState({progress: 20});
+        _.setState({progressShow: true});
         _.setState({loadedSimilars: false});
         _.setState({loadedKeywords: false});
         _.setState({suggestIndex: 0});
@@ -558,9 +567,9 @@ export default class Dashboard extends MixinAuth {
                                         : null}
                                     {this.state.stats.length > 0
                                         ? <div className="scroll-block-suggestions suggestions">
-                                                {this.state.progress < 100 ?
-                                                  <ProgressBar active now={this.state.progress} label={`${this.state.progress}%`}  />
-                                                : null}
+                                                {this.state.progressShow
+                                                    ? <ProgressBar active now={this.state.progress} label={`${this.state.progress}%`}/>
+                                                    : null}
                                                 <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
                                                     {this.state.keywords.map(function(keyword, i) {
                                                         return <Tab eventKey={i} title={this.state.tags[i]}>

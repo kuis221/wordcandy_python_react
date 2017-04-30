@@ -52,6 +52,10 @@
                     border-bottom: 1px solid #ddd;
                     padding: 10px;
 
+                    li {
+                      margin-top: 3px;
+                    }
+
                     li.active > a,
                     li.active > a:focus,
                     li.active > a:hover {
@@ -63,7 +67,7 @@
 
                     li > a {
                         color: #fff;
-                        border: 1px solid #ddd;
+                        border: 1px solid #dbdaed;
                         color: #56576c;
                         padding: 6px 12px;
                     }

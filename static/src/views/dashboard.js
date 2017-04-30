@@ -322,9 +322,6 @@ export default class Dashboard extends MixinAuth {
                 'format': 'json'
             }
         };
-        var keywordsTitle = _.state.keywordsTitle;
-        keywordsTitle.push(_.state.tags[i])
-        _.setState({keywordsTitle: keywordsTitle})
 
         apiDashboard.keywordtool(data).then(function(response) {
             var keywords = _.state.keywords;
@@ -334,7 +331,16 @@ export default class Dashboard extends MixinAuth {
 
             var stats = (_.state.stats).concat(response.data.keywords);
             stats = lodash.sortBy(stats, 'volume').reverse();
-            _.setState({stats: stats})
+            _.setState({stats: stats});
+
+            var keywordsTitle = _.state.keywordsTitle;
+            if (response.data.trademark > 0 ) {
+              keywordsTitle.push(_.state.tags[i] + ' ™');        
+            } else {
+              keywordsTitle.push(_.state.tags[i]);
+            }
+            _.setState({keywordsTitle: keywordsTitle})
+
             _.setState({loadedKeywords: true});
             _.setState({
                 progress: Math.round(100 / (_.state.tags.length - i))

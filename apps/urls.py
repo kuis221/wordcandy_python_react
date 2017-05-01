@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^v1/dashboard/', include('api.urls')),
     url(r'^v1/payment/', include('payment.urls')),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
+    url(r'^accounts/', include('allauth.urls', namespace='allauth')),
 ]
 
 

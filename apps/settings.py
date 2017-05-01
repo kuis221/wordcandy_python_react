@@ -45,8 +45,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth.registration',
     'rest_framework_tracking',
+    'social_django',
+    'social.apps.django_app.default',
     'allauth',
-    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.dropbox_oauth2',
+    'allauth.socialaccount.providers.google',
     'rest_auth',
     'rest_framework_swagger',
     'djstripe',
@@ -56,8 +60,31 @@ INSTALLED_APPS = [
     'easy_thumbnails'
 ]
 
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+SOCIALACCOUNT_QUERY_EMAIL = False
+ACCOUNT_UNIQUE_EMAIL = False
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_live_T0LhQjr6GkIDIJYJc3xJrnYu")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_live_Y2V173ann7w9Z9HTxjN7CCps")
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
 
 DJSTRIPE_PLANS = {
     "WCHIGHTIERANNUAL": {

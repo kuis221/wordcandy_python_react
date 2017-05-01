@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'index.html'}, name="password_reset_complete"),
     url(r'^v1/dashboard/', include('api.urls')),
     url(r'^v1/payment/', include('payment.urls')),
+    url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
 ]
 
 

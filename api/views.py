@@ -181,7 +181,8 @@ class ExportTemplatesView(GenericAPIView):
 
 
 class ExportKeywordsView(GenericAPIView):
-
+    serializer_class = ExportSerializer
+    
     def post(self, request, format=None):
         filename = int(time.time())
         s3c = boto3.client('s3',

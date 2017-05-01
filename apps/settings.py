@@ -59,6 +59,41 @@ INSTALLED_APPS = [
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_live_T0LhQjr6GkIDIJYJc3xJrnYu")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_live_Y2V173ann7w9Z9HTxjN7CCps")
 
+DJSTRIPE_PLANS = {
+    "WCHIGHTIERANNUAL": {
+        "stripe_plan_id": "WCHIGHTIERANNUAL",
+        "name": "WordCandy Prof Annual Plan ($690/year)",
+        "description": "WordCandy Prof Annual Plan",
+        "price": 69000,
+        "currency": "usd",
+        "interval": "year"
+    },
+    "WCHIGHTIERMONTHLY": {
+        "stripe_plan_id": "WCHIGHTIERMONTHLY",
+        "name": "WordCandy Prof Monthly Plan ($69/year)",
+        "description": "WordCandy Prof Monthly Plan",
+        "price": 6900,
+        "currency": "usd",
+        "interval": "month"
+    },
+    "WCLOWTIERANNUAL": {
+        "stripe_plan_id": "WCLOWTIERANNUAL",
+        "name": "WordCandy Beginner Annual Plan ($290/year)",
+        "description": "WordCandy Beginner Annual Plan",
+        "price": 29000,
+        "currency": "usd",
+        "interval": "year"
+    },
+    "WCLOWTIERMONTHLY": {
+        "stripe_plan_id": "WCLOWTIERMONTHLY",
+        "name": "WordCandy Beginner Monthly Plan ($29/month)",
+        "description": "WordCandy Beginner",
+        "price": 2900,
+        "currency": "usd",
+        "interval": "month"
+    },
+}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -190,7 +225,3 @@ AWS_ACCESS_KEY_ID = "AKIAIOCAEG4U53J2G2KA"
 AWS_SECRET_ACCESS_KEY = "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"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static')
-#]

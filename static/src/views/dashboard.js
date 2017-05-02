@@ -335,7 +335,7 @@ export default class Dashboard extends MixinAuth {
 
             var keywordsTitle = _.state.keywordsTitle;
             if (response.data.trademark > 0 ) {
-              keywordsTitle.push(_.state.tags[i] + ' ™');        
+              keywordsTitle.push(_.state.tags[i] + ' ™');
             } else {
               keywordsTitle.push(_.state.tags[i]);
             }
@@ -614,7 +614,7 @@ export default class Dashboard extends MixinAuth {
                             </Row>
                         </Col>
                         <Col md={3}>
-                            <Panel header="Amazon keywords auto suggest" className="suggestions-block" style={{
+                            <Panel header="Amazon Auto Suggest + Google Search Traffic" className="suggestions-block" style={{
                                 height: '745px'
                             }}>
                                 <Loader loaded={this.state.loadedKeywords}>

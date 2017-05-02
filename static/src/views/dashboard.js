@@ -370,6 +370,7 @@ export default class Dashboard extends MixinAuth {
 
         _.setState({
             keywordsTitle: [],
+            keywords: [],
             progress: 20,
             progressShow: true,
             loadedSimilars: false,

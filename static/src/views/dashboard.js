@@ -36,6 +36,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import MixinAuth from '../mixins/auth';
 import {apiDashboard} from '../api/dashboard';
 import {apiProfiles} from '../api/profiles';
+import Templates from '../components/templates';
 
 export default class Dashboard extends MixinAuth {
 
@@ -51,6 +52,7 @@ export default class Dashboard extends MixinAuth {
             activeTemplate: 0,
             activeShop: 0,
             loadedSimilars: true,
+            loadedTemplates: true,
             loadedKeywords: true,
             copied: false,
             keywords: [],
@@ -93,7 +95,18 @@ export default class Dashboard extends MixinAuth {
         this.handleSuggests = this.handleSuggests.bind(this);
         this.dragWordStart = this.dragWordStart.bind(this);
         this.dropWord = this.dropWord.bind(this);
-        this.preventDefault = this.dropWord.bind(this);
+        this.preventDefault = this.preventDefault.bind(this);
+        this.newTemplate = this.newTemplate.bind(this);
+    }
+
+    newTemplate(data) {
+        var _ = this;
+        _.setState({loadedTemplates: false});
+        apiDashboard.newTemplates(data).then(function(response) {
+            var templates = _.state.templates;
+            templates.push(response.data);
+            _.setState({loadedTemplates: true, templates: templates});
+        });
     }
 
     preventDefault(event) {
@@ -266,8 +279,9 @@ export default class Dashboard extends MixinAuth {
 
         }).catch(function(error) {});
 
+        _.setState({loadedTemplates: false});
         apiDashboard.templates().then(function(response) {
-            _.setState({shops: response.data, templates: response.data[0].templates, template: response.data[0].templates[0]});
+            _.setState({shops: response.data, templates: response.data[0].templates, template: response.data[0].templates[0], loadedTemplates: true});
         }).catch(function(error) {});
 
     }
@@ -334,10 +348,10 @@ export default class Dashboard extends MixinAuth {
             _.setState({stats: stats});
 
             var keywordsTitle = _.state.keywordsTitle;
-            if (response.data.trademark > 0 ) {
-              keywordsTitle.push(_.state.tags[i] + ' ™');
+            if (response.data.trademark > 0) {
+                keywordsTitle.push(_.state.tags[i] + ' ™');
             } else {
-              keywordsTitle.push(_.state.tags[i]);
+                keywordsTitle.push(_.state.tags[i]);
             }
             _.setState({keywordsTitle: keywordsTitle})
 
@@ -523,92 +537,95 @@ export default class Dashboard extends MixinAuth {
                                     <Panel style={{
                                         height: '400px'
                                     }}>
-                                        <Row>
-                                            <Col md={12} className="templates-list">
-                                                <Nav bsStyle="tabs" activeKey={this.state.activeShop} onSelect={this.handleShop}>
-                                                    {this.state.shops.map(function(item, i) {
-                                                        return <NavItem eventKey={i}>{item.name}</NavItem>
-                                                    }, this)}
-                                                </Nav>
-                                            </Col>
-                                        </Row>
+                                        <Loader loaded={this.state.loadedTemplates}>
+                                            <Row>
+                                                <Col md={12} className="templates-list">
+                                                    <Nav bsStyle="tabs" activeKey={this.state.activeShop} onSelect={this.handleShop}>
+                                                        {this.state.shops.map(function(item, i) {
+                                                            return <NavItem eventKey={i}>{item.name}</NavItem>
+                                                        }, this)}
+                                                    </Nav>
+                                                </Col>
+                                            </Row>
 
-                                        <Row className="templates">
-                                            <Col md={12}>
-                                                <div className="templates">
-                                                    <b>Templates</b>
-                                                </div>
-                                                <ul className="list-inline">
-                                                    {this.state.templates.map(function(item, i) {
-                                                        return <li>
-                                                            <Button onClick={this.handleTemplate} data-id={i} disabled={i == this.state.activeTemplate}>{item.name}</Button>
-                                                        </li>
-                                                    }, this)}
-                                                </ul>
-                                            </Col>
-                                            <Col md={12}>
-                                                <FormGroup>
-                                                    <div className="title">
-                                                        <b>{this.state.data.title}</b>{' '}characters</div>
-                                                    <ControlLabel>Title</ControlLabel>
-                                                    <InputGroup>
-                                                        <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
-                                                        <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
-                                                            <InputGroup.Addon>
-                                                                <span className="ion-clipboard"></span>
-                                                            </InputGroup.Addon>
-                                                        </CopyToClipboard>
-                                                    </InputGroup>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md={6}>
-                                                <FormGroup>
-                                                    <div className="description">
-                                                        <b>{this.state.data.description}</b>{' '}characters</div>
-                                                    <ControlLabel>Description</ControlLabel>
-                                                    <InputGroup>
-                                                        <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
-                                                        <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
-                                                            <InputGroup.Addon>
-                                                                <span className="ion-clipboard"></span>
-                                                            </InputGroup.Addon>
-                                                        </CopyToClipboard>
-                                                    </InputGroup>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md={6}>
-                                                {this.state.template.shop != 2
-                                                    ? <FormGroup>
-                                                            <div className="tags">
-                                                                <b>{this.state.data.tags}</b>{' '}characters</div>
-                                                            <ControlLabel>Tags</ControlLabel>
-                                                            <InputGroup>
-                                                                <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
-                                                                <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
-                                                                    <InputGroup.Addon>
-                                                                        <span className="ion-clipboard"></span>
-                                                                    </InputGroup.Addon>
-                                                                </CopyToClipboard>
-                                                            </InputGroup>
-                                                        </FormGroup>
-                                                    : null}
-                                                {this.state.template.shop == 4
-                                                    ? <FormGroup>
-                                                            <div className="main-tags">
-                                                                <b>{this.state.data.main_tags}</b>{' '}characters</div>
-                                                            <ControlLabel>Main tags</ControlLabel>
-                                                            <InputGroup>
-                                                                <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
-                                                                <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
-                                                                    <InputGroup.Addon>
-                                                                        <span className="ion-clipboard"></span>
-                                                                    </InputGroup.Addon>
-                                                                </CopyToClipboard>
-                                                            </InputGroup>
-                                                        </FormGroup>
-                                                    : null}
-                                            </Col>
-                                        </Row>
+                                            <Row className="templates">
+                                                <Col md={12}>
+                                                    <div className="templates">
+                                                        <b>Templates</b>
+                                                    </div>
+                                                    <ul className="list-inline">
+                                                        <li><Templates shop={this.state.activeShop} shops={this.state.shops} newTemplate={this.newTemplate}/></li>
+                                                        {this.state.templates.map(function(item, i) {
+                                                            return <li>
+                                                                <Button onClick={this.handleTemplate} data-id={i} disabled={i == this.state.activeTemplate}>{item.name}</Button>
+                                                            </li>
+                                                        }, this)}
+                                                    </ul>
+                                                </Col>
+                                                <Col md={12}>
+                                                    <FormGroup>
+                                                        <div className="title">
+                                                            <b>{this.state.data.title}</b>{' '}characters</div>
+                                                        <ControlLabel>Title</ControlLabel>
+                                                        <InputGroup>
+                                                            <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
+                                                            <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                    <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                            </CopyToClipboard>
+                                                        </InputGroup>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <FormGroup>
+                                                        <div className="description">
+                                                            <b>{this.state.data.description}</b>{' '}characters</div>
+                                                        <ControlLabel>Description</ControlLabel>
+                                                        <InputGroup>
+                                                            <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
+                                                            <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                    <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                            </CopyToClipboard>
+                                                        </InputGroup>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col md={6}>
+                                                    {this.state.template.shop != 2
+                                                        ? <FormGroup>
+                                                                <div className="tags">
+                                                                    <b>{this.state.data.tags}</b>{' '}characters</div>
+                                                                <ControlLabel>Tags</ControlLabel>
+                                                                <InputGroup>
+                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                                    <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
+                                                                        <InputGroup.Addon>
+                                                                            <span className="ion-clipboard"></span>
+                                                                        </InputGroup.Addon>
+                                                                    </CopyToClipboard>
+                                                                </InputGroup>
+                                                            </FormGroup>
+                                                        : null}
+                                                    {this.state.template.shop == 4
+                                                        ? <FormGroup>
+                                                                <div className="main-tags">
+                                                                    <b>{this.state.data.main_tags}</b>{' '}characters</div>
+                                                                <ControlLabel>Main tags</ControlLabel>
+                                                                <InputGroup>
+                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
+                                                                    <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
+                                                                        <InputGroup.Addon>
+                                                                            <span className="ion-clipboard"></span>
+                                                                        </InputGroup.Addon>
+                                                                    </CopyToClipboard>
+                                                                </InputGroup>
+                                                            </FormGroup>
+                                                        : null}
+                                                </Col>
+                                            </Row>
+                                        </Loader>
                                     </Panel>
 
                                 </Col>

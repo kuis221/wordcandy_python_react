@@ -21,25 +21,7 @@ import {Link, browserHistory} from 'react-router';
 import React, {Component} from 'react';
 
 import {apiProfiles} from '../api/profiles';
-
-
-class Vimeo extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            videoSrc: "https://player.vimeo.com/video/" + this.props.video
-        };
-    }
-
-    render() {
-        return (
-            <div>
-                <iframe width={this.props.width} height={this.props.height} src={this.state.videoSrc} frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            </div>
-        );
-    }
-}
+import Vimeo from '../components/vimeo';
 
 
 class Subscribe extends Component {

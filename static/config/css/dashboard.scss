@@ -53,7 +53,7 @@
                     padding: 10px;
 
                     li {
-                      margin-top: 3px;
+                        margin-top: 3px;
                     }
 
                     li.active > a,
@@ -219,4 +219,35 @@
         background-color: #839ff9;
         border-color: #839ff9;
     }
+}
+
+.new-template {
+    .forms {
+        background-color: #f5f6fc;
+        border: 1px solid #dcdaed;
+
+        .control-label {
+            color: #56576c;
+        }
+
+        .validate {
+            position: absolute;
+            right: 20px;
+            color: #ccc;
+        }
+    }
+
+    .btn-primary {
+        background-color: #839ff9;
+        border-color: #839ff9;
+    }
+
+    .btn.disabled,
+    .btn[disabled],
+    fieldset[disabled] .btn {
+        background-color: #dbdaed;
+        border-color: #dbdaed;
+        color: #56576c;
+    }
+
 }

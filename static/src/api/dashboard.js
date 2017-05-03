@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export let url = 'http://www.wordcandy.io/v1/';
+export let url = 'http://0.0.0.0:8000/v1/';
 
 exports.apiDashboard = {
     exportTemplates: function(data) {
@@ -47,7 +47,28 @@ exports.apiDashboard = {
                 method: 'get',
                 responseType: 'json',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('key')
+                },
+                data: data,
+                validateStatus: function(status) {
+                    return status;
+                }
+            })
+            .then(response => {
+                return response;
+            }).catch(function(error) {
+                return error;
+            });
+    },
+    newTemplates: function(data) {
+        return axios({
+                url: url + "dashboard/templates/",
+                method: 'post',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('key')
                 },
                 data: data,
                 validateStatus: function(status) {

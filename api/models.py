@@ -40,6 +40,7 @@ class Export(models.Model):
 
 
 class Template(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True)
     shop = models.ForeignKey(Shop)
     name = models.CharField(max_length=255)
     title = models.CharField(max_length=255, blank=True)
@@ -48,6 +49,7 @@ class Template(models.Model):
     description = models.TextField(max_length=255, blank=True)
     tags = models.CharField(max_length=255, blank=True)
     main_tags = models.CharField(max_length=255, blank=True)
+    default= models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 

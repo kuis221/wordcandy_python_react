@@ -25,6 +25,7 @@ from openpyxl.writer.excel import save_virtual_workbook
 from trademark import marker
 
 from rest_framework_tracking.mixins import LoggingMixin
+from rest_framework.authentication import TokenAuthentication
 
 
 class SynonymsView(LoggingMixin, GenericAPIView):
@@ -182,7 +183,7 @@ class ExportTemplatesView(GenericAPIView):
 
 class ExportKeywordsView(GenericAPIView):
     serializer_class = ExportSerializer
-    
+
     def post(self, request, format=None):
         filename = int(time.time())
         s3c = boto3.client('s3',
@@ -199,14 +200,29 @@ class ExportKeywordsView(GenericAPIView):
 
 class ShopList(LoggingMixin, GenericAPIView):
     serializer_class = ShopSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get(self, request, format=None):
         """
         Return list of shops
         """
         shops = Shop.objects.all()
-        serializer = self.serializer_class(shops, many=True)
+        serializer = self.serializer_class(shops, many=True, context={'request': request})
         return Response(serializer.data)
+
+    def post(self, request, format=None):
+        """
+        Return new template
+        """
+        data = request.data.copy()
+        data['user'] = request.user.id
+        serializer = TemplateSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class SubscribeView(LoggingMixin, GenericAPIView):

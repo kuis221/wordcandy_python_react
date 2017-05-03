@@ -3,6 +3,7 @@ from rest_framework import serializers
 from api.models import Shop, Template, Subscribe, Export
 from easy_thumbnails.files import get_thumbnailer
 from django.conf import settings
+from django.db.models import Q
 
 class Base64ImageField(serializers.ImageField):
     """
@@ -102,6 +103,12 @@ class ShopSerializer(serializers.ModelSerializer):
         fields = ('id', 'templates', 'name')
 
     def is_templates(self, obj):
-        templates = Template.objects.filter(shop=obj).order_by('sort')
-        serializer = TemplateSerializer(templates, many=True)
+        request = self.context.get('request', None)
+        if request:
+            templates = Template.objects.filter(shop=obj)
+            templates = templates.filter(Q(default=True) | Q(user=request.user)).order_by('sort')
+            serializer = TemplateSerializer(templates, many=True)
+        else:
+            templates = Template.objects.filter(shop=obj, default=True).order_by('sort')
+            serializer = TemplateSerializer(templates, many=True)
         return serializer.data

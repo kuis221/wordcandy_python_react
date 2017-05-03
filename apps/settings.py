@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'social_django',
     'social.apps.django_app.default',
     'allauth',
+    'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.dropbox_oauth2',
     'allauth.socialaccount.providers.google',

@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'api',
     'storages',
     'payment',
-    'easy_thumbnails'
+    'easy_thumbnails',
+    'dashboard'
 ]
 
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
@@ -237,6 +238,7 @@ WEBPACK_LOADER = {
     }
 }
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -251,5 +253,9 @@ MEDIA_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
 MEDIA_ROOT = ''
 AWS_ACCESS_KEY_ID = "AKIAIOCAEG4U53J2G2KA"
 AWS_SECRET_ACCESS_KEY = "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"
+
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

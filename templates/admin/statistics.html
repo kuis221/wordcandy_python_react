@@ -1,0 +1,257 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}"/>
+    {% if cl.formset %}
+        <link rel="stylesheet" type="text/css" href="{% static " admin/css/forms.css" %}"/>
+    {% endif %}
+    {% if cl.formset or action_form %}
+        <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    {% endif %}
+    {{ media.css }}
+    {% if not actions_on_top and not actions_on_bottom %}
+        <style>
+            #changelist table thead th:first-child {
+                width: inherit;
+            }
+        </style>
+    {% endif %}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }}
+    app-{{ opts.app_label }}
+    model-{{ opts.model_name }}
+    change-list{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+            &rsaquo; Statistics
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% block coltype %}flex{% endblock %}
+
+{% block content %}
+  <div сlass="tab-content tab-content-main">
+    <h1>Users last joined:</h1>
+    <div style="width: 100%; height: 70px; display: block; padding-bottom: 250px;">
+      <canvas id="joined" height='70px'></canvas>
+    </div>
+    <script>
+    var ctx = document.getElementById("joined");
+    var joinedCharts = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+              {% for item in users %}
+                '{{item.day}}'{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            ],
+            datasets: [{
+                label: '# users last joined',
+                data: [
+                  {% for item in users %}
+                    {{item.available}}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    <h1>Words created:</h1>
+    <div style="width: 100%; height: 70px; display: block; padding-bottom: 250px;">
+      <canvas id="words"  height='70px'></canvas>
+    </div>
+    <script>
+    var ctx = document.getElementById("words");
+    var wordsCharts = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+              {% for item in words %}
+                '{{item.day}}'{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            ],
+            datasets: [{
+                label: '# words created',
+                data: [
+                  {% for item in words %}
+                    {{item.available}}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    <h1>Calculated:</h1>
+    <div style="width: 100%; height: 70px; display: block; padding-bottom: 250px;">
+      <canvas id="calculated" height='70px'></canvas>
+    </div>
+    <script>
+    var ctx = document.getElementById("calculated");
+    var calculatedCharts = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+              {% for item in calculated %}
+                '{{item.day}}'{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            ],
+            datasets: [{
+                label: '# calculated',
+                data: [
+                  {% for item in calculated %}
+                    {{item.available}}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    <h1>Export to .XLS:</h1>
+    <div style="width: 100%; height: 70px; display: block; padding-bottom: 250px;">
+      <canvas id="export" height='70px'></canvas>
+    </div>
+    <script>
+    var ctx = document.getElementById("export");
+    var exportCharts = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+              {% for item in export %}
+                '{{item.day}}'{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            ],
+            datasets: [{
+                label: '# export to .XLS',
+                data: [
+                  {% for item in export %}
+                    {{item.available}}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    <h1>Customers:</h1>
+    <div style="width: 100%; height: 70px; display: block; padding-bottom: 250px;">
+      <canvas id="customers" height='70px'></canvas>
+    </div>
+    <script>
+    var ctx = document.getElementById("customers");
+    var customersCharts = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+              {% for item in customers %}
+                '{{item.day}}'{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            ],
+            datasets: [{
+                label: '# customers',
+                data: [
+                  {% for item in customers %}
+                    {{item.available}}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    <h1>Templates created:</h1>
+    <div style="width: 100%; height: 70px; display: block; padding-bottom: 250px;">
+      <canvas id="templates" height='70px'></canvas>
+    </div>
+    <script>
+    var ctx = document.getElementById("templates");
+    var templatesCharts = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+              {% for item in templates %}
+                '{{item.day}}'{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            ],
+            datasets: [{
+                label: '# templates created',
+                data: [
+                  {% for item in templates %}
+                    {{item.available}}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+  </div>
+{% endblock %}

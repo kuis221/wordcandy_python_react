@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^v1/payment/', include('payment.urls')),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^accounts/', include('allauth.urls', namespace='allauth')),
+    url(r'^statistics/$', 'dashboard.views.statistics', name='statistics'),
 ]
 
 

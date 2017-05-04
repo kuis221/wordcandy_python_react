@@ -20,21 +20,21 @@ export default class Templates extends Component {
         this.state = {
             modal: false,
             shopName: '',
-            validate: {
+            newValidate: {
                 name: 60,
                 title: 90,
                 description: 180,
                 tags: 60,
                 main_tags: 60
             },
-            data: {
+            newData: {
                 name: 60,
                 title: 90,
                 description: 180,
                 tags: 60,
                 main_tags: 60
             },
-            template: {
+            newTemplate: {
                 name: '',
                 title: '',
                 description: '',
@@ -46,13 +46,33 @@ export default class Templates extends Component {
         this.openModal = this.openModal.bind(this);
         this.handleForms = this.handleForms.bind(this);
         this.create = this.create.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    componentWillMount() {
+        document.addEventListener("keydown", this.handleKeyDown.bind(this));
     }
 
     create(e) {
-      this.setState({modal: false});
-      var data = this.state.template;
-      data['shop'] = this.props.shop + 1;
-      this.props.newTemplate(data);
+        this.setState({modal: false});
+        var data = this.state.newTemplate;
+        data['shop'] = this.props.shop + 1;
+        this.props.newTemplate(data);
+    }
+
+    handleKeyDown(event) {
+        if (event.keyCode == 13 && event.target.getAttribute('data-keypress') == 'modal') {
+            var attr = event.target.getAttribute('data-type');
+            var template = this.state.newTemplate;
+            template[attr] = event.target.value + ' [______] ';
+            if (this.state.newValidate[attr] - event.target.value.length > 0) {
+                var data = this.state.newData;
+                data[attr] = this.state.newValidate[attr] - template[attr].length;
+                this.setState({newTemplate: template, newData: data});
+            }
+            event.preventDefault();
+            return false;
+        }
     }
 
     closeModal() {
@@ -67,13 +87,13 @@ export default class Templates extends Component {
     }
 
     handleForms(event) {
-        if (this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length > 0) {
-            var template = this.state.template;
+        if (this.state.newValidate[event.target.getAttribute('data-type')] - event.target.value.length > 0) {
+            var template = this.state.newTemplate;
             template[event.target.getAttribute('data-type')] = event.target.value;
-            var data = this.state.data;
-            data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length;
+            var data = this.state.newData;
+            data[event.target.getAttribute('data-type')] = this.state.newValidate[event.target.getAttribute('data-type')] - event.target.value.length;
         }
-        this.setState({template: template, data: data});
+        this.setState({newTemplate: template, newData: data});
     }
 
     render() {
@@ -98,48 +118,53 @@ export default class Templates extends Component {
                                         paddingTop: '10px',
                                         paddingBottom: '10px'
                                     }}>
-                                        <div className="validate"><b>{this.state.data.name}</b>{' '}characters</div>
+                                        <div className="validate">
+                                            <b>{this.state.newData.name}</b>{' '}characters</div>
                                         <label className="control-label">Template name</label>
-                                        <FormControl type="text" placeholder="Template name" onChange={this.handleForms} data-type="name" value={this.state.template.name}/>
+                                        <FormControl type="text" placeholder="Template name" onChange={this.handleForms} data-type="name" value={this.state.newTemplate.name}/>
                                     </Col>
                                     <Col md={12} style={{
                                         paddingBottom: '10px'
                                     }}>
-                                        <div className="validate"><b>{this.state.data.title}</b>{' '}characters</div>
+                                        <div className="validate">
+                                            <b>{this.state.newData.title}</b>{' '}characters</div>
                                         <label className="control-label">Title</label>
-                                        <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleForms} data-type="title" value={this.state.template.title}/>
+                                        <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleForms} data-keypress="modal" data-type="title" value={this.state.newTemplate.title}/>
                                     </Col>
                                     <Col md={12} style={{
                                         paddingBottom: '10px'
                                     }}>
-                                        <div className="validate"><b>{this.state.data.description}</b>{' '}characters</div>
+                                        <div className="validate">
+                                            <b>{this.state.newData.description}</b>{' '}characters</div>
                                         <label className="control-label">Description</label>
-                                        <FormControl componentClass="textarea" placeholder="Dref description of work to get your audience all excited" onChange={this.handleForms} data-type="description" value={this.state.template.description}/>
+                                        <FormControl componentClass="textarea" placeholder="Dref description of work to get your audience all excited" onChange={this.handleForms} data-keypress="modal" data-type="description" value={this.state.newTemplate.description}/>
                                     </Col>
-                                    {this.props.shop != 1 ?
-                                      <Col md={12} style={{
-                                          paddingBottom: '10px'
-                                      }}>
-                                          <div className="validate"><b>{this.state.data.tags}</b>{' '}characters</div>
-                                          <label className="control-label">Tags</label>
-                                          <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleForms} data-type="tags" onChange={this.handleForms} value={this.state.template.tags}/>
-                                      </Col>
-                                    : null}
-                                    {this.props.shop == 3 ?
-                                      <Col md={12} style={{
-                                          paddingBottom: '10px'
-                                      }}>
-                                          <div className="validate"><b>{this.state.data.main_tags}</b>{' '}characters</div>
-                                          <label className="control-label">Main tags</label>
-                                          <FormControl type="text" placeholder="What one tag would I search to find your design?" data-type="main_tags" onChange={this.handleForms} value={this.state.template.main_tags}/>
-                                      </Col>
-                                    : null}
+                                    {this.props.shop != 1
+                                        ? <Col md={12} style={{
+                                                paddingBottom: '10px'
+                                            }}>
+                                                <div className="validate">
+                                                    <b>{this.state.newData.tags}</b>{' '}characters</div>
+                                                <label className="control-label">Tags</label>
+                                                <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleForms} data-keypress="modal" data-type="tags" value={this.state.newTemplate.tags}/>
+                                            </Col>
+                                        : null}
+                                    {this.props.shop == 3
+                                        ? <Col md={12} style={{
+                                                paddingBottom: '10px'
+                                            }}>
+                                                <div className="validate">
+                                                    <b>{this.state.newData.main_tags}</b>{' '}characters</div>
+                                                <label className="control-label">Main tags</label>
+                                                <FormControl type="text" placeholder="What one tag would I search to find your design?" onChange={this.handleForms} data-keypress="modal" data-type="main_tags" value={this.state.newTemplate.main_tags}/>
+                                            </Col>
+                                        : null}
                                 </Row>
                             </Col>
                         </Row>
                         <Row>
                             <Col md={12} className="text-right">
-                                <Button bsStyle="primary" onClick={this.create} disabled={this.state.template.name.length == 0}>Create</Button>
+                                <Button bsStyle="primary" onClick={this.create} disabled={this.state.newTemplate.name.length == 0}>Create</Button>
                             </Col>
                         </Row>
                     </Modal.Body>

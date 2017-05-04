@@ -97,6 +97,26 @@ export default class Dashboard extends MixinAuth {
         this.dropWord = this.dropWord.bind(this);
         this.preventDefault = this.preventDefault.bind(this);
         this.newTemplate = this.newTemplate.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    componentWillMount() {
+        document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    }
+
+    handleKeyDown(event) {
+        if (event.keyCode == 13 && event.target.getAttribute('data-keypress') == 'dashboard') {
+            var attr = event.target.getAttribute('data-type');
+            var template = this.state.template;
+            template[attr] = event.target.value + ' [______] ';
+            if (this.state.validate[attr] - event.target.value.length > 0) {
+                var data = this.state.data;
+                data[attr] = this.state.validate[attr] - template[attr].length;
+                this.setState({template: template, data: data});
+            }
+            event.preventDefault();
+            return false;
+        }
     }
 
     newTemplate(data) {
@@ -121,9 +141,9 @@ export default class Dashboard extends MixinAuth {
             var template = this.state.template;
 
             if (this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length >= 0) {
-                template[event.target.getAttribute('data-type')] = event.target.value.replace('{}', data);
+                template[event.target.getAttribute('data-type')] = event.target.value.replace('[______]', data);
                 var data = this.state.data;
-                data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.replace('{}', data).length;
+                data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.replace('[______]', data).length;
             } else {
                 var data = this.state.data;
                 data[event.target.getAttribute('data-type')] = 0;
@@ -159,10 +179,10 @@ export default class Dashboard extends MixinAuth {
 
     addWord(event) {
         var template = this.state.template;
-        template.title = template.title.replace('{}', event.target.getAttribute('data-word'));
-        template.description = template.description.replace('{}', event.target.getAttribute('data-word'));
-        template.tags = template.tags.replace('{}', event.target.getAttribute('data-word'));
-        template.main_tags = template.main_tags.replace('{}', event.target.getAttribute('data-word'));
+        template.title = template.title.replace('[______]', event.target.getAttribute('data-word'));
+        template.description = template.description.replace('[______]', event.target.getAttribute('data-word'));
+        template.tags = template.tags.replace('[______]', event.target.getAttribute('data-word'));
+        template.main_tags = template.main_tags.replace('[______]', event.target.getAttribute('data-word'));
         this.setState({template: template});
 
         var data = this.state.data;
@@ -520,7 +540,7 @@ export default class Dashboard extends MixinAuth {
                                                                 }} onClick={this.addWord} data-word={item} className="icon ion-android-add-circle"></i>{' '}
                                                                 <span draggable='true' onDragStart={this.dragWordStart} style={{
                                                                     cursor: 'move'
-                                                                }} data-word={item}>{item}</span>
+                                                                }} data-word={item}>[{item}]</span>
                                                             </Col>
                                                         }, this)}
                                                     </Row>
@@ -568,7 +588,7 @@ export default class Dashboard extends MixinAuth {
                                                             <b>{this.state.data.title}</b>{' '}characters</div>
                                                         <ControlLabel>Title</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
+                                                            <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
                                                             <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -583,7 +603,7 @@ export default class Dashboard extends MixinAuth {
                                                             <b>{this.state.data.description}</b>{' '}characters</div>
                                                         <ControlLabel>Description</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
+                                                            <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
                                                             <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -599,7 +619,7 @@ export default class Dashboard extends MixinAuth {
                                                                     <b>{this.state.data.tags}</b>{' '}characters</div>
                                                                 <ControlLabel>Tags</ControlLabel>
                                                                 <InputGroup>
-                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
                                                                     <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
                                                                         <InputGroup.Addon>
                                                                             <span className="ion-clipboard"></span>
@@ -614,7 +634,7 @@ export default class Dashboard extends MixinAuth {
                                                                     <b>{this.state.data.main_tags}</b>{' '}characters</div>
                                                                 <ControlLabel>Main tags</ControlLabel>
                                                                 <InputGroup>
-                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
+                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
                                                                     <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
                                                                         <InputGroup.Addon>
                                                                             <span className="ion-clipboard"></span>
@@ -655,7 +675,7 @@ export default class Dashboard extends MixinAuth {
                                                                     <Col md={6}>
                                                                         <p className="name" draggable='true' onDragStart={this.dragWordStart} style={{
                                                                             cursor: 'move'
-                                                                        }} data-word={item.name}>{item.name}</p>
+                                                                        }} data-word={item.name}>[{item.name}]</p>
                                                                     </Col>
                                                                     <Col md={3} className="text-right">
                                                                         <span className="volume">{item.volume}</span>

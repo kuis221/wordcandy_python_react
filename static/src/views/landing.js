@@ -147,7 +147,7 @@ export default class Landing extends Component {
                     </Col>
                     <Col md={2}></Col>
                     <Col md={12} className="video">
-                      <Wistia video="ccn9rovszu" height="460px" width="600px" />
+                      <Wistia video="ccn9rovszu" height="340px" width="600px" />
                     </Col>
                 </Row>
                 <Row className="price">

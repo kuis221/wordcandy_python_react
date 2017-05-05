@@ -21,7 +21,7 @@ import {Link, browserHistory} from 'react-router';
 import React, {Component} from 'react';
 
 import {apiProfiles} from '../api/profiles';
-import Vimeo from '../components/vimeo';
+import Wistia from '../components/wistia';
 
 
 class Subscribe extends Component {
@@ -147,7 +147,7 @@ export default class Landing extends Component {
                     </Col>
                     <Col md={2}></Col>
                     <Col md={12} className="video">
-                        <Vimeo video="215130910" height="460px" width="600px" />
+                      <Wistia video="ccn9rovszu" height="460px" width="600px" />
                     </Col>
                 </Row>
                 <Row className="price">

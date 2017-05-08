@@ -63,20 +63,32 @@ export default class Dashboard extends MixinAuth {
             progress: 20,
             progressShow: true,
             thumbnailStatus: false,
+            forms: {
+                title: false,
+                description: false,
+                tags: false,
+                main_tags: false
+            },
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
             thumbnailBackground: '#e1e0f0',
             validate: {
                 title: 90,
                 description: 180,
-                tags: 60,
-                main_tags: 60
+                tags: 55,
+                main_tags: 55
             },
             data: {
                 title: 90,
                 description: 180,
-                tags: 60,
-                main_tags: 60
+                tags: 55,
+                main_tags: 55
+            },
+            htmlTemplate: {
+                title: '',
+                description: '',
+                tags: '',
+                main_tags: ''
             }
         };
         this.onUploadImage = this.onUploadImage.bind(this);
@@ -86,10 +98,7 @@ export default class Dashboard extends MixinAuth {
         this.handleTemplate = this.handleTemplate.bind(this);
         this.reset = this.reset.bind(this);
         this.addWord = this.addWord.bind(this);
-        this.handleTitle = this.handleTitle.bind(this);
-        this.handleDescription = this.handleDescription.bind(this);
-        this.handleTags = this.handleTags.bind(this);
-        this.handleMainTags = this.handleMainTags.bind(this);
+        this.handleChangeForms = this.handleChangeForms.bind(this);
         this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
         this.exportKeywords = this.exportKeywords.bind(this);
         this.handleSuggests = this.handleSuggests.bind(this);
@@ -98,6 +107,25 @@ export default class Dashboard extends MixinAuth {
         this.preventDefault = this.preventDefault.bind(this);
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.formsEnter = this.formsEnter.bind(this);
+        this.formsLeave = this.formsLeave.bind(this);
+    }
+
+    formsEnter(event) {
+        var type = event.target.getAttribute('data-type');
+        var forms = this.state.forms;
+        forms[type] = true;
+        this.setState({forms: forms});
+    }
+
+    formsLeave(event) {
+        var type = event.target.getAttribute('data-type');
+        var forms = this.state.forms;
+        forms[type] = false;
+        var htmlTemplate = this.state.htmlTemplate;
+        var template = this.state.template;
+        htmlTemplate[type] = template[type].replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>');
+        this.setState({forms: forms});
     }
 
     componentWillMount() {
@@ -193,92 +221,44 @@ export default class Dashboard extends MixinAuth {
         this.setState({data: data});
     }
 
-    handleTitle(event) {
+    handleChangeForms(event) {
+        var template = this.state.template;
+        template[event.target.getAttribute('data-type')] = event.target.value
+        this.setState({template: template});
 
-        if (this.state.validate.title - event.target.value.length >= 0) {
-            var template = this.state.template;
-            template.title = event.target.value
-            this.setState({template: template});
-
-            var data = this.state.data;
-            data.title = this.state.validate.title - event.target.value.length;
-        } else {
-            var data = this.state.data;
-            data.title = 0;
-        }
-        this.setState({data: data});
-    }
-
-    handleMainTags(event) {
-        if (this.state.validate.main_tags - event.target.value.length >= 0) {
-            var template = this.state.template;
-            template.main_tags = event.target.value
-            this.setState({template: template});
-
-            var data = this.state.data;
-            data.main_tags = this.state.validate.main_tags - event.target.value.length;
-        } else {
-            var data = this.state.data;
-            data.main_tags = 0;
-        }
-        this.setState({data: data});
-    }
-
-    handleTags(event) {
-        if (this.state.validate.tags - event.target.value.length >= 0) {
-            var template = this.state.template;
-            template.tags = event.target.value
-            this.setState({template: template});
-
-            var data = this.state.data;
-            data.tags = this.state.validate.tags - event.target.value.length;
-        } else {
-            var data = this.state.data;
-            data.tags = 0;
-        }
-        this.setState({data: data});
-    }
-
-    handleDescription(event) {
-        if (this.state.validate.description - event.target.value.length >= 0) {
-            var template = this.state.template;
-            template.description = event.target.value
-            this.setState({template: template});
-
-            var data = this.state.data;
-            data.description = this.state.validate.description - event.target.value.length;
-        } else {
-            var data = this.state.data;
-            data.description = 0;
-        }
+        var data = this.state.data;
+        data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length;
         this.setState({data: data});
     }
 
     handleShop(index) {
-        this.setState({activeShop: index, templates: this.state.shops[index].templates, activeTemplate: 0, template: this.state.shops[index].templates[0]})
-
         var template = this.state.shops[index].templates[0];
         var data = this.state.data;
         data.title = this.state.validate.title - template.title.length;
         data.description = this.state.validate.description - template.description.length;
         data.tags = this.state.validate.tags - template.tags.length;
         data.main_tags = this.state.validate.main_tags - template.main_tags.length;
-        this.setState({data: data});
+        this.setState({activeShop: index, templates: this.state.shops[index].templates, activeTemplate: 0, data: data, template: this.state.shops[index].templates[0]})
     }
 
     handleTemplate(event) {
-        this.setState({
-            activeTemplate: event.target.getAttribute('data-id'),
-            template: this.state.templates[event.target.getAttribute('data-id')]
-        });
-
         var template = this.state.templates[event.target.getAttribute('data-id')];
         var data = this.state.data;
         data.title = this.state.validate.title - template.title.length;
         data.description = this.state.validate.description - template.description.length;
         data.tags = this.state.validate.tags - template.tags.length;
         data.main_tags = this.state.validate.main_tags - template.main_tags.length;
-        this.setState({data: data});
+        this.setState({
+            activeTemplate: event.target.getAttribute('data-id'),
+            template: this.state.templates[event.target.getAttribute('data-id')],
+            data: data,
+            htmlTemplate: {
+                title: this.state.templates[event.target.getAttribute('data-id')].title.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
+                description: this.state.templates[event.target.getAttribute('data-id')].description.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
+                tags: this.state.templates[event.target.getAttribute('data-id')].tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
+                main_tags: this.state.templates[event.target.getAttribute('data-id')].main_tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>')
+            }
+        });
     }
 
     handleChangeTags(tags) {
@@ -584,11 +564,29 @@ export default class Dashboard extends MixinAuth {
                                                 </Col>
                                                 <Col md={12}>
                                                     <FormGroup>
-                                                        <div className="title">
+                                                        <div className="title" style={{
+                                                            color: this.state.data.title < 10
+                                                                ? '#f50313'
+                                                                : '#ccc'
+                                                        }}>
                                                             <b>{this.state.data.title}</b>{' '}characters</div>
                                                         <ControlLabel>Title</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleTitle} value={this.state.template.title}/>
+                                                            {this.state.forms.title
+                                                                ? <FormControl type="text" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.title}/>
+                                                                : null}
+                                                            {this.state.forms.title == false
+                                                                ? <div data-type="title" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
+                                                                        {this.state.template.title != ''
+                                                                            ? <span dangerouslySetInnerHTML={{
+                                                                                    __html: this.state.htmlTemplate.title
+                                                                                }}/>
+                                                                            : null}
+                                                                        {this.state.template.title == ''
+                                                                            ? <span className="placeholder">Title - 4 to 8 words is best</span>
+                                                                            : null}
+                                                                    </div>
+                                                                : null}
                                                             <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -599,11 +597,30 @@ export default class Dashboard extends MixinAuth {
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormGroup>
-                                                        <div className="description">
-                                                            <b>{this.state.data.description}</b>{' '}characters</div>
+                                                        <div className="description" style={{
+                                                            color: this.state.data.description < 10
+                                                                ? '#f50313'
+                                                                : '#ccc'
+                                                        }}>
+                                                        <b>{this.state.data.description}</b>{' '}characters</div>
                                                         <ControlLabel>Description</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleDescription} value={this.state.template.description}/>
+                                                          {this.state.forms.description
+                                                              ?
+                                                              <FormControl componentClass="textarea" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault}  onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleChangeForms} value={this.state.template.description}/>
+                                                              : null}
+                                                          {this.state.forms.description == false
+                                                              ? <div data-type="description" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template description-template">
+                                                                      {this.state.template.description != ''
+                                                                          ? <span dangerouslySetInnerHTML={{
+                                                                                  __html: this.state.htmlTemplate.description
+                                                                              }}/>
+                                                                          : null}
+                                                                      {this.state.template.description == ''
+                                                                          ? <span className="placeholder">Dref description of work to get your audience all excited</span>
+                                                                          : null}
+                                                                  </div>
+                                                              : null}
                                                             <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -615,11 +632,29 @@ export default class Dashboard extends MixinAuth {
                                                 <Col md={6}>
                                                     {this.state.template.shop != 2
                                                         ? <FormGroup>
-                                                                <div className="tags">
+                                                                <div className="tags" style={{
+                                                                    color: this.state.data.tags < 10
+                                                                        ? '#f50313'
+                                                                        : '#ccc'
+                                                                }}>
                                                                     <b>{this.state.data.tags}</b>{' '}characters</div>
                                                                 <ControlLabel>Tags</ControlLabel>
                                                                 <InputGroup>
-                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleTags} value={this.state.template.tags}/>
+                                                                    {this.state.forms.tags
+                                                                        ? <FormControl type="text" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleChangeForms} value={this.state.template.tags}/>
+                                                                        : null}
+                                                                    {this.state.forms.tags == false
+                                                                        ? <div data-type="tags" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
+                                                                                {this.state.template.tags != ''
+                                                                                    ? <span dangerouslySetInnerHTML={{
+                                                                                            __html: this.state.htmlTemplate.tags
+                                                                                        }}/>
+                                                                                    : null}
+                                                                                {this.state.template.tags == ''
+                                                                                    ? <span className="placeholder">Use, comas to-separate-tags</span>
+                                                                                    : null}
+                                                                            </div>
+                                                                        : null}
                                                                     <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
                                                                         <InputGroup.Addon>
                                                                             <span className="ion-clipboard"></span>
@@ -630,11 +665,30 @@ export default class Dashboard extends MixinAuth {
                                                         : null}
                                                     {this.state.template.shop == 4
                                                         ? <FormGroup>
-                                                                <div className="main-tags">
+                                                                <div className="main-tags" style={{
+                                                                    color: this.state.data.main_tags < 10
+                                                                        ? '#f50313'
+                                                                        : '#ccc'
+                                                                }}>
                                                                     <b>{this.state.data.main_tags}</b>{' '}characters</div>
                                                                 <ControlLabel>Main tags</ControlLabel>
                                                                 <InputGroup>
-                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleMainTags} value={this.state.template.main_tags}/>
+                                                                  {this.state.forms.main_tags
+                                                                      ? <FormControl type="text" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
+                                                                      : null}
+                                                                  {this.state.forms.main_tags == false
+                                                                      ? <div data-type="main_tags" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
+                                                                              {this.state.template.main_tags != ''
+                                                                                  ? <span dangerouslySetInnerHTML={{
+                                                                                          __html: this.state.htmlTemplate.main_tags
+                                                                                      }}/>
+                                                                                  : null}
+                                                                              {this.state.template.main_tags == ''
+                                                                                  ? <span className="placeholder">What one tag would I search to find your design?</span>
+                                                                                  : null}
+                                                                          </div>
+                                                                      : null}
+
                                                                     <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
                                                                         <InputGroup.Addon>
                                                                             <span className="ion-clipboard"></span>
@@ -708,7 +762,7 @@ export default class Dashboard extends MixinAuth {
                                         <OverlayTrigger trigger="click" placement="top" overlay={exportWindow}>
                                             <Button bsStyle="success" disabled={this.state.tags.length == 0}>
                                                 <i className="icon ion-arrow-down-c"></i>
-                                                Export
+                                                Export Data
                                             </Button>
                                         </OverlayTrigger>
                                     </Loader>

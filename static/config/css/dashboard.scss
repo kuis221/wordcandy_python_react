@@ -2,6 +2,19 @@
     color: #56576c;
     background-color: #56576c;
 
+    .form-template {
+        background-color: #fff;
+        border-color: #dbd9ed;
+
+        .placeholder {
+            color: #999;
+        }
+    }
+
+    .description-template {
+      height: 108px;
+    }
+
     .dashboard-content {
         .progress {
             margin-bottom: 0;
@@ -105,7 +118,6 @@
 
     input,
     textarea {
-        background-color: #f5f6fc;
         border-color: #dbd9ed;
     }
 
@@ -137,6 +149,11 @@
     .templates {
         padding-top: 20px;
         padding-bottom: 10px;
+
+        input,
+        textarea {
+            background-color: #fff;
+        }
     }
 
     .templates-list {
@@ -202,6 +219,7 @@
             background-color: #fff;
             cursor: pointer;
             color: #839ff9;
+            font-size: 19px;
         }
     }
 
@@ -223,11 +241,13 @@
 
 .new-template {
     .forms {
-        background-color: #f5f6fc;
-        border: 1px solid #dcdaed;
-
         .control-label {
             color: #56576c;
+        }
+
+        input,
+        textarea {
+            border-color: #dbd9ed;
         }
 
         .validate {
@@ -249,5 +269,4 @@
         border-color: #dbdaed;
         color: #56576c;
     }
-
 }

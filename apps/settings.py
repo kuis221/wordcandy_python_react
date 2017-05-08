@@ -126,10 +126,10 @@ DJSTRIPE_PLANS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'da4clbe9966ba3',
-        'USER': 'ffsltlsfxfwxlb',
-        'PASSWORD': '03b59a5077632d516ff5c55c8e81c668ce80e6c38380c8db88c3bdc03d7ead92',
-        'HOST': 'ec2-23-21-220-188.compute-1.amazonaws.com',
+        'NAME': 'd1ips4r6hkk0r4',
+        'USER': 'vhzrexiecjagan',
+        'PASSWORD': '0ae59082b514ceb928221199243a02fbc753093a68c1978ba78e1023e7681053',
+        'HOST': 'ec2-54-83-205-71.compute-1.amazonaws.com',
         'PORT': '5432'
     }
 }

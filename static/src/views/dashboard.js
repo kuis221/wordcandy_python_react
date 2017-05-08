@@ -573,7 +573,7 @@ export default class Dashboard extends MixinAuth {
                                                         <ControlLabel>Title</ControlLabel>
                                                         <InputGroup>
                                                             {this.state.forms.title
-                                                                ? <FormControl type="text" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.title}/>
+                                                                ? <FormControl type="text" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.title}/>
                                                                 : null}
                                                             {this.state.forms.title == false
                                                                 ? <div data-type="title" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
@@ -607,7 +607,7 @@ export default class Dashboard extends MixinAuth {
                                                         <InputGroup>
                                                           {this.state.forms.description
                                                               ?
-                                                              <FormControl componentClass="textarea" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault}  onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleChangeForms} value={this.state.template.description}/>
+                                                              <FormControl componentClass="textarea" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onDragOver={this.preventDefault}  onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleChangeForms} value={this.state.template.description}/>
                                                               : null}
                                                           {this.state.forms.description == false
                                                               ? <div data-type="description" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template description-template">
@@ -641,7 +641,7 @@ export default class Dashboard extends MixinAuth {
                                                                 <ControlLabel>Tags</ControlLabel>
                                                                 <InputGroup>
                                                                     {this.state.forms.tags
-                                                                        ? <FormControl type="text" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleChangeForms} value={this.state.template.tags}/>
+                                                                        ? <FormControl type="text" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleChangeForms} value={this.state.template.tags}/>
                                                                         : null}
                                                                     {this.state.forms.tags == false
                                                                         ? <div data-type="tags" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
@@ -674,7 +674,9 @@ export default class Dashboard extends MixinAuth {
                                                                 <ControlLabel>Main tags</ControlLabel>
                                                                 <InputGroup>
                                                                   {this.state.forms.main_tags
-                                                                      ? <FormControl type="text" onBlur={this.formsLeave} onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onMouseOut={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
+                                                                      ? <FormControl type="text" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave}
+
+                                                                       onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
                                                                       : null}
                                                                   {this.state.forms.main_tags == false
                                                                       ? <div data-type="main_tags" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">

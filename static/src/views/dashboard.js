@@ -218,7 +218,16 @@ export default class Dashboard extends MixinAuth {
         for (var i = 0; i < fields.length; i++) {
             data[fields[i]] = this.state.validate[fields[i]] - template[fields[i]].length;
         }
-        this.setState({data: data});
+        this.setState({
+          data: data,
+          htmlTemplate: {
+              title: template.title.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
+              description: template.description.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
+              tags: template.tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
+              main_tags: template.main_tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>')
+          }
+        });
+
     }
 
     handleChangeForms(event) {

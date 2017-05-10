@@ -63,12 +63,6 @@ export default class Dashboard extends MixinAuth {
             progress: 20,
             progressShow: true,
             thumbnailStatus: false,
-            forms: {
-                title: false,
-                description: false,
-                tags: false,
-                main_tags: false
-            },
             username: localStorage.getItem('username'),
             thumbnail: '/static/images/dashboard/shirt.png',
             thumbnailBackground: '#e1e0f0',
@@ -83,12 +77,6 @@ export default class Dashboard extends MixinAuth {
                 description: 180,
                 tags: 55,
                 main_tags: 55
-            },
-            htmlTemplate: {
-                title: '',
-                description: '',
-                tags: '',
-                main_tags: ''
             }
         };
         this.onUploadImage = this.onUploadImage.bind(this);
@@ -97,6 +85,7 @@ export default class Dashboard extends MixinAuth {
         this.handleShop = this.handleShop.bind(this);
         this.handleTemplate = this.handleTemplate.bind(this);
         this.reset = this.reset.bind(this);
+        this.resetKeywords = this.resetKeywords.bind(this);
         this.addWord = this.addWord.bind(this);
         this.handleChangeForms = this.handleChangeForms.bind(this);
         this.handleThumbnailChange = this.handleThumbnailChange.bind(this);
@@ -107,25 +96,6 @@ export default class Dashboard extends MixinAuth {
         this.preventDefault = this.preventDefault.bind(this);
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
-        this.formsEnter = this.formsEnter.bind(this);
-        this.formsLeave = this.formsLeave.bind(this);
-    }
-
-    formsEnter(event) {
-        var type = event.target.getAttribute('data-type');
-        var forms = this.state.forms;
-        forms[type] = true;
-        this.setState({forms: forms});
-    }
-
-    formsLeave(event) {
-        var type = event.target.getAttribute('data-type');
-        var forms = this.state.forms;
-        forms[type] = false;
-        var htmlTemplate = this.state.htmlTemplate;
-        var template = this.state.template;
-        htmlTemplate[type] = template[type].replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>');
-        this.setState({forms: forms});
     }
 
     componentWillMount() {
@@ -159,6 +129,10 @@ export default class Dashboard extends MixinAuth {
 
     preventDefault(event) {
         event.preventDefault();
+    }
+
+    resetKeywords(event) {
+        this.setState({tags: []});
     }
 
     dropWord(event) {
@@ -218,15 +192,7 @@ export default class Dashboard extends MixinAuth {
         for (var i = 0; i < fields.length; i++) {
             data[fields[i]] = this.state.validate[fields[i]] - template[fields[i]].length;
         }
-        this.setState({
-          data: data,
-          htmlTemplate: {
-              title: template.title.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
-              description: template.description.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
-              tags: template.tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
-              main_tags: template.main_tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>')
-          }
-        });
+        this.setState({data: data});
 
     }
 
@@ -260,13 +226,7 @@ export default class Dashboard extends MixinAuth {
         this.setState({
             activeTemplate: event.target.getAttribute('data-id'),
             template: this.state.templates[event.target.getAttribute('data-id')],
-            data: data,
-            htmlTemplate: {
-                title: this.state.templates[event.target.getAttribute('data-id')].title.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
-                description: this.state.templates[event.target.getAttribute('data-id')].description.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
-                tags: this.state.templates[event.target.getAttribute('data-id')].tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>'),
-                main_tags: this.state.templates[event.target.getAttribute('data-id')].main_tags.replace('[______]', '<b style="background-color: #e1e0f0;">[______]</b>')
-            }
+            data: data
         });
     }
 
@@ -458,7 +418,10 @@ export default class Dashboard extends MixinAuth {
                                     <Panel className="photo-block text-center" style={{
                                         height: '335px'
                                     }}>
-                                        <Toggle defaultChecked={this.state.thumbnailStatus} onChange={this.handleThumbnailChange} icons={false}/>
+                                        <Toggle defaultChecked={this.state.thumbnailStatus} icons={{
+                                            checked: <span className="ion-ios-sunny toogle-sunny"></span>,
+                                            unchecked: <span className="ion-ios-moon toogle-moon"></span>
+                                        }} onChange={this.handleThumbnailChange}/>
                                         <p style={{
                                             backgroundColor: this.state.thumbnailBackground
                                         }}>
@@ -473,38 +436,32 @@ export default class Dashboard extends MixinAuth {
                                 </Col>
                                 <Col md={8}>
                                     <Row>
-                                        <Col md={12}>
+                                        <Col md={12} className="keywords">
                                             <Panel header="What keywords descript this t-shirt?" style={{
                                                 height: 155
                                             }}>
                                                 <Form inline>
                                                     <Row>
-                                                        <Col md={9}>
+                                                        <Col md={12}>
                                                             <FormGroup controlId="formControlsTextarea" style={{
                                                                 'width': '100%'
                                                             }}>
                                                                 <TagsInput maxTags={4} value={this.state.tags} onChange={:: this.handleChangeTags}/>
                                                             </FormGroup>
                                                         </Col>
-                                                        <Col md={3} className="text-center">
+                                                        <Col md={12} className="actions">
                                                             <Row>
-                                                                <Col md={12}>
-                                                                    <p>
-                                                                        <Button disabled={this.state.tags.length == 0} bsStyle="primary" block onClick={this.calculate}>
-                                                                            <i className="icon ion-calculator"></i>
-                                                                            Calculate
-                                                                        </Button>
-                                                                    </p>
+                                                                <Col md={6} className="text-left">
+                                                                    <div className="reset" onClick={this.resetKeywords}>
+                                                                        <i className="icon ion-android-refresh"></i>
+                                                                        Reset Keywords
+                                                                    </div>
                                                                 </Col>
-                                                            </Row>
-                                                            <Row>
-                                                                <Col md={12}>
-                                                                    <p>
-                                                                        <Button bsStyle="primary" block onClick={this.reset}>
-                                                                            <i className="icon ion-android-refresh"></i>
-                                                                            Start Over
-                                                                        </Button>
-                                                                    </p>
+                                                                <Col md={6} className="text-right">
+                                                                    <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
+                                                                        <i className="icon ion-calculator"></i>
+                                                                        Calculate
+                                                                    </Button>
                                                                 </Col>
                                                             </Row>
                                                         </Col>
@@ -513,23 +470,23 @@ export default class Dashboard extends MixinAuth {
                                                 </Form>
                                             </Panel>
                                         </Col>
-                                        <Col md={12}>
+                                        <Col md={12} className="similars">
                                             <Panel header="Synonyms / Antonyms" style={{
                                                 height: 170
                                             }}>
                                                 <Loader loaded={this.state.loadedSimilars}>
-                                                    {this.state.similars.length == 0
-                                                        ? <div>Empty</div>
-                                                        : null}
-                                                    <Row className="scroll-block">
+                                                    <Row>
+                                                        {this.state.similars.length == 0
+                                                            ? <div style={{
+                                                                    paddingLeft: '15px'
+                                                                }} className="text-center">Use different keywords.</div>
+                                                            : null}
                                                         {this.state.similars.map(function(item, i) {
                                                             return <Col md={6}>
-                                                                <i style={{
-                                                                    cursor: 'pointer'
-                                                                }} onClick={this.addWord} data-word={item} className="icon ion-android-add-circle"></i>{' '}
-                                                                <span draggable='true' onDragStart={this.dragWordStart} style={{
+                                                                <button className="ion-plus plus-button" onClick={this.addWord} data-word={item}></button>
+                                                                <span draggable='true' className="btn-container" onDragStart={this.dragWordStart} style={{
                                                                     cursor: 'move'
-                                                                }} data-word={item}>[{item}]</span>
+                                                                }} data-word={item}>{item}</span>
                                                             </Col>
                                                         }, this)}
                                                     </Row>
@@ -573,29 +530,15 @@ export default class Dashboard extends MixinAuth {
                                                 </Col>
                                                 <Col md={12}>
                                                     <FormGroup>
-                                                        <div className="title" style={{
-                                                            color: this.state.data.title < 10
-                                                                ? '#f50313'
-                                                                : '#ccc'
-                                                        }}>
-                                                            <b>{this.state.data.title}</b>{' '}characters</div>
+                                                        <div className="title">
+                                                            <b style={{
+                                                                color: this.state.data.title < 10
+                                                                    ? '#f50313'
+                                                                    : '#ccc'
+                                                            }}>{this.state.data.title}</b>{' '}characters</div>
                                                         <ControlLabel>Title</ControlLabel>
                                                         <InputGroup>
-                                                            {this.state.forms.title
-                                                                ? <FormControl type="text" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.title}/>
-                                                                : null}
-                                                            {this.state.forms.title == false
-                                                                ? <div data-type="title" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
-                                                                        {this.state.template.title != ''
-                                                                            ? <span dangerouslySetInnerHTML={{
-                                                                                    __html: this.state.htmlTemplate.title
-                                                                                }}/>
-                                                                            : null}
-                                                                        {this.state.template.title == ''
-                                                                            ? <span className="placeholder">Title - 4 to 8 words is best</span>
-                                                                            : null}
-                                                                    </div>
-                                                                : null}
+                                                            <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="title" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.title}/>
                                                             <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -606,30 +549,15 @@ export default class Dashboard extends MixinAuth {
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormGroup>
-                                                        <div className="description" style={{
-                                                            color: this.state.data.description < 10
-                                                                ? '#f50313'
-                                                                : '#ccc'
-                                                        }}>
-                                                        <b>{this.state.data.description}</b>{' '}characters</div>
+                                                        <div className="description">
+                                                            <b style={{
+                                                                color: this.state.data.description < 10
+                                                                    ? '#f50313'
+                                                                    : '#ccc'
+                                                            }}>{this.state.data.description}</b>{' '}characters</div>
                                                         <ControlLabel>Description</ControlLabel>
                                                         <InputGroup>
-                                                          {this.state.forms.description
-                                                              ?
-                                                              <FormControl componentClass="textarea" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onDragOver={this.preventDefault}  onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleChangeForms} value={this.state.template.description}/>
-                                                              : null}
-                                                          {this.state.forms.description == false
-                                                              ? <div data-type="description" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template description-template">
-                                                                      {this.state.template.description != ''
-                                                                          ? <span dangerouslySetInnerHTML={{
-                                                                                  __html: this.state.htmlTemplate.description
-                                                                              }}/>
-                                                                          : null}
-                                                                      {this.state.template.description == ''
-                                                                          ? <span className="placeholder">Dref description of work to get your audience all excited</span>
-                                                                          : null}
-                                                                  </div>
-                                                              : null}
+                                                            <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleChangeForms} value={this.state.template.description}/>
                                                             <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -641,29 +569,15 @@ export default class Dashboard extends MixinAuth {
                                                 <Col md={6}>
                                                     {this.state.template.shop != 2
                                                         ? <FormGroup>
-                                                                <div className="tags" style={{
-                                                                    color: this.state.data.tags < 10
-                                                                        ? '#f50313'
-                                                                        : '#ccc'
-                                                                }}>
-                                                                    <b>{this.state.data.tags}</b>{' '}characters</div>
+                                                                <div className="tags">
+                                                                    <b style={{
+                                                                        color: this.state.data.tags < 10
+                                                                            ? '#f50313'
+                                                                            : '#ccc'
+                                                                    }}>{this.state.data.tags}</b>{' '}characters</div>
                                                                 <ControlLabel>Tags</ControlLabel>
                                                                 <InputGroup>
-                                                                    {this.state.forms.tags
-                                                                        ? <FormControl type="text" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleChangeForms} value={this.state.template.tags}/>
-                                                                        : null}
-                                                                    {this.state.forms.tags == false
-                                                                        ? <div data-type="tags" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
-                                                                                {this.state.template.tags != ''
-                                                                                    ? <span dangerouslySetInnerHTML={{
-                                                                                            __html: this.state.htmlTemplate.tags
-                                                                                        }}/>
-                                                                                    : null}
-                                                                                {this.state.template.tags == ''
-                                                                                    ? <span className="placeholder">Use, comas to-separate-tags</span>
-                                                                                    : null}
-                                                                            </div>
-                                                                        : null}
+                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleChangeForms} value={this.state.template.tags}/>
                                                                     <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
                                                                         <InputGroup.Addon>
                                                                             <span className="ion-clipboard"></span>
@@ -674,32 +588,15 @@ export default class Dashboard extends MixinAuth {
                                                         : null}
                                                     {this.state.template.shop == 4
                                                         ? <FormGroup>
-                                                                <div className="main-tags" style={{
-                                                                    color: this.state.data.main_tags < 10
-                                                                        ? '#f50313'
-                                                                        : '#ccc'
-                                                                }}>
-                                                                    <b>{this.state.data.main_tags}</b>{' '}characters</div>
+                                                                <div className="main-tags">
+                                                                    <b style={{
+                                                                        color: this.state.data.main_tags < 10
+                                                                            ? '#f50313'
+                                                                            : '#ccc'
+                                                                    }}>{this.state.data.main_tags}</b>{' '}characters</div>
                                                                 <ControlLabel>Main tags</ControlLabel>
                                                                 <InputGroup>
-                                                                  {this.state.forms.main_tags
-                                                                      ? <FormControl type="text" onDragLeave={this.formsLeave} onMouseLeave={this.formsLeave}
-
-                                                                       onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
-                                                                      : null}
-                                                                  {this.state.forms.main_tags == false
-                                                                      ? <div data-type="main_tags" onMouseOver={this.formsEnter} onDragOver={this.formsEnter} className="form-control form-template">
-                                                                              {this.state.template.main_tags != ''
-                                                                                  ? <span dangerouslySetInnerHTML={{
-                                                                                          __html: this.state.htmlTemplate.main_tags
-                                                                                      }}/>
-                                                                                  : null}
-                                                                              {this.state.template.main_tags == ''
-                                                                                  ? <span className="placeholder">What one tag would I search to find your design?</span>
-                                                                                  : null}
-                                                                          </div>
-                                                                      : null}
-
+                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
                                                                     <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
                                                                         <InputGroup.Addon>
                                                                             <span className="ion-clipboard"></span>
@@ -722,10 +619,10 @@ export default class Dashboard extends MixinAuth {
                             }}>
                                 <Loader loaded={this.state.loadedKeywords}>
                                     {this.state.stats.length == 0
-                                        ? <div className="empty-result">Empty</div>
+                                        ? <div className="text-center">Use different keywords.</div>
                                         : null}
                                     {this.state.stats.length > 0
-                                        ? <div className="scroll-block-suggestions suggestions">
+                                        ? <div className="suggestions">
                                                 {this.state.progressShow
                                                     ? <ProgressBar active now={this.state.progress} label={`${this.state.progress}%`}/>
                                                     : null}
@@ -734,21 +631,14 @@ export default class Dashboard extends MixinAuth {
                                                         return <Tab eventKey={i} title={this.state.keywordsTitle[i]}>
                                                             {this.state.keywords[i].map(function(item, j) {
                                                                 return <Row>
-                                                                    <Col md={1}>
-                                                                        <span className="index">{j + 1}.</span>
-                                                                    </Col>
-                                                                    <Col md={6}>
-                                                                        <p className="name" draggable='true' onDragStart={this.dragWordStart} style={{
+                                                                    <Col md={8}>
+                                                                        <button className="ion-plus plus-button" onClick={this.addWord} data-word={item.name}></button>
+                                                                        <span draggable='true' className="btn-container" onDragStart={this.dragWordStart} style={{
                                                                             cursor: 'move'
-                                                                        }} data-word={item.name}>[{item.name}]</p>
+                                                                        }} data-word={item.name}>{item.name}</span>
                                                                     </Col>
-                                                                    <Col md={3} className="text-right">
+                                                                    <Col md={4} className="text-right">
                                                                         <span className="volume">{item.volume}</span>
-                                                                    </Col>
-                                                                    <Col md={1} className="text-left">
-                                                                        <i onClick={this.addWord} style={{
-                                                                            cursor: 'cursor'
-                                                                        }} data-word={item.name} className="icon ion-android-add-circle"></i>
                                                                     </Col>
                                                                 </Row>
                                                             }, this)}

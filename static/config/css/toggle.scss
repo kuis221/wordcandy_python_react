@@ -132,3 +132,19 @@
   -moz-box-shadow: 0px 0px 5px 5px #0099E0;
   box-shadow: 0px 0px 5px 5px #0099E0;
 }
+
+.toogle-moon {
+    color: #fff;
+    font-size: 30px;
+    position: absolute;
+    left: 0;
+    top: -10px;
+}
+
+.toogle-sunny {
+    font-size: 30px;
+    position: absolute;
+    left: -2px;
+    top: -10px;
+    color: #fff;
+}

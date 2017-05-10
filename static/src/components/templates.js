@@ -116,24 +116,24 @@ export default class Templates extends Component {
                                         paddingTop: '10px',
                                         paddingBottom: '10px'
                                     }}>
-                                        <div className="validate" style={{
-                                            color: this.state.newData.name < 10
-                                                ? '#f50313'
-                                                : '#ccc'
-                                        }}>
-                                            <b>{this.state.newData.name}</b>{' '}characters</div>
+                                        <div className="validate">
+                                            <b style={{
+                                                color: this.state.newData.name < 10
+                                                    ? '#f50313'
+                                                    : '#ccc'
+                                            }}>{this.state.newData.name}</b>{' '}characters</div>
                                         <label className="control-label">Template name</label>
                                         <FormControl type="text" placeholder="Template name" onChange={this.handleForms} data-type="name" value={this.state.newTemplate.name}/>
                                     </Col>
                                     <Col md={12} style={{
                                         paddingBottom: '10px'
                                     }}>
-                                        <div className="validate" style={{
-                                            color: this.state.newData.title < 10
-                                                ? '#f50313'
-                                                : '#ccc'
-                                        }}>
-                                            <b>{this.state.newData.title}</b>{' '}characters</div>
+                                        <div className="validate">
+                                            <b style={{
+                                                color: this.state.newData.title < 10
+                                                    ? '#f50313'
+                                                    : '#ccc'
+                                            }}>{this.state.newData.title}</b>{' '}characters</div>
                                         <label className="control-label">Title</label>
                                         <FormControl type="text" placeholder="Title - 4 to 8 words is best" onChange={this.handleForms} data-keypress="modal" data-type="title" value={this.state.newTemplate.title}/>
                                     </Col>
@@ -149,12 +149,12 @@ export default class Templates extends Component {
                                         ? <Col md={12} style={{
                                                 paddingBottom: '10px'
                                             }}>
-                                                <div className="validate" style={{
-                                                    color: this.state.newData.tags < 10
-                                                        ? '#f50313'
-                                                        : '#ccc'
-                                                }}>
-                                                    <b>{this.state.newData.tags}</b>{' '}characters</div>
+                                                <div className="validate">
+                                                    <b style={{
+                                                        color: this.state.newData.tags < 10
+                                                            ? '#f50313'
+                                                            : '#ccc'
+                                                    }}>{this.state.newData.tags}</b>{' '}characters</div>
                                                 <label className="control-label">Tags</label>
                                                 <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleForms} data-keypress="modal" data-type="tags" value={this.state.newTemplate.tags}/>
                                             </Col>
@@ -163,12 +163,12 @@ export default class Templates extends Component {
                                         ? <Col md={12} style={{
                                                 paddingBottom: '10px'
                                             }}>
-                                                <div className="validate" style={{
-                                                    color: this.state.newData.main_tags < 10
-                                                        ? '#f50313'
-                                                        : '#ccc'
-                                                }}>
-                                                    <b>{this.state.newData.main_tags}</b>{' '}characters</div>
+                                                <div className="validate">
+                                                    <b style={{
+                                                        color: this.state.newData.main_tags < 10
+                                                            ? '#f50313'
+                                                            : '#ccc'
+                                                    }}>{this.state.newData.main_tags}</b>{' '}characters</div>
                                                 <label className="control-label">Main tags</label>
                                                 <FormControl type="text" placeholder="What one tag would I search to find your design?" onChange={this.handleForms} data-keypress="modal" data-type="main_tags" value={this.state.newTemplate.main_tags}/>
                                             </Col>

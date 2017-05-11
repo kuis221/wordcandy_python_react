@@ -143,9 +143,9 @@ export default class Dashboard extends MixinAuth {
             var template = this.state.template;
 
             if (this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length >= 0) {
-                template[event.target.getAttribute('data-type')] = event.target.value.replace('[______]', data);
+                template[event.target.getAttribute('data-type')] = event.target.value.replace('[______]', '[' + data + ']');
                 var data = this.state.data;
-                data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.replace('[______]', data).length;
+                data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.replace('[______]', '[' + data + ']').length;
             } else {
                 var data = this.state.data;
                 data[event.target.getAttribute('data-type')] = 0;
@@ -181,10 +181,10 @@ export default class Dashboard extends MixinAuth {
 
     addWord(event) {
         var template = this.state.template;
-        template.title = template.title.replace('[______]', event.target.getAttribute('data-word'));
-        template.description = template.description.replace('[______]', event.target.getAttribute('data-word'));
-        template.tags = template.tags.replace('[______]', event.target.getAttribute('data-word'));
-        template.main_tags = template.main_tags.replace('[______]', event.target.getAttribute('data-word'));
+        template.title = template.title.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
+        template.description = template.description.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
+        template.tags = template.tags.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
+        template.main_tags = template.main_tags.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
         this.setState({template: template});
 
         var data = this.state.data;
@@ -453,7 +453,7 @@ export default class Dashboard extends MixinAuth {
                                                             <Row>
                                                                 <Col md={6} className="text-left">
                                                                     <div className="reset" onClick={this.resetKeywords}>
-                                                                        <i className="icon ion-android-refresh"></i>
+                                                                        <i className="icon ion-backspace"></i>
                                                                         Reset Keywords
                                                                     </div>
                                                                 </Col>
@@ -654,10 +654,11 @@ export default class Dashboard extends MixinAuth {
                 </div>
                 <Row id="footer">
                     <Col md={12}>
+                        {this.state.tags}
                         <Navbar>
                             <Nav style={{
                                 paddingRight: '20%'
-                            }} pullRight>
+                            }} pullLeft>
                                 <NavItem>
                                     <Loader loaded={this.state.loadedExport}>
                                         <OverlayTrigger trigger="click" placement="top" overlay={exportWindow}>
@@ -667,6 +668,12 @@ export default class Dashboard extends MixinAuth {
                                             </Button>
                                         </OverlayTrigger>
                                     </Loader>
+                                </NavItem>
+                                <NavItem>
+                                    <Button bsStyle="primary" className="btn-reset" onClick={this.reset}>
+                                        <i className="icon ion-refresh"></i>
+                                        Start Over
+                                    </Button>
                                 </NavItem>
                             </Nav>
                         </Navbar>

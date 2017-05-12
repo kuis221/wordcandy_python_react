@@ -96,11 +96,14 @@ export default class Dashboard extends MixinAuth {
         this.preventDefault = this.preventDefault.bind(this);
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentWillMount() {
         document.addEventListener("keydown", this.handleKeyDown.bind(this));
+        document.addEventListener("keyup", this.handleKeyPress.bind(this));
     }
+
 
     handleKeyDown(event) {
         if (event.keyCode == 13 && event.target.getAttribute('data-keypress') == 'dashboard') {
@@ -115,6 +118,21 @@ export default class Dashboard extends MixinAuth {
             event.preventDefault();
             return false;
         }
+    }
+
+    handleKeyPress(event) {
+      if (event.keyCode == 8 && event.target.getAttribute('data-keypress') == 'dashboard') {
+        var attr = event.target.getAttribute('data-type');
+        var template = this.state.template;
+        template[attr] = event.target.value.replace(' [______ ', '');
+        if (this.state.validate[attr] - event.target.value.length > 0) {
+            var data = this.state.data;
+            data[attr] = this.state.validate[attr] - template[attr].length;
+            this.setState({template: template, data: data});
+        }
+        event.preventDefault();
+        return false;
+      }
     }
 
     newTemplate(data) {
@@ -198,11 +216,12 @@ export default class Dashboard extends MixinAuth {
 
     handleChangeForms(event) {
         var template = this.state.template;
-        template[event.target.getAttribute('data-type')] = event.target.value
+        var value = event.target.value;
+        template[event.target.getAttribute('data-type')] = value;
         this.setState({template: template});
 
         var data = this.state.data;
-        data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length;
+        data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - value.length;
         this.setState({data: data});
     }
 
@@ -250,7 +269,14 @@ export default class Dashboard extends MixinAuth {
 
         _.setState({loadedTemplates: false});
         apiDashboard.templates().then(function(response) {
-            _.setState({shops: response.data, templates: response.data[0].templates, template: response.data[0].templates[0], loadedTemplates: true});
+            var data = _.state.data;
+            var template = response.data[0].templates[0];
+            data.title = _.state.validate.title - template.title.length;
+            data.description = _.state.validate.description - template.description.length;
+            data.tags = _.state.validate.tags - template.tags.length;
+            data.main_tags = _.state.validate.main_tags - template.main_tags.length;
+
+            _.setState({shops: response.data, templates: response.data[0].templates, template: template, data: data, loadedTemplates: true});
         }).catch(function(error) {});
 
     }
@@ -452,10 +478,10 @@ export default class Dashboard extends MixinAuth {
                                                         <Col md={12} className="actions">
                                                             <Row>
                                                                 <Col md={6} className="text-left">
-                                                                    <div className="reset" onClick={this.resetKeywords}>
+                                                                    <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.resetKeywords}>
                                                                         <i className="icon ion-backspace"></i>
                                                                         Reset Keywords
-                                                                    </div>
+                                                                    </Button>
                                                                 </Col>
                                                                 <Col md={6} className="text-right">
                                                                     <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
@@ -567,7 +593,7 @@ export default class Dashboard extends MixinAuth {
                                                     </FormGroup>
                                                 </Col>
                                                 <Col md={6}>
-                                                    {this.state.template.shop != 2
+                                                    {this.state.template.shop > 2
                                                         ? <FormGroup>
                                                                 <div className="tags">
                                                                     <b style={{
@@ -670,7 +696,7 @@ export default class Dashboard extends MixinAuth {
                                     </Loader>
                                 </NavItem>
                                 <NavItem>
-                                    <Button bsStyle="primary" className="btn-reset" onClick={this.reset}>
+                                    <Button bsStyle="primary" onClick={this.reset}>
                                         <i className="icon ion-refresh"></i>
                                         Start Over
                                     </Button>

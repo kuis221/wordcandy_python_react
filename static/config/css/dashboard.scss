@@ -8,15 +8,6 @@
         color: #fff;
     }
 
-    .btn-reset,
-    .btn-reset:focus,
-    .btn-reset:hover {
-        background-color: #fff !important;
-        color: #839ff9;
-        border: transparent;
-        font-weight: bold;
-    }
-
     .btn-default {
         background-color: #dbe4ff;
         border-color: #dbe4ff;
@@ -29,13 +20,6 @@
 
         .actions {
             padding-top: 5px;
-
-            .reset {
-                cursor: pointer;
-                color: #839ff9;
-                font-weight: bold;
-                padding-top: 5px;
-            }
         }
     }
 

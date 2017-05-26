@@ -227,7 +227,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-REST_SESSION_LOGIN = False
+REST_SESSION_LOGIN = True
 
 SITE_ID = 1
 

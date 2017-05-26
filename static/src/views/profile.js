@@ -313,29 +313,12 @@ export default class Profile extends MixinAuth {
                                             <Col md={7}>
                                                 {this.state.activePayment == false
                                                     ? <div>
-                                                            <b>Master Card **** **** **** ****</b>
-                                                        </div>
-                                                    : null}
-                                                {this.state.activePayment
-                                                    ? <div>
-                                                            <FormGroup>
-                                                                <MaskedFormControl type='text' name='payment' mask='1111-1111-1111-1111'/>
-                                                            </FormGroup>
-                                                            <FormGroup className="text-right">
-                                                                <Button disabled className="primary" onClick={() => this.setState({activePayment: false})}>
-                                                                    Change number
-                                                                </Button>
-                                                            </FormGroup>
+                                                            <b>**** **** **** ****</b>
                                                         </div>
                                                     : null}
                                             </Col>
                                             <Col md={2} className="text-right">
-                                                {this.state.activePayment
-                                                    ? <a href="#" onClick={() => this.setState({activePayment: false})}>Cancel</a>
-                                                    : null}
-                                                {this.state.activePayment == false
-                                                    ? <a href="#" onClick={() => this.setState({activePayment: true})}>Change</a>
-                                                    : null}
+                                              <a href="/payments/">Change</a>
                                             </Col>
                                         </Row>
                                     </Col>

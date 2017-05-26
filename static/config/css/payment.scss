@@ -1,0 +1,31 @@
+.payment-page {
+    color: #56576c;
+    background-color: #fff;
+
+    .btn-success {
+        background-color: #74ca88;
+        border-color: #74ca88;
+        color: #fff;
+    }
+
+    .btn-default {
+        background-color: #dbe4ff;
+        border-color: #dbe4ff;
+    }
+
+    .navbar-default {
+        background-color: #fff;
+        margin-left: -15px;
+        margin-right: -15px;
+
+        a {
+            color: #313a46;
+            font-size: 25px;
+        }
+
+        span {
+            color: #565763;
+            font-size: 16px;
+        }
+    }
+}

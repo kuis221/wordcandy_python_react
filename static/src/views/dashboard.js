@@ -161,9 +161,9 @@ export default class Dashboard extends MixinAuth {
             var template = this.state.template;
 
             if (this.state.validate[event.target.getAttribute('data-type')] - event.target.value.length >= 0) {
-                template[event.target.getAttribute('data-type')] = event.target.value.replace('[______]', '[' + data + ']');
+                template[event.target.getAttribute('data-type')] = event.target.value.replace('[______]', data);
                 var data = this.state.data;
-                data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.replace('[______]', '[' + data + ']').length;
+                data[event.target.getAttribute('data-type')] = this.state.validate[event.target.getAttribute('data-type')] - event.target.value.replace('[______]', data).length;
             } else {
                 var data = this.state.data;
                 data[event.target.getAttribute('data-type')] = 0;
@@ -199,10 +199,10 @@ export default class Dashboard extends MixinAuth {
 
     addWord(event) {
         var template = this.state.template;
-        template.title = template.title.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
-        template.description = template.description.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
-        template.tags = template.tags.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
-        template.main_tags = template.main_tags.replace('[______]', '[' + event.target.getAttribute('data-word') + ']');
+        template.title = template.title.replace('[______]', event.target.getAttribute('data-word'));
+        template.description = template.description.replace('[______]', event.target.getAttribute('data-word'));
+        template.tags = template.tags.replace('[______]', event.target.getAttribute('data-word'));
+        template.main_tags = template.main_tags.replace('[______]', event.target.getAttribute('data-word'));
         this.setState({template: template});
 
         var data = this.state.data;

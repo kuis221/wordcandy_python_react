@@ -52,6 +52,7 @@ export default class Dashboard extends MixinAuth {
             activeTemplate: 0,
             activeShop: 0,
             loadedSimilars: true,
+            loadedTrademark: true,
             loadedTemplates: true,
             loadedKeywords: true,
             copied: false,
@@ -97,13 +98,13 @@ export default class Dashboard extends MixinAuth {
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.trademarks = this.trademarks.bind(this);
     }
 
     componentWillMount() {
         document.addEventListener("keydown", this.handleKeyDown.bind(this));
         document.addEventListener("keyup", this.handleKeyPress.bind(this));
     }
-
 
     handleKeyDown(event) {
         if (event.keyCode == 13 && event.target.getAttribute('data-keypress') == 'dashboard') {
@@ -121,18 +122,18 @@ export default class Dashboard extends MixinAuth {
     }
 
     handleKeyPress(event) {
-      if (event.keyCode == 8 && event.target.getAttribute('data-keypress') == 'dashboard') {
-        var attr = event.target.getAttribute('data-type');
-        var template = this.state.template;
-        template[attr] = event.target.value.replace(' [______ ', '');
-        if (this.state.validate[attr] - event.target.value.length > 0) {
-            var data = this.state.data;
-            data[attr] = this.state.validate[attr] - template[attr].length;
-            this.setState({template: template, data: data});
+        if (event.keyCode == 8 && event.target.getAttribute('data-keypress') == 'dashboard') {
+            var attr = event.target.getAttribute('data-type');
+            var template = this.state.template;
+            template[attr] = event.target.value.replace(' [______ ', '');
+            if (this.state.validate[attr] - event.target.value.length > 0) {
+                var data = this.state.data;
+                data[attr] = this.state.validate[attr] - template[attr].length;
+                this.setState({template: template, data: data});
+            }
+            event.preventDefault();
+            return false;
         }
-        event.preventDefault();
-        return false;
-      }
     }
 
     newTemplate(data) {
@@ -195,6 +196,32 @@ export default class Dashboard extends MixinAuth {
 
     reset() {
         this.setState({tags: [], similars: [], stats: [], thumbnail: '/static/images/dashboard/shirt.png'});
+    }
+
+    trademarks() {
+        var _ = this;
+        _.setState({loadedTrademark: false});
+        var stats = this.state.stats;
+
+        var words = '';
+        for (var i = 0; i < this.state.stats.length; i++) {
+          if (i < 50) {
+            words += (i == 0
+                ? ''
+                : ',') + this.state.stats[i].name;
+          }
+        }
+        var data = {
+            'words': words
+        }
+        apiDashboard.trademarks(data).then(function(response) {
+            for (var i = 0; i < response.data.length; i++) {
+              if (response.data[i].count > 0) {
+                stats[i]['trademark'] = true
+              }
+            }
+            _.setState({loadedTrademark: true, stats: stats});
+        });
     }
 
     addWord(event) {
@@ -343,11 +370,7 @@ export default class Dashboard extends MixinAuth {
             _.setState({stats: stats});
 
             var keywordsTitle = _.state.keywordsTitle;
-            if (response.data.trademark > 0) {
-                keywordsTitle.push(_.state.tags[i] + ' ™');
-            } else {
-                keywordsTitle.push(_.state.tags[i]);
-            }
+            keywordsTitle.push(_.state.tags[i]);
             _.setState({keywordsTitle: keywordsTitle})
 
             _.setState({loadedKeywords: true});
@@ -483,7 +506,15 @@ export default class Dashboard extends MixinAuth {
                                                                         Reset Keywords
                                                                     </Button>
                                                                 </Col>
-                                                                <Col md={6} className="text-right">
+                                                                <Col md={3} className="text-right">
+                                                                    <Loader loaded={this.state.loadedTrademark}>
+                                                                      <Button disabled={this.state.stats.length == 0} bsStyle="primary" onClick={this.trademarks}>
+                                                                          <i className="icon ion-android-search"></i>
+                                                                          Trademarks
+                                                                      </Button>
+                                                                    </Loader>
+                                                                </Col>
+                                                                <Col md={3} className="text-right">
                                                                     <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
                                                                         <i className="icon ion-calculator"></i>
                                                                         Calculate
@@ -659,7 +690,7 @@ export default class Dashboard extends MixinAuth {
                                                                 return <Row>
                                                                     <Col md={8}>
                                                                         <button className="ion-plus plus-button" onClick={this.addWord} data-word={item.name}></button>
-                                                                        <span draggable='true' className="btn-container" onDragStart={this.dragWordStart} style={{
+                                                                        <span draggable='true' className={(item.trademark ? 'btn-trademark' : 'btn-container')} onDragStart={this.dragWordStart} style={{
                                                                             cursor: 'move'
                                                                         }} data-word={item.name}>{item.name}</span>
                                                                     </Col>

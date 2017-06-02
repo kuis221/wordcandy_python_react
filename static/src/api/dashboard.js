@@ -89,6 +89,14 @@ exports.apiDashboard = {
                 return error;
             });
     },
+    trademarks: function(data) {
+        return axios.post("https://trademarks-database.herokuapp.com/v1/api/search/", data)
+            .then(response => {
+                return response;
+            }).catch(function(error) {
+                return error;
+            });
+    },
     antonyms: function(data) {
         return axios.get(url + "dashboard/antonyms/", data)
             .then(response => {

@@ -66,7 +66,7 @@
         .suggestions-block {
             background-color: #f5f6fc;
             margin-left: -20px;
-            margin-right: 0px;
+            margin-right: 0;
 
             .panel-heading {
                 background-color: #fff;
@@ -295,4 +295,18 @@
         border-color: #dbdaed;
         color: #56576c;
     }
+}
+
+.btn-trademark {
+    border-radius: 2px;
+    color: #56576c;
+    background-color: #ffe5e5;
+    padding: 5px 10px;
+    border: 1px solid #d9b8b8;
+    white-space: nowrap;
+    position: absolute;
+    max-width: 180px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -118,15 +118,7 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                             if 'volume' in sub_item and 'string' in sub_item:
                                 if sub_item['volume'] > 300 and not sub_item['string'] in list_keywords:
                                     list_keywords.append(sub_item['string'])
-                                    result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume']})
-
-            params = {
-                    'username': settings.TRADEMARK_USERNAME,
-                    'password': settings.TRADEMARK_PASSWORD,
-                    'search': word
-                  }
-            trademark = marker.API(params)
-            result['trademark'] = trademark.result()['count']
+                                    result['keywords'].append({'name': sub_item['string'], 'volume': sub_item['volume'], 'trademark': False})
 
         return Response(result)
 

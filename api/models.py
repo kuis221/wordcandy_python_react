@@ -18,6 +18,7 @@ class Subscribe(models.Model):
 
 class Shop(models.Model):
     name = models.CharField(max_length=255)
+    disabled = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -43,9 +44,11 @@ class Template(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
     shop = models.ForeignKey(Shop)
     name = models.CharField(max_length=255)
-    title = models.CharField(max_length=255, blank=True)
     sort = models.IntegerField(default=0)
     title = models.CharField(max_length=255, blank=True)
+    brand_name = models.CharField(max_length=255, blank=True)
+    description_first = models.TextField(max_length=255, blank=True)
+    description_second = models.TextField(max_length=255, blank=True)
     description = models.TextField(max_length=255, blank=True)
     tags = models.CharField(max_length=255, blank=True)
     main_tags = models.CharField(max_length=255, blank=True)

@@ -198,7 +198,7 @@ class ShopList(LoggingMixin, GenericAPIView):
         """
         Return list of shops
         """
-        shops = Shop.objects.all()
+        shops = Shop.objects.filter(disabled=False)
         serializer = self.serializer_class(shops, many=True, context={'request': request})
         return Response(serializer.data)
 

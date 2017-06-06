@@ -12,7 +12,9 @@ import {
     FormControl,
     Button,
     ControlLabel,
-    Image
+    Image,
+    NavDropdown,
+    MenuItem
 } from 'react-bootstrap';
 
 import MaskedFormControl from 'react-bootstrap-maskedinput';
@@ -102,21 +104,19 @@ export default class Profile extends MixinAuth {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link to="/dashboard">WORDCANDY.IO</Link>
+                            <Link className="logo" to="/dashboard">WORDCANDY.IO</Link>
                             <span>{' '}
                                 - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight>
-                        <NavItem href="/profile" className="profile-header">
-                            <ul className="list-inline">
-                                <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png"/></li>
-                                <li>{this.state.username}</li>
-                                <li>
-                                    <i className="icon ion-chevron-down"></i>
-                                </li>
-                            </ul>
-                        </NavItem>
+                        <NavDropdown title={this.state.username} id="basic-nav-dropdown">
+                             <MenuItem href="/dashboard/">Dashboard</MenuItem>
+                             <MenuItem disabled>Settings</MenuItem>
+                             <MenuItem href="/payments/">Payment</MenuItem>
+                             <MenuItem divider />
+                             <MenuItem href="/">Exit</MenuItem>
+                      </NavDropdown>
                     </Nav>
                 </Navbar>
                 <div className="dashboard-content">

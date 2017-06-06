@@ -22,20 +22,23 @@ export default class Templates extends Component {
             shopName: '',
             newValidate: {
                 name: 60,
+                brand_name: 90,
                 title: 90,
                 description: 180,
-                tags: 55,
-                main_tags: 55
+                tags: 180,
+                main_tags: 180
             },
             newData: {
                 name: 60,
+                brand_name: 90,
                 title: 90,
                 description: 180,
-                tags: 55,
-                main_tags: 55
+                tags: 180,
+                main_tags: 180
             },
             newTemplate: {
                 name: '',
+                brand_name: '',
                 title: '',
                 description: '',
                 tags: '',
@@ -98,7 +101,7 @@ export default class Templates extends Component {
         return (
             <div className="static-modal">
                 <div>
-                    <Button bsStyle="primary" onClick={this.openModal}>+ Add template</Button>
+                    <Button bsStyle="primary" onClick={this.openModal}>+ New</Button>
                 </div>
                 <Modal show={this.state.modal} onHide={this.closeModal}>
                     <Modal.Header closeButton>
@@ -130,6 +133,18 @@ export default class Templates extends Component {
                                     }}>
                                         <div className="validate">
                                             <b style={{
+                                                color: this.state.newData.brand_name < 10
+                                                    ? '#f50313'
+                                                    : '#ccc'
+                                            }}>{this.state.newData.brand_name}</b>{' '}characters</div>
+                                        <label className="control-label">Brand name</label>
+                                        <FormControl type="text" placeholder="Brand name" onChange={this.handleForms} data-keypress="modal" data-type="brand_name" value={this.state.newTemplate.brand_name}/>
+                                    </Col>
+                                    <Col md={12} style={{
+                                        paddingBottom: '10px'
+                                    }}>
+                                        <div className="validate">
+                                            <b style={{
                                                 color: this.state.newData.title < 10
                                                     ? '#f50313'
                                                     : '#ccc'
@@ -141,38 +156,35 @@ export default class Templates extends Component {
                                         paddingBottom: '10px'
                                     }}>
                                         <div className="validate">
+                                            <b style={{
+                                                color: this.state.newData.tags < 10
+                                                    ? '#f50313'
+                                                    : '#ccc'
+                                            }}>{this.state.newData.tags}</b>{' '}characters</div>
+                                          <label className="control-label">Description Bullet Point 2</label>
+                                        <FormControl type="text" placeholder="Add description" onChange={this.handleForms} data-keypress="modal" data-type="tags" value={this.state.newTemplate.tags}/>
+                                    </Col>
+
+                                    <Col md={12} style={{
+                                        paddingBottom: '10px'
+                                    }}>
+                                        <div className="validate">
+                                            <b style={{
+                                                color: this.state.newData.main_tags < 10
+                                                    ? '#f50313'
+                                                    : '#ccc'
+                                            }}>{this.state.newData.main_tags}</b>{' '}characters</div>
+                                        <label className="control-label">Description Bullet Point 1</label>
+                                        <FormControl type="text" placeholder="Add description" onChange={this.handleForms} data-keypress="modal" data-type="main_tags" value={this.state.newTemplate.main_tags}/>
+                                    </Col>
+                                    <Col md={12} style={{
+                                        paddingBottom: '10px'
+                                    }}>
+                                        <div className="validate">
                                             <b>{this.state.newData.description}</b>{' '}characters</div>
-                                        <label className="control-label">Description</label>
+                                        <label className="control-label">Description Box</label>
                                         <FormControl componentClass="textarea" placeholder="Dref description of work to get your audience all excited" onChange={this.handleForms} data-keypress="modal" data-type="description" value={this.state.newTemplate.description}/>
                                     </Col>
-                                    {this.props.shop != 1
-                                        ? <Col md={12} style={{
-                                                paddingBottom: '10px'
-                                            }}>
-                                                <div className="validate">
-                                                    <b style={{
-                                                        color: this.state.newData.tags < 10
-                                                            ? '#f50313'
-                                                            : '#ccc'
-                                                    }}>{this.state.newData.tags}</b>{' '}characters</div>
-                                                <label className="control-label">Tags</label>
-                                                <FormControl type="text" placeholder="Use, comas to-separate-tags" onChange={this.handleForms} data-keypress="modal" data-type="tags" value={this.state.newTemplate.tags}/>
-                                            </Col>
-                                        : null}
-                                    {this.props.shop == 3
-                                        ? <Col md={12} style={{
-                                                paddingBottom: '10px'
-                                            }}>
-                                                <div className="validate">
-                                                    <b style={{
-                                                        color: this.state.newData.main_tags < 10
-                                                            ? '#f50313'
-                                                            : '#ccc'
-                                                    }}>{this.state.newData.main_tags}</b>{' '}characters</div>
-                                                <label className="control-label">Main tags</label>
-                                                <FormControl type="text" placeholder="What one tag would I search to find your design?" onChange={this.handleForms} data-keypress="modal" data-type="main_tags" value={this.state.newTemplate.main_tags}/>
-                                            </Col>
-                                        : null}
                                 </Row>
                             </Col>
                         </Row>

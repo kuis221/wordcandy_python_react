@@ -1,40 +1,35 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
-    <div class="payment-page container-fluid">
-      <nav class="navbar navbar-default">
-          <div class="container">
-              <div class="navbar-header"><span class="navbar-brand"><a href="/dashboard">WORDCANDY.IO</a><span><!-- react-text: 8 --> <!-- /react-text --><!-- react-text: 9 -->- <!-- /react-text --><!-- react-text: 10 --> <!-- /react-text --><!-- react-text: 11 -->KEYWORD APP<!-- /react-text --></span></span>
-              </div>
-              <ul class="nav navbar-nav navbar-right">
-                  <li role="presentation" class="profile-header">
-                      <a href="/profile">
-                          <ul class="list-inline">
-                              <li><img width="20px" height="20px" src="/static/images/profile/avatar.png" class=""></li>
-                              <li>{{request.user}}</li>
-                              <li><i class="icon ion-chevron-down"></i></li>
-                          </ul>
-                      </a>
-                  </li>
-              </ul>
-          </div>
-      </nav>
-      {% block body %} {% endblock %}
-      <!-- Modal for server update -->
-      <div class="modal fade" id="in-progress">
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="payment-page container-fluid">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header"><span class="navbar-brand"><a class="logo" href="/dashboard">WORDCANDY.IO</a><span><!-- react-text: 8 --> <!-- /react-text --><!-- react-text: 9 -->- <!-- /react-text --><!-- react-text: 10 --> <!-- /react-text --><!-- react-text: 11 -->KEYWORD APP<!-- /react-text --></span></span>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a id="basic-nav-dropdown" href="/dashboard/" role="button" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="#">
+                        {{ request.user }} <span class="caret"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% block body %} {% endblock %}
+    <!-- Modal for server update -->
+    <div class="modal fade" id="in-progress">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Server Update In-Progress <img class="pull-right" src="{% static 'img/in-progress.gif' %}" /></h4>
-            </div>
-            <div class="modal-body">
-                <div class="progress">
-                    <div class="progress-bar" style="width: 0%;"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Server Update In-Progress <img class="pull-right" src="{% static 'img/in-progress.gif' %}" /></h4>
                 </div>
-            </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
 
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-{% endblock %}
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    {% endblock %}

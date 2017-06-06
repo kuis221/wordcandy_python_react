@@ -18,6 +18,8 @@ import {
     ButtonToolbar,
     ButtonGroup,
     Tabs,
+    NavDropdown,
+    MenuItem,
     Tab,
     ProgressBar
 } from 'react-bootstrap';
@@ -68,16 +70,22 @@ export default class Dashboard extends MixinAuth {
             thumbnail: '/static/images/dashboard/shirt.png',
             thumbnailBackground: '#e1e0f0',
             validate: {
+                brand_name: 90,
                 title: 90,
                 description: 180,
-                tags: 55,
-                main_tags: 55
+                description_first: 180,
+                description_second: 180,
+                tags: 180,
+                main_tags: 180
             },
             data: {
+                brand_name: 90,
                 title: 90,
                 description: 180,
-                tags: 55,
-                main_tags: 55
+                description_first: 180,
+                description_second: 180,
+                tags: 180,
+                main_tags: 180
             }
         };
         this.onUploadImage = this.onUploadImage.bind(this);
@@ -233,7 +241,7 @@ export default class Dashboard extends MixinAuth {
         this.setState({template: template});
 
         var data = this.state.data;
-        var fields = ['title', 'description', 'tags', 'main_tags'];
+        var fields = ['title', 'brand_name', 'description', 'tags', 'main_tags'];
         for (var i = 0; i < fields.length; i++) {
             data[fields[i]] = this.state.validate[fields[i]] - template[fields[i]].length;
         }
@@ -442,21 +450,19 @@ export default class Dashboard extends MixinAuth {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link to="/dashboard">WORDCANDY.IO</Link>
+                            <Link className="logo" to="/dashboard">WORDCANDY.IO</Link>
                             <span>{' '}
                                 - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight>
-                        <NavItem href="/profile" className="profile-header">
-                            <ul className="list-inline">
-                                <li><Image width={'20px'} height={'20px'} src="/static/images/profile/avatar.png"/></li>
-                                <li>{this.state.username}</li>
-                                <li>
-                                    <i className="icon ion-chevron-down"></i>
-                                </li>
-                            </ul>
-                        </NavItem>
+                        <NavDropdown title={this.state.username} id="basic-nav-dropdown">
+                             <MenuItem disabled >Dashboard</MenuItem>
+                             <MenuItem href="/profile/">Settings</MenuItem>
+                             <MenuItem href="/payments/">Payment</MenuItem>
+                             <MenuItem divider />
+                             <MenuItem href="/">Exit</MenuItem>
+                      </NavDropdown>
                     </Nav>
                 </Navbar>
                 <div className="dashboard-content">
@@ -558,7 +564,7 @@ export default class Dashboard extends MixinAuth {
                             }}>
                                 <Col md={12}>
                                     <Panel style={{
-                                        height: '400px'
+                                        height: '470px'
                                     }}>
                                         <Loader loaded={this.state.loadedTemplates}>
                                             <Row>
@@ -585,7 +591,26 @@ export default class Dashboard extends MixinAuth {
                                                         }, this)}
                                                     </ul>
                                                 </Col>
-                                                <Col md={12}>
+                                                <Col md={6}>
+                                                    <FormGroup>
+                                                        <div className="title">
+                                                            <b style={{
+                                                                color: this.state.data.brand_name < 10
+                                                                    ? '#f50313'
+                                                                    : '#ccc'
+                                                            }}>{this.state.data.brand_name}</b>{' '}characters</div>
+                                                          <ControlLabel>Brand name</ControlLabel>
+                                                        <InputGroup>
+                                                            <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="brand_name" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.brand_name}/>
+                                                            <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                    <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                            </CopyToClipboard>
+                                                        </InputGroup>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col md={6}>
                                                     <FormGroup>
                                                         <div className="title">
                                                             <b style={{
@@ -606,13 +631,51 @@ export default class Dashboard extends MixinAuth {
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormGroup>
+                                                        <div className="title">
+                                                            <b style={{
+                                                                color: this.state.data.tags < 10
+                                                                    ? '#f50313'
+                                                                    : '#ccc'
+                                                            }}>{this.state.data.tags}</b>{' '}characters</div>
+                                                          <ControlLabel>Description Bullet Point 1</ControlLabel>
+                                                        <InputGroup>
+                                                            <FormControl componentClass="textarea" rows={2} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.tags}/>
+                                                            <CopyToClipboard text={this.state.template.description_first} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                    <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                            </CopyToClipboard>
+                                                        </InputGroup>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <FormGroup>
+                                                        <div className="title">
+                                                            <b style={{
+                                                                color: this.state.data.main_tags < 10
+                                                                    ? '#f50313'
+                                                                    : '#ccc'
+                                                            }}>{this.state.data.main_tags}</b>{' '}characters</div>
+                                                          <ControlLabel>Description Bullet Point 2</ControlLabel>
+                                                        <InputGroup>
+                                                            <FormControl componentClass="textarea" rows={2} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
+                                                            <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
+                                                                <InputGroup.Addon>
+                                                                    <span className="ion-clipboard"></span>
+                                                                </InputGroup.Addon>
+                                                            </CopyToClipboard>
+                                                        </InputGroup>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col md={12}>
+                                                    <FormGroup>
                                                         <div className="description">
                                                             <b style={{
                                                                 color: this.state.data.description < 10
                                                                     ? '#f50313'
                                                                     : '#ccc'
                                                             }}>{this.state.data.description}</b>{' '}characters</div>
-                                                        <ControlLabel>Description</ControlLabel>
+                                                          <ControlLabel>Description Box</ControlLabel>
                                                         <InputGroup>
                                                             <FormControl componentClass="textarea" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="description" data-keypress="dashboard" rows={5} placeholder="Dref description of work to get your audience all excited" onChange={this.handleChangeForms} value={this.state.template.description}/>
                                                             <CopyToClipboard text={this.state.template.description} onCopy={() => this.setState({copied: true})}>
@@ -623,46 +686,6 @@ export default class Dashboard extends MixinAuth {
                                                         </InputGroup>
                                                     </FormGroup>
                                                 </Col>
-                                                <Col md={6}>
-                                                    {this.state.template.shop > 2
-                                                        ? <FormGroup>
-                                                                <div className="tags">
-                                                                    <b style={{
-                                                                        color: this.state.data.tags < 10
-                                                                            ? '#f50313'
-                                                                            : '#ccc'
-                                                                    }}>{this.state.data.tags}</b>{' '}characters</div>
-                                                                <ControlLabel>Tags</ControlLabel>
-                                                                <InputGroup>
-                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Use, comas to-separate-tags" onChange={this.handleChangeForms} value={this.state.template.tags}/>
-                                                                    <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
-                                                                        <InputGroup.Addon>
-                                                                            <span className="ion-clipboard"></span>
-                                                                        </InputGroup.Addon>
-                                                                    </CopyToClipboard>
-                                                                </InputGroup>
-                                                            </FormGroup>
-                                                        : null}
-                                                    {this.state.template.shop == 4
-                                                        ? <FormGroup>
-                                                                <div className="main-tags">
-                                                                    <b style={{
-                                                                        color: this.state.data.main_tags < 10
-                                                                            ? '#f50313'
-                                                                            : '#ccc'
-                                                                    }}>{this.state.data.main_tags}</b>{' '}characters</div>
-                                                                <ControlLabel>Main tags</ControlLabel>
-                                                                <InputGroup>
-                                                                    <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="What one tag would I search to find your design?" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
-                                                                    <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
-                                                                        <InputGroup.Addon>
-                                                                            <span className="ion-clipboard"></span>
-                                                                        </InputGroup.Addon>
-                                                                    </CopyToClipboard>
-                                                                </InputGroup>
-                                                            </FormGroup>
-                                                        : null}
-                                                </Col>
                                             </Row>
                                         </Loader>
                                     </Panel>
@@ -672,7 +695,7 @@ export default class Dashboard extends MixinAuth {
                         </Col>
                         <Col md={3}>
                             <Panel header="Amazon Auto Suggest + Google Search Traffic" className="suggestions-block" style={{
-                                height: '745px'
+                                height: '815px'
                             }}>
                                 <Loader loaded={this.state.loadedKeywords}>
                                     {this.state.stats.length == 0

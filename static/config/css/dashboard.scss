@@ -325,3 +325,22 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.reset-keywords,
+.reset-keywords:active,
+.reset-keywords:focus,
+.reset-keywords:hover {
+    cursor: pointer;
+    color: #839ff9;
+}
+
+.start-over,
+.start-over:active,
+.start-over:focus,
+.start-over:hover {
+    cursor: pointer;
+    color: #839ff9;
+    position: absolute;
+    width: 150px;
+    top: 20px;
+}

@@ -11,6 +11,7 @@ import {
     Nav,
     NavItem,
     Panel,
+    Image,
     Alert
 } from 'react-bootstrap';
 
@@ -140,7 +141,7 @@ export default class SignUp extends Component {
                     <Navbar>
                         <Navbar.Header>
                             <Navbar.Brand>
-                                <Link to="/">WORDCANDY.IO</Link>
+                                <Link to="/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
                             </Navbar.Brand>
                         </Navbar.Header>
                         <Nav pullRight>

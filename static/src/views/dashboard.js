@@ -450,7 +450,7 @@ export default class Dashboard extends MixinAuth {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link className="logo" to="/dashboard">WORDCANDY.IO</Link>
+                            <Link className="logo" to="/dashboard"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
                             <span>{' '}
                                 - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
@@ -507,20 +507,12 @@ export default class Dashboard extends MixinAuth {
                                                         <Col md={12} className="actions">
                                                             <Row>
                                                                 <Col md={6} className="text-left">
-                                                                    <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.resetKeywords}>
+                                                                    <a disabled={this.state.tags.length == 0} className="reset-keywords" onClick={this.resetKeywords}>
                                                                         <i className="icon ion-backspace"></i>
                                                                         Reset Keywords
-                                                                    </Button>
+                                                                    </a>
                                                                 </Col>
-                                                                <Col md={3} className="text-right">
-                                                                    <Loader loaded={this.state.loadedTrademark}>
-                                                                      <Button disabled={this.state.stats.length == 0} bsStyle="primary" onClick={this.trademarks}>
-                                                                          <i className="icon ion-android-search"></i>
-                                                                          Trademarks
-                                                                      </Button>
-                                                                    </Loader>
-                                                                </Col>
-                                                                <Col md={3} className="text-right">
+                                                                <Col md={6} className="text-right">
                                                                     <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
                                                                         <i className="icon ion-calculator"></i>
                                                                         Calculate
@@ -750,10 +742,10 @@ export default class Dashboard extends MixinAuth {
                                     </Loader>
                                 </NavItem>
                                 <NavItem>
-                                    <Button bsStyle="primary" onClick={this.reset}>
+                                    <a className="start-over" onClick={this.reset}>
                                         <i className="icon ion-refresh"></i>
                                         Start Over
-                                    </Button>
+                                    </a>
                                 </NavItem>
                             </Nav>
                         </Navbar>

@@ -32,6 +32,8 @@ class Export(models.Model):
     title = models.CharField(max_length=512, blank=True)
     description = models.CharField(max_length=512, blank=True)
     tags = models.CharField(max_length=512, blank=True)
+    brand_name = models.CharField(max_length=512, blank=True)
+    main_tags = models.CharField(max_length=512, blank=True)
     keywords = models.CharField(max_length=512, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)

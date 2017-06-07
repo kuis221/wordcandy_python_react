@@ -72,20 +72,16 @@ export default class Dashboard extends MixinAuth {
             validate: {
                 brand_name: 90,
                 title: 90,
-                description: 180,
-                description_first: 180,
-                description_second: 180,
-                tags: 180,
-                main_tags: 180
+                description: 256,
+                tags: 256,
+                main_tags: 256
             },
             data: {
                 brand_name: 90,
                 title: 90,
-                description: 180,
-                description_first: 180,
-                description_second: 180,
-                tags: 180,
-                main_tags: 180
+                description: 256,
+                tags: 256,
+                main_tags: 256
             }
         };
         this.onUploadImage = this.onUploadImage.bind(this);
@@ -634,7 +630,7 @@ export default class Dashboard extends MixinAuth {
                                                           <ControlLabel>Description Bullet Point 1</ControlLabel>
                                                         <InputGroup>
                                                             <FormControl componentClass="textarea" rows={2} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.tags}/>
-                                                            <CopyToClipboard text={this.state.template.description_first} onCopy={() => this.setState({copied: true})}>
+                                                            <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
                                                                 </InputGroup.Addon>

@@ -24,17 +24,17 @@ export default class Templates extends Component {
                 name: 60,
                 brand_name: 90,
                 title: 90,
-                description: 180,
-                tags: 180,
-                main_tags: 180
+                description: 256,
+                tags: 256,
+                main_tags: 256
             },
             newData: {
                 name: 60,
                 brand_name: 90,
                 title: 90,
-                description: 180,
-                tags: 180,
-                main_tags: 180
+                description: 256,
+                tags: 256,
+                main_tags: 256
             },
             newTemplate: {
                 name: '',

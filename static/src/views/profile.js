@@ -104,7 +104,7 @@ export default class Profile extends MixinAuth {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link className="logo" to="/dashboard"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
+                            <Link className="logo" to="/dashboard/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
                             <span>{' '}
                                 - {' '}KEYWORD APP</span>
                         </Navbar.Brand>

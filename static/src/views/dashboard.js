@@ -450,7 +450,7 @@ export default class Dashboard extends MixinAuth {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link className="logo" to="/dashboard"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
+                            <Link className="logo" to="/dashboard/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
                             <span>{' '}
                                 - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
@@ -726,7 +726,6 @@ export default class Dashboard extends MixinAuth {
                 </div>
                 <Row id="footer">
                     <Col md={12}>
-                        {this.state.tags}
                         <Navbar>
                             <Nav style={{
                                 paddingRight: '20%'

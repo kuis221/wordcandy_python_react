@@ -1,6 +1,7 @@
 .dashboard-page {
     color: #56576c;
     background-color: #56576c;
+    padding-bottom: 60px;
 
     .btn-success {
         background-color: #74ca88;
@@ -224,6 +225,7 @@
         span {
             color: #565763;
             font-size: 16px;
+            margin-top: -5px;
         }
     }
 
@@ -264,7 +266,15 @@
     }
 
     #footer {
+        position: fixed;
+        left: 0px;
+        bottom: 0px;
+        height: 60px;
+        width: 100%;
+        z-index: 999999;
+
         .navbar {
+            background-color: #f8f6f6;
             border: none;
             border-radius: 0;
             margin-bottom: 0;

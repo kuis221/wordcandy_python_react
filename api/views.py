@@ -142,20 +142,26 @@ class ExportTemplatesView(GenericAPIView):
                 image_file = io.BytesIO(r.data)
                 img = Image(image_file)
                 ws.add_image(img, 'A2')
-            ws['B1'] = 'PRODUCT TITLE'
-            ws['B2'] = serializer.data['title']
-            ws['C1'] = 'BULLET POINT ONE'
-            ws['C2'] = serializer.data['description']
-            ws['D1'] = 'BULET POINT TWO'
+            ws['B1'] = 'BRAND NAME'
+            ws['B2'] = serializer.data['brand_name']
+            ws['C1'] = 'PRODUCT TITLE'
+            ws['C2'] = serializer.data['title']
+            ws['D1'] = 'BULLET POINT ONE'
             ws['D2'] = serializer.data['tags']
-            ws['E1'] = 'SELECTED KEYWORDS FROM WC'
-            ws['E2'] = serializer.data['keywords']
+            ws['E1'] = 'BULET POINT TWO'
+            ws['E2'] = serializer.data['main_tags']
+            ws['F1'] = 'DESCRIPTION BOX'
+            ws['F2'] = serializer.data['description']
+            ws['G1'] = 'SELECTED KEYWORDS FROM WC'
+            ws['G2'] = serializer.data['keywords']
 
             ws.column_dimensions["A"].width = 60
             ws.column_dimensions["B"].width = 60
             ws.column_dimensions["C"].width = 60
             ws.column_dimensions["D"].width = 60
             ws.column_dimensions["E"].width = 60
+            ws.column_dimensions["F"].width = 60
+            ws.column_dimensions["G"].width = 60
             ws.row_dimensions[2].height = 100
 
             filename = int(time.time())

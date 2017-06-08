@@ -449,15 +449,12 @@ export default class Dashboard extends MixinAuth {
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Link className="logo" to="/dashboard/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
-                            <span>{' '}
-                                - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                              <MenuItem disabled >Dashboard</MenuItem>
                              <MenuItem href="/profile/">Settings</MenuItem>
-                             <MenuItem href="/payments/">Payment</MenuItem>
                              <MenuItem divider />
                              <MenuItem href="/">Exit</MenuItem>
                       </NavDropdown>

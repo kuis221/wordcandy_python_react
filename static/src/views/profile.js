@@ -105,15 +105,12 @@ export default class Profile extends MixinAuth {
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Link className="logo" to="/dashboard/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
-                            <span>{' '}
-                                - {' '}KEYWORD APP</span>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                              <MenuItem href="/dashboard/">Dashboard</MenuItem>
                              <MenuItem disabled>Settings</MenuItem>
-                             <MenuItem href="/payments/">Payment</MenuItem>
                              <MenuItem divider />
                              <MenuItem href="/">Exit</MenuItem>
                       </NavDropdown>
@@ -299,26 +296,6 @@ export default class Profile extends MixinAuth {
                                                 {this.state.activePlan == false
                                                     ? <a href="#" onClick={() => this.setState({activePlan: true})}>Change</a>
                                                     : null}
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={3}></Col>
-                                    <Col md={9}>
-                                        <Row>
-                                            <Col md={3}>
-                                                Payment
-                                            </Col>
-                                            <Col md={7}>
-                                                {this.state.activePayment == false
-                                                    ? <div>
-                                                            <b>**** **** **** ****</b>
-                                                        </div>
-                                                    : null}
-                                            </Col>
-                                            <Col md={2} className="text-right">
-                                              <a href="/payments/">Change</a>
                                             </Col>
                                         </Row>
                                     </Col>

@@ -502,7 +502,7 @@ export default class Dashboard extends MixinAuth {
                                                         <Col md={12} className="actions">
                                                             <Row>
                                                                 <Col md={6} className="text-left">
-                                                                    <a disabled={this.state.tags.length == 0} className="reset-keywords" onClick={this.resetKeywords}>
+                                                                    <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.resetKeywords}>
                                                                         <i className="icon ion-backspace"></i>
                                                                         Reset Keywords
                                                                     </a>
@@ -532,7 +532,7 @@ export default class Dashboard extends MixinAuth {
                                                                 }} className="text-center">Use different keywords.</div>
                                                             : null}
                                                         {this.state.similars.map(function(item, i) {
-                                                            return <Col md={6}>
+                                                            return <Col md={4}>
                                                                 <button className="ion-plus plus-button" onClick={this.addWord} data-word={item}></button>
                                                                 <span draggable='true' className="btn-container" onDragStart={this.dragWordStart} style={{
                                                                     cursor: 'move'
@@ -736,10 +736,12 @@ export default class Dashboard extends MixinAuth {
                                     </Loader>
                                 </NavItem>
                                 <NavItem>
-                                    <a className="start-over" onClick={this.reset}>
-                                        <i className="icon ion-refresh"></i>
-                                        Start Over
-                                    </a>
+
+                                          <Button bsStyle="primary" onClick={this.reset}>
+                                              <i className="icon ion-refresh"></i>
+                                              Start Over
+                                          </Button>
+
                                 </NavItem>
                             </Nav>
                         </Navbar>

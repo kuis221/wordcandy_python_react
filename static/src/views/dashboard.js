@@ -209,11 +209,9 @@ export default class Dashboard extends MixinAuth {
 
         var words = '';
         for (var i = 0; i < this.state.stats.length; i++) {
-          if (i < 50) {
             words += (i == 0
                 ? ''
                 : ',') + this.state.stats[i].name;
-          }
         }
         var data = {
             'words': words
@@ -507,7 +505,15 @@ export default class Dashboard extends MixinAuth {
                                                                         Reset Keywords
                                                                     </a>
                                                                 </Col>
-                                                                <Col md={6} className="text-right">
+                                                                <Col md={3} className="text-right">
+                                                                  <Loader loaded={this.state.loadedTrademark}>
+                                                                    <Button disabled={this.state.stats.length == 0} bsStyle="primary" onClick={this.trademarks}>
+                                                                        <i className="icon ion-search"></i>
+                                                                        Trademarks
+                                                                    </Button>
+                                                                  </Loader>
+                                                                </Col>
+                                                                <Col md={3} className="text-right">
                                                                     <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
                                                                         <i className="icon ion-calculator"></i>
                                                                         Calculate

@@ -674,6 +674,9 @@ export default class Dashboard extends MixinAuth {
                             </Row>
                         </Col>
                         <Col md={3}>
+                            {this.state.progress > 20 && this.state.progress < 99
+                            ? <ProgressBar active now={this.state.progress} label={`${this.state.progress}%`} />
+                            : null}
                             <Panel header="Amazon Auto Suggest + Google Search Traffic" className="suggestions-block" style={{
                                 height: '815px'
                             }}>
@@ -683,9 +686,6 @@ export default class Dashboard extends MixinAuth {
                                         : null}
                                     {this.state.stats.length > 0
                                         ? <div className="suggestions">
-                                                {this.state.progressShow
-                                                    ? <ProgressBar active now={this.state.progress} label={`${this.state.progress}%`}/>
-                                                    : null}
                                                 <Tabs activeKey={this.state.suggestIndex} animation={false} onSelect={this.handleSuggests}>
                                                     {this.state.keywords.map(function(keyword, i) {
                                                         return <Tab eventKey={i} title={this.state.keywordsTitle[i]}>

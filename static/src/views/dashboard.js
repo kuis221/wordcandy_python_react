@@ -453,8 +453,8 @@ export default class Dashboard extends MixinAuth {
                       </NavDropdown>
                     </Nav>
                 </Navbar>
-                <div className="dashboard-content">
-                    <Row>
+                <div className="container">
+                    <Row className="dashboard-content">
                         <Col md={9}>
                             <Row>
                                 <Col md={4}>

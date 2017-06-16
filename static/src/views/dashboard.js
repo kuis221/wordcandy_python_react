@@ -102,7 +102,6 @@ export default class Dashboard extends MixinAuth {
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.trademarks = this.trademarks.bind(this);
     }
 
     componentWillMount() {
@@ -200,30 +199,6 @@ export default class Dashboard extends MixinAuth {
 
     reset() {
         this.setState({tags: [], similars: [], stats: [], thumbnail: '/static/images/dashboard/shirt.png'});
-    }
-
-    trademarks() {
-        var _ = this;
-        _.setState({loadedTrademark: false});
-        var stats = this.state.stats;
-
-        var words = '';
-        for (var i = 0; i < this.state.stats.length; i++) {
-            words += (i == 0
-                ? ''
-                : ',') + this.state.stats[i].name;
-        }
-        var data = {
-            'words': words
-        }
-        apiDashboard.trademarks(data).then(function(response) {
-            for (var i = 0; i < response.data.length; i++) {
-              if (response.data[i].count > 0) {
-                stats[i]['trademark'] = true
-              }
-            }
-            _.setState({loadedTrademark: true, stats: stats});
-        });
     }
 
     addWord(event) {
@@ -373,6 +348,26 @@ export default class Dashboard extends MixinAuth {
             stats = lodash.sortBy(stats, 'volume').reverse();
             _.setState({stats: stats});
 
+            var stats = _.state.stats;
+
+            var words = '';
+            for (var index = 0; index < _.state.stats.length; index++) {
+                words += (index == 0
+                    ? ''
+                    : ',') + _.state.stats[index].name;
+            }
+            var data = {
+                'words': words
+            }
+            apiDashboard.trademarks(data).then(function(response) {
+                for (var j = 0; j < response.data.length; j++) {
+                  if (response.data[j].count > 0) {
+                    stats[j]['trademark'] = true
+                  }
+                }
+                _.setState({stats: stats});
+            });
+
             var keywordsTitle = _.state.keywordsTitle;
             keywordsTitle.push(_.state.tags[i]);
             _.setState({keywordsTitle: keywordsTitle})
@@ -505,15 +500,7 @@ export default class Dashboard extends MixinAuth {
                                                                         Reset Keywords
                                                                     </a>
                                                                 </Col>
-                                                                <Col md={3} className="text-right">
-                                                                  <Loader loaded={this.state.loadedTrademark}>
-                                                                    <Button disabled={this.state.stats.length == 0} bsStyle="primary" onClick={this.trademarks}>
-                                                                        <i className="icon ion-search"></i>
-                                                                        Trademarks
-                                                                    </Button>
-                                                                  </Loader>
-                                                                </Col>
-                                                                <Col md={3} className="text-right">
+                                                                <Col md={6} className="text-right">
                                                                     <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
                                                                         <i className="icon ion-calculator"></i>
                                                                         Calculate

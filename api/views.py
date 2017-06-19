@@ -2,7 +2,6 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
-from rest_auth.serializers import UserDetailsSerializer
 
 from django.http import HttpResponse
 from django.conf import settings
@@ -16,7 +15,7 @@ from cStringIO import StringIO
 import io
 import urllib3
 
-from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer, TemplateSerializer, SubscribeSerializer, ExportSerializer
+from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer, TemplateSerializer, SubscribeSerializer, ExportSerializer, UserDetailsSerializer
 from .models import Shop, Subscribe, Word
 
 from openpyxl import Workbook

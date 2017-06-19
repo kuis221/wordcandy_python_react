@@ -1,9 +1,34 @@
+from django.contrib.auth import get_user_model, authenticate
+from django.conf import settings
+from django.db.models import Q
+
+from easy_thumbnails.files import get_thumbnailer
 from rest_framework import serializers
 
 from api.models import Shop, Template, Subscribe, Export
-from easy_thumbnails.files import get_thumbnailer
-from django.conf import settings
-from django.db.models import Q
+from payment.models import Vip
+
+
+# Get the UserModel
+UserModel = get_user_model()
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    """
+    User model w/o password
+    """
+    vip = serializers.SerializerMethodField()
+
+    def get_vip(self, obj):
+        if Vip.objects.filter(user=obj):
+            return True
+        else:
+            return False
+
+    class Meta:
+        model = UserModel
+        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip')
+        read_only_fields = ('email', )
+
 
 class Base64ImageField(serializers.ImageField):
     """

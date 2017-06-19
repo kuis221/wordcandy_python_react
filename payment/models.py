@@ -23,4 +23,4 @@ class Vip(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return self.user
+        return self.user.email

@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.db import models
 
 from djstripe.settings import get_subscriber_model
 from djstripe.models import Customer
@@ -14,3 +15,12 @@ def user_post_save(sender, instance, created, **kwargs):
             print("Created subscriber for {0}".format(subscriber.email))
 
 post_save.connect(user_post_save, sender=User)
+
+
+class Vip(models.Model):
+    user = models.ForeignKey(User)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.user

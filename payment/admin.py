@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Vip
+
+class VipAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user']
+    date_hierarchy = 'created_date'
+
+admin.site.register(Vip, VipAdmin)

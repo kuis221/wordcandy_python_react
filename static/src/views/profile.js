@@ -33,8 +33,16 @@ export default class Profile extends MixinAuth {
           browserHistory.push('/sign-in');
         }
         var user = JSON.parse(localStorage.getItem("user"));
+        var vip = false;
+        try {
+          if (user.vip) {
+            vip = true;
+          }
+        } catch (e) {
+        }
         this.state = {
             user: user,
+            vip: vip,
             activeName: false,
             loaded: true,
             email: user['email'],
@@ -263,39 +271,24 @@ export default class Profile extends MixinAuth {
                                         Subscription
                                     </Col>
                                     <Col md={9}>
-                                        <Row className="border-bottom">
+                                        <Row>
                                             <Col md={3}>
                                                 Current Plan
                                             </Col>
                                             <Col md={7}>
-                                                {this.state.activePlan == false
+                                                {this.state.vip
                                                     ? <ul className="list-inline">
                                                             <li><Image width={'32px'} height={'32px'} src="/static/images/dashboard/vip.png"/></li>
                                                             <li>Founding LIFETIME Member</li>
                                                         </ul>
                                                     : null}
-                                                {this.state.activePlan
-                                                    ? <div>
-                                                            <FormGroup controlId="formControlsSelect">
-                                                                <FormControl componentClass="select" placeholder="Free">
-                                                                    <option value="select">Founding LIFETIME Member</option>
-                                                                </FormControl>
-                                                            </FormGroup>
-                                                            <FormGroup className="text-right">
-                                                                <Button className="primary" onClick={() => this.setState({activePlan: false})}>
-                                                                    Change plan
-                                                                </Button>
-                                                            </FormGroup>
-                                                        </div>
+                                                {!this.state.vip
+                                                    ? <ul className="list-inline">
+                                                            <li>FREE Plan</li>
+                                                        </ul>
                                                     : null}
                                             </Col>
                                             <Col md={2} className="text-right">
-                                                {this.state.activePlan
-                                                    ? <a href="#" onClick={() => this.setState({activePlan: false})}>Cancel</a>
-                                                    : null}
-                                                {this.state.activePlan == false
-                                                    ? <a href="#" onClick={() => this.setState({activePlan: true})}>Change</a>
-                                                    : null}
                                             </Col>
                                         </Row>
                                     </Col>

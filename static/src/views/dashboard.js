@@ -44,9 +44,37 @@ export default class Dashboard extends MixinAuth {
 
     constructor(props) {
         super(props);
+        if (localStorage.getItem("user") == null) {
+          browserHistory.push('/sign-in');
+        }
+        var user = JSON.parse(localStorage.getItem("user"));
+        var vip = false;
+        try {
+          if (user.vip) {
+            vip = true;
+          }
+        } catch (e) {
+        }
+
+        var print = 20;
+
+        if (!vip) {
+          var today = new Date();
+          var formattedToday = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+
+          if (localStorage.getItem("print_" + formattedToday) == null) {
+            localStorage.setItem("print_" + formattedToday, 20);
+          } else {
+            print = localStorage.getItem("print_" + formattedToday);
+          }
+        }
+
         this.state = {
             tags: [],
             similars: [],
+            formattedToday: formattedToday,
+            print: print,
+            vip: vip,
             stats: [],
             shops: [],
             templates: [],
@@ -102,6 +130,8 @@ export default class Dashboard extends MixinAuth {
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+
+
     }
 
     componentWillMount() {
@@ -398,11 +428,19 @@ export default class Dashboard extends MixinAuth {
                 'format': 'json'
             }
         }
-
+        var print = 20;
+        console.log(_.state.vip);
+        if (_.state.vip == false) {
+          print = (_.state.print - 1);
+          localStorage.setItem("print_" + _.state.formattedToday, print);
+        } else {
+          print = _.state.print;
+        }
         _.setState({
             keywordsTitle: [],
             keywords: [],
             progress: 20,
+            print: print,
             progressShow: true,
             loadedSimilars: false,
             loadedKeywords: false,
@@ -433,6 +471,14 @@ export default class Dashboard extends MixinAuth {
                         <Button bsStyle="primary" onClick={this.exportTemplates}>Templates</Button>
                     </li>
                 </ul>
+            </Popover>
+        );
+
+        const limitWindow = (
+            <Popover>
+              <p>You have "FREE" plan you can do 20 calculations a day. At the beginning of the next week you can choose and pay another plan.</p>
+              <hr/>
+              <p>If you are <b>VIP</b> member and you have "Free" plan please write to <a href="mailto:travis@wordcandy.io">Travis</a> and we will make you <b>VIP</b>.</p>
             </Popover>
         );
 
@@ -494,17 +540,26 @@ export default class Dashboard extends MixinAuth {
                                                         </Col>
                                                         <Col md={12} className="actions">
                                                             <Row>
-                                                                <Col md={6} className="text-left">
+                                                                <Col md={5} className="text-left">
                                                                     <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.resetKeywords}>
                                                                         <i className="icon ion-backspace"></i>
                                                                         Reset Keywords
                                                                     </a>
                                                                 </Col>
-                                                                <Col md={6} className="text-right">
-                                                                    <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
-                                                                        <i className="icon ion-calculator"></i>
-                                                                        Calculate
-                                                                    </Button>
+                                                                <Col md={4} className="text-right limit">
+                                                                  {!this.state.vip?
+                                                                    <OverlayTrigger trigger="click" placement="bottom" overlay={limitWindow}>
+                                                                      <p><b>{this.state.print}</b> listings left <a href="#"><span className="icon ion-ios-help-outline"></span></a></p>
+                                                                    </OverlayTrigger>
+                                                                  : null}
+                                                                </Col>
+                                                                <Col md={3} className="text-right">
+                                                                    {this.state.print > 0 ?
+                                                                      <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
+                                                                          <i className="icon ion-calculator"></i>
+                                                                          Calculate
+                                                                      </Button>
+                                                                    : null}
                                                                 </Col>
                                                             </Row>
                                                         </Col>
@@ -729,12 +784,10 @@ export default class Dashboard extends MixinAuth {
                                     </Loader>
                                 </NavItem>
                                 <NavItem>
-
-                                          <Button bsStyle="primary" onClick={this.reset}>
-                                              <i className="icon ion-refresh"></i>
-                                              Start Over
-                                          </Button>
-
+                                  <Button bsStyle="primary" onClick={this.reset}>
+                                    <i className="icon ion-refresh"></i>
+                                    Start Over
+                                  </Button>
                                 </NavItem>
                             </Nav>
                         </Navbar>

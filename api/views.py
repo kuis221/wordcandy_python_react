@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 
 from django.http import HttpResponse
 from django.conf import settings
@@ -28,6 +29,7 @@ from rest_framework.authentication import TokenAuthentication
 
 
 class SynonymsView(LoggingMixin, GenericAPIView):
+    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -48,6 +50,7 @@ class SynonymsView(LoggingMixin, GenericAPIView):
 
 
 class AntonymsView(LoggingMixin, GenericAPIView):
+    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -68,6 +71,7 @@ class AntonymsView(LoggingMixin, GenericAPIView):
 
 
 class KeywordToolView(LoggingMixin, GenericAPIView):
+    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -123,6 +127,7 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
 
 
 class ExportTemplatesView(GenericAPIView):
+    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
     serializer_class = ExportSerializer
 
     def post(self, request, format=None):
@@ -197,7 +202,7 @@ class ExportKeywordsView(GenericAPIView):
 
 class ShopList(LoggingMixin, GenericAPIView):
     serializer_class = ShopSerializer
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -238,6 +243,8 @@ class SubscribeView(LoggingMixin, GenericAPIView):
 
 
 class UserDetailsView(RetrieveUpdateAPIView):
+    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+
     """
     Reads and updates UserModel fields
     Accepts GET, PUT, PATCH methods.

@@ -18,14 +18,16 @@
   {% if view.error %}
       <div class="alert alert-error">{{ view.error }}</div>
   {% endif %}
-
+  <hr/>
   <div class="row">
       {% for plan in PLAN_LIST %}
         {% with plan_count=PLAN_LIST|length %}
           <div class="col-xs-{{ 12|djdiv:plan_count|floatformat }}">
+            <div class="panel panel-default">
+              <div class="panel-body">
         {% endwith %}
               {% if customer.current_subscription.plan == plan.plan and customer.current_subscription.status != CurrentSubscription.STATUS_CANCELLED %}
-              <div class="btn btn-default disabled">
+              <div>
               {% else %}
               <a href="{% url 'djstripe:confirm' plan=plan.plan %}" role="button">
               {% endif %}
@@ -33,15 +35,17 @@
                     <p>{{ plan.description }}</p>
               {% if customer.current_subscription.plan == plan.plan and customer.current_subscription.status != CurrentSubscription.STATUS_CANCELLED %}
               </div>
-              <h4>Your Current Plan</h4>
+              <b>Your Current Plan</b>
               {% else %}
               </a>
                 {% if customer.current_subscription.amount < plan.price|djdiv:100 %}
-                  <h4>Upgrade</h4>
+                  <div>Upgrade</div>
                 {% elif customer.current_subscription.amount > plan.price|djdiv:100 %}
-                  <h4>Downgrade</h4>
+                  <div>Downgrade</div>
                 {% endif %}
               {% endif %}
+            </div>
+          </div>
           </div>
       {% endfor %}
   </div>

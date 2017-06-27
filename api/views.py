@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 
+from django.contrib.auth import login
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.cache import cache
@@ -35,6 +36,9 @@ class SynonymsView(LoggingMixin, GenericAPIView):
         """
         Return words with synonyms
         """
+        user = request.user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
         data = {}
         data['synonyms'] = []
         tags = request.GET.get('tags', '')
@@ -56,6 +60,9 @@ class AntonymsView(LoggingMixin, GenericAPIView):
         """
         Return words with antonyms
         """
+        user = request.user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
         data = {}
         data['antonyms'] = []
         tags = request.GET.get('tags', '')
@@ -77,6 +84,9 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
         """
         Return result from keywordtool
         """
+        user = request.user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
         keywords = request.GET.get('tags', '')
         result = {
             'keywords': [],
@@ -191,7 +201,6 @@ class ExportKeywordsView(GenericAPIView):
         s3c = boto3.client('s3',
                             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-        print request.data.get('keywords', '')
         handle_txt = StringIO(request.data.get('keywords', ''))
         txt_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key='txt/{0}.txt'.format(filename), Body=handle_txt.read())
         result = {
@@ -202,12 +211,15 @@ class ExportKeywordsView(GenericAPIView):
 
 class ShopList(LoggingMixin, GenericAPIView):
     serializer_class = ShopSerializer
-    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+    authentication_classes = (TokenAuthentication, BasicAuthentication,  SessionAuthentication)
 
     def get(self, request, format=None):
         """
         Return list of shops
         """
+        user = request.user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
         shops = Shop.objects.filter(disabled=False)
         serializer = self.serializer_class(shops, many=True, context={'request': request})
         return Response(serializer.data)
@@ -258,6 +270,9 @@ class UserDetailsView(RetrieveUpdateAPIView):
     serializer_class = UserDetailsSerializer
 
     def get_object(self):
+        user = self.request.user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(self.request, user)
         return self.request.user
 
     def get_queryset(self):

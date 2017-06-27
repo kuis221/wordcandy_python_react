@@ -55,9 +55,9 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_framework_swagger',
     'djstripe',
+    'payment',
     'api',
     'storages',
-    'payment',
     'easy_thumbnails',
     'dashboard'
 ]
@@ -79,8 +79,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_live_T0LhQjr6GkIDIJYJc3xJrnYu")
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_live_Y2V173ann7w9Z9HTxjN7CCps")
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_live_cfDmcYe9P4O2Y04O85mnGhPJ")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_live_oqCbQMSyrLT5lefUoCdz7tiJ")
 
 
 AUTHENTICATION_BACKENDS = (
@@ -148,7 +148,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -222,9 +222,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
     ),
 }
 

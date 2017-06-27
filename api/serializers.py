@@ -2,6 +2,9 @@ from django.contrib.auth import get_user_model, authenticate
 from django.conf import settings
 from django.db.models import Q
 
+from djstripe.models import Customer, CurrentSubscription
+from djstripe.settings import subscriber_request_callback
+
 from easy_thumbnails.files import get_thumbnailer
 from rest_framework import serializers
 
@@ -17,6 +20,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     User model w/o password
     """
     vip = serializers.SerializerMethodField()
+    active = serializers.SerializerMethodField()
 
     def get_vip(self, obj):
         if Vip.objects.filter(user=obj):
@@ -24,9 +28,26 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         else:
             return False
 
+    def get_active(self, obj):
+
+        if Vip.objects.filter(user=obj):
+            return True
+
+        customer, created = Customer.get_or_create(subscriber=obj)
+        try:
+            subscription = customer.current_subscription
+        except CurrentSubscription.DoesNotExist:
+            return False
+
+        if subscription.status != 'active':
+            return False
+
+        return True
+
+
     class Meta:
         model = UserModel
-        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip')
+        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip', 'active')
         read_only_fields = ('email', )
 
 

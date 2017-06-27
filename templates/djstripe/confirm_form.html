@@ -4,14 +4,14 @@
 {% block title %}Choose a Subscription{% endblock title %}
 
 {% block body %}
-<div class="container">
+<div class="container ">
   {{ block.super }}
   <ul class="breadcrumb">
       <li><a href="{% url 'djstripe:account' %}">Payment</a></li>
       <li><a href="{% url 'djstripe:subscribe' %}">Subscription</a></li>
       <li class="active">Confirm</li>
   </ul>
-  <h2>Confirm your Subscription</h2>
+  <h2 class="text-center">Confirm your Subscription</h2>
   {% if error %}
       <div class="alert alert-error">{{ error }}</div>
   {% endif %}
@@ -20,7 +20,7 @@
   {% endif %}
 
   <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 text-center">
           <form
           {% if not customer.current_subscription or customer.current_subscription.status == CurrentSubscription.STATUS_CANCELLED %}
               action="{% url 'djstripe:confirm' plan=plan.plan %}" class="djstripe-subscribe"
@@ -38,11 +38,15 @@
           <input type="hidden" name="plan" value="{{ plan.plan }}" />
           <input name="stripe_token" type="hidden" />
 
-          <!-- disable this when clicked -->
-          <button type="submit">
-              <h3>{{ plan.name }}</h3>
-              <p>{{ plan.description }}</p>
-          </button>
+
+              <h3>{{ plan.description }}</h3>
+              <p>{{ plan.name }}</p>
+              <button class="btn btn-primary" type="submit">
+                Confirm
+              </button>
+
+
+
 
           {% if not customer.current_subscription or customer.current_subscription.status == CurrentSubscription.STATUS_CANCELLED %}
             <!-- do nothing -->
@@ -61,6 +65,8 @@
 
 {% block javascript %}
 {{ block.super }}
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/v2/checkout.js"></script>
 <script text="text/javascript">
     $(function() {

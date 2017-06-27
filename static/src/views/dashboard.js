@@ -47,34 +47,17 @@ export default class Dashboard extends MixinAuth {
         if (localStorage.getItem("user") == null) {
           browserHistory.push('/sign-in');
         }
-        var user = JSON.parse(localStorage.getItem("user"));
-        var vip = false;
-        try {
-          if (user.vip) {
-            vip = true;
-          }
-        } catch (e) {
-        }
-
+        var vip = true;
+        var active = 20;
         var print = 20;
-
-        if (!vip) {
-          var today = new Date();
-          var formattedToday = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-
-          if (localStorage.getItem("print_" + formattedToday) == null) {
-            localStorage.setItem("print_" + formattedToday, 20);
-          } else {
-            print = localStorage.getItem("print_" + formattedToday);
-          }
-        }
 
         this.state = {
             tags: [],
             similars: [],
-            formattedToday: formattedToday,
+            formattedToday: '',
             print: print,
             vip: vip,
+            active: active,
             stats: [],
             shops: [],
             templates: [],
@@ -130,8 +113,6 @@ export default class Dashboard extends MixinAuth {
         this.newTemplate = this.newTemplate.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-
-
     }
 
     componentWillMount() {
@@ -292,12 +273,50 @@ export default class Dashboard extends MixinAuth {
         apiProfiles.getUser().then(function(response) {
             switch (response.status) {
                 case 200:
+                    var user = response.data;
                     localStorage.setItem("user", JSON.stringify(response.data));
                     break;
                 case 401:
                     browserHistory.push('/sign-in');
                     break;
             }
+            var vip = false;
+            var active = false;
+            var print = 0;
+            try {
+              if (user.vip) {
+                vip = true;
+              }
+            } catch (e) {
+            }
+
+            try {
+              if (user.active) {
+                active = true;
+                print = 20;
+              } else {
+                print = 1;
+              }
+            } catch (e) {
+              print = 1;
+            }
+
+            if (!vip) {
+              var today = new Date();
+              var formattedToday = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+
+              if (localStorage.getItem("prints_" + formattedToday) == null) {
+                localStorage.setItem("prints_" + formattedToday, print);
+              } else {
+                print = localStorage.getItem("prints_" + formattedToday);
+              }
+            }
+            _.setState({
+                vip: vip,
+                active: active,
+                print: print,
+                formattedToday: formattedToday
+            });
 
         }).catch(function(error) {});
 
@@ -428,11 +447,10 @@ export default class Dashboard extends MixinAuth {
                 'format': 'json'
             }
         }
-        var print = 20;
-        console.log(_.state.vip);
+        var print = 0;
         if (_.state.vip == false) {
           print = (_.state.print - 1);
-          localStorage.setItem("print_" + _.state.formattedToday, print);
+          localStorage.setItem("prints_" + _.state.formattedToday, print);
         } else {
           print = _.state.print;
         }
@@ -476,9 +494,13 @@ export default class Dashboard extends MixinAuth {
 
         const limitWindow = (
             <Popover>
-              <p>You have "FREE" plan you can do 20 calculations a day. At the beginning of the next week you can choose and pay another plan.</p>
-              <hr/>
-              <p>If you are <b>VIP</b> member and you have "Free" plan please write to <a href="mailto:travis@wordcandy.io">Travis</a> and we will make you <b>VIP</b>.</p>
+              <p>You have Plan you can do 20 calculations a day.</p>
+            </Popover>
+        );
+
+        const limitWindowFree = (
+            <Popover>
+              <p>You have <b>"Free" Plan</b> you can do 1 calculation a day. Please <a href="/payments/">Upgrade plan</a>.</p>
             </Popover>
         );
 
@@ -548,9 +570,18 @@ export default class Dashboard extends MixinAuth {
                                                                 </Col>
                                                                 <Col md={4} className="text-right limit">
                                                                   {!this.state.vip?
-                                                                    <OverlayTrigger trigger="click" placement="bottom" overlay={limitWindow}>
-                                                                      <p><b>{this.state.print}</b> listings left <a href="#"><span className="icon ion-ios-help-outline"></span></a></p>
-                                                                    </OverlayTrigger>
+                                                                    <span>
+                                                                      {this.state.active?
+                                                                        <OverlayTrigger trigger="click" placement="bottom" overlay={limitWindow}>
+                                                                          <p><b>{this.state.print}</b> listings left <a href="#"><span className="icon ion-ios-help-outline"></span></a></p>
+                                                                        </OverlayTrigger>
+                                                                      : null}
+                                                                      {!this.state.active?
+                                                                        <OverlayTrigger trigger="click" placement="bottom" overlay={limitWindowFree}>
+                                                                          <p><b>{this.state.print}</b> listing left <a href="#"><span className="icon ion-ios-help-outline"></span></a></p>
+                                                                        </OverlayTrigger>
+                                                                      : null}
+                                                                    </span>
                                                                   : null}
                                                                 </Col>
                                                                 <Col md={3} className="text-right">

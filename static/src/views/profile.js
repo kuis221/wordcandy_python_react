@@ -40,6 +40,7 @@ export default class Profile extends MixinAuth {
           }
         } catch (e) {
         }
+
         this.state = {
             user: user,
             vip: vip,
@@ -49,7 +50,6 @@ export default class Profile extends MixinAuth {
             activeEmail: false,
             activePassword: false,
             activePlan: false,
-            activePayment: false,
             username: user['username']
         };
         this.handleEmail = this.handleEmail.bind(this);
@@ -264,33 +264,6 @@ export default class Profile extends MixinAuth {
                                             </Col>
                                         </Row>
 
-                                    </Col>
-                                </Row>
-                                <Row className="border-top">
-                                    <Col md={3} className="profile-title">
-                                        Subscription
-                                    </Col>
-                                    <Col md={9}>
-                                        <Row>
-                                            <Col md={3}>
-                                                Current Plan
-                                            </Col>
-                                            <Col md={7}>
-                                                {this.state.vip
-                                                    ? <ul className="list-inline">
-                                                            <li><Image width={'32px'} height={'32px'} src="/static/images/dashboard/vip.png"/></li>
-                                                            <li>Founding LIFETIME Member</li>
-                                                        </ul>
-                                                    : null}
-                                                {!this.state.vip
-                                                    ? <ul className="list-inline">
-                                                            <li>FREE Plan</li>
-                                                        </ul>
-                                                    : null}
-                                            </Col>
-                                            <Col md={2} className="text-right">
-                                            </Col>
-                                        </Row>
                                     </Col>
                                 </Row>
                                 <Row className="border-top">

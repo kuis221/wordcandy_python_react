@@ -39,7 +39,6 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', ResetPasswordView.as_view(), name='password_reset_confirm'),
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'index.html'}, name="password_reset_complete"),
     url(r'^v1/dashboard/', include('api.urls')),
-    url(r'^v1/payment/', include('payment.urls')),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^accounts/', include('allauth.urls', namespace='allauth')),
     url(r'^statistics/$', 'dashboard.views.statistics', name='statistics'),

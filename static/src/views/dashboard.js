@@ -305,10 +305,10 @@ export default class Dashboard extends MixinAuth {
               var today = new Date();
               var formattedToday = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
 
-              if (localStorage.getItem("prints_" + user.pk + "_" + formattedToday) == null) {
-                localStorage.setItem("prints_" + user.pk + "_" + formattedToday, print);
+              if (localStorage.getItem("prints_" + user.pk + "_" + user.active + "_" + formattedToday) == null) {
+                localStorage.setItem("prints_" + user.pk + "_" + user.active + "_" + formattedToday, print);
               } else {
-                print = localStorage.getItem("prints_" + user.pk + "_" +  formattedToday);
+                print = localStorage.getItem("prints_" + user.pk + "_" + user.active + "_" + formattedToday);
               }
             }
             _.setState({
@@ -451,7 +451,7 @@ export default class Dashboard extends MixinAuth {
         var print = 0;
         if (_.state.vip == false) {
           print = (_.state.print - 1);
-          localStorage.setItem("prints_" + _.state.user.pk + "_" +  _.state.formattedToday, print);
+          localStorage.setItem("prints_" + user.pk + "_" + user.active + "_" +  _.state.formattedToday, print);
         } else {
           print = _.state.print;
         }

@@ -21,12 +21,30 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     """
     vip = serializers.SerializerMethodField()
     active = serializers.SerializerMethodField()
+    plan = serializers.SerializerMethodField()
+
 
     def get_vip(self, obj):
         if Vip.objects.filter(user=obj):
             return True
         else:
             return False
+
+    def get_plan(self, obj):
+
+        if Vip.objects.filter(user=obj):
+            return 'Founding LIFETIME Member'
+
+        customer, created = Customer.get_or_create(subscriber=obj)
+        try:
+            subscription = customer.current_subscription
+        except CurrentSubscription.DoesNotExist:
+            return 'FREE Plan'
+
+        if subscription.status != 'active':
+            return 'FREE Plan'
+
+        return subscription.plan
 
     def get_active(self, obj):
 
@@ -47,7 +65,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip', 'active')
+        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip', 'active', 'plan')
         read_only_fields = ('email', )
 
 

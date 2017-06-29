@@ -47,6 +47,7 @@ export default class Dashboard extends MixinAuth {
         if (localStorage.getItem("user") == null) {
           browserHistory.push('/sign-in');
         }
+        var user = localStorage.getItem("user");
         var vip = true;
         var active = 20;
         var print = 20;
@@ -57,6 +58,7 @@ export default class Dashboard extends MixinAuth {
             formattedToday: '',
             print: print,
             vip: vip,
+            user: user,
             active: active,
             stats: [],
             shops: [],
@@ -451,7 +453,7 @@ export default class Dashboard extends MixinAuth {
         var print = 0;
         if (_.state.vip == false) {
           print = (_.state.print - 1);
-          localStorage.setItem("prints_" + user.pk + "_" + user.active + "_" +  _.state.formattedToday, print);
+          localStorage.setItem("prints_" +_.state.user.pk + "_" + _.state.user.active + "_" +  _.state.formattedToday, print);
         } else {
           print = _.state.print;
         }

@@ -49,8 +49,8 @@ export default class Dashboard extends MixinAuth {
         }
         var user = localStorage.getItem("user");
         var vip = true;
-        var active = 20;
-        var print = 20;
+        var active = false;
+        var print = 200;
 
         this.state = {
             tags: [],
@@ -295,7 +295,7 @@ export default class Dashboard extends MixinAuth {
             try {
               if (user.active) {
                 active = true;
-                print = 20;
+                print = 200;
               } else {
                 print = 1;
               }
@@ -497,7 +497,7 @@ export default class Dashboard extends MixinAuth {
 
         const limitWindow = (
             <Popover>
-              <p>You have Plan you can do 20 calculations a day.</p>
+              <p>You have Plan you can do 200 calculations a day.</p>
             </Popover>
         );
 

@@ -218,10 +218,10 @@ export default class Landing extends Component {
                                             <p>
                                                 <span className="dollar">$</span>
                                                   {this.state.planBeginner == 1 ?
-                                                    <span><span className="value">29</span> / per month</span>
+                                                    <span><span className="value">19.99</span> / per month</span>
                                                   : null}
                                                   {this.state.planBeginner == 2 ?
-                                                    <span><span className="value">290</span> / per year</span>
+                                                    <span><span className="value">199.99</span> / per year</span>
                                                   : null}
                                             </p>
                                             <p>We’ve set costs with your business in mind. Our goal is to double each cent you’ll spend with WordCandy.</p>

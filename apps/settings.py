@@ -109,7 +109,7 @@ DJSTRIPE_PLANS = {
         "stripe_plan_id": "WCLOWTIERANNUAL",
         "name": "WordCandy Beginner Annual Plan ($290/year)",
         "description": "WordCandy Beginner Annual Plan",
-        "price": 29000,
+        "price": 19999,
         "currency": "usd",
         "interval": "year"
     },
@@ -117,7 +117,7 @@ DJSTRIPE_PLANS = {
         "stripe_plan_id": "WCLOWTIERMONTHLY",
         "name": "WordCandy Beginner Monthly Plan ($29/month)",
         "description": "WordCandy Beginner",
-        "price": 2900,
+        "price": 1999,
         "currency": "usd",
         "interval": "month"
     },
@@ -251,9 +251,5 @@ MEDIA_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
 MEDIA_ROOT = ''
 AWS_ACCESS_KEY_ID = "AKIAIOCAEG4U53J2G2KA"
 AWS_SECRET_ACCESS_KEY = "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"
-
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static')
-#]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

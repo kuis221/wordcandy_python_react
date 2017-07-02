@@ -107,7 +107,7 @@ DJSTRIPE_PLANS = {
     },
     "WCLOWTIERANNUAL": {
         "stripe_plan_id": "WCLOWTIERANNUAL",
-        "name": "WordCandy Beginner Annual Plan ($290/year)",
+        "name": "WordCandy Beginner Annual Plan ($199.99/year)",
         "description": "WordCandy Beginner Annual Plan",
         "price": 19999,
         "currency": "usd",
@@ -115,7 +115,7 @@ DJSTRIPE_PLANS = {
     },
     "WCLOWTIERMONTHLY": {
         "stripe_plan_id": "WCLOWTIERMONTHLY",
-        "name": "WordCandy Beginner Monthly Plan ($29/month)",
+        "name": "WordCandy Beginner Monthly Plan ($19.99/month)",
         "description": "WordCandy Beginner",
         "price": 1999,
         "currency": "usd",

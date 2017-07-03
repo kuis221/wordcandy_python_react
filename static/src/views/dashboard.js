@@ -671,7 +671,7 @@ export default class Dashboard extends MixinAuth {
                                                           <ControlLabel>Brand name</ControlLabel>
                                                         <InputGroup>
                                                             <FormControl type="text" onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="brand_name" data-keypress="dashboard" placeholder="Title - 4 to 8 words is best" onChange={this.handleChangeForms} value={this.state.template.brand_name}/>
-                                                            <CopyToClipboard text={this.state.template.title} onCopy={() => this.setState({copied: true})}>
+                                                            <CopyToClipboard text={this.state.template.brand_name} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
                                                                 </InputGroup.Addon>

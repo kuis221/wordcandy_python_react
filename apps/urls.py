@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from main.views import  IndexView, ResetPasswordView
+from main.views import  IndexView, ResetPasswordView, RobotsView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
@@ -28,6 +28,7 @@ schema_view = get_swagger_view(title='WORDCANDY.IO API')
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
+    url(r'^7E9A804C7C36FFC333B7794DECB893CF.txt$', RobotsView.as_view(), name='robots'),
     url(r'^dashboard/$', IndexView.as_view(), name="dashboard"),
     url(r'^sign-in/$', IndexView.as_view(), name="sign_in"),
     url(r'^sign-up/$', IndexView.as_view(), name="sign_up"),

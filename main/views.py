@@ -1,5 +1,10 @@
 from django.views.generic import TemplateView
 
+
+class RobotsView(TemplateView):
+    template_name = "7E9A804C7C36FFC333B7794DECB893CF.txt"
+
+
 class IndexView(TemplateView):
     template_name = "index.html"
 

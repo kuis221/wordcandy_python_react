@@ -47,19 +47,17 @@ export default class Dashboard extends MixinAuth {
         if (localStorage.getItem("user") == null) {
           browserHistory.push('/sign-in');
         }
-        var user = localStorage.getItem("user");
-        var vip = true;
-        var active = false;
-        var print = 200;
+        var user = JSON.parse(localStorage.getItem("user"));
 
         this.state = {
             tags: [],
             similars: [],
             formattedToday: '',
-            print: print,
-            vip: vip,
             user: user,
-            active: active,
+            vip: user.vip,
+            print: user.count,
+            active: user.active,
+            loadedPlan: false,
             stats: [],
             shops: [],
             templates: [],
@@ -276,50 +274,20 @@ export default class Dashboard extends MixinAuth {
             switch (response.status) {
                 case 200:
                     var user = response.data;
+                    console.log(user);
+                    _.setState({
+                        vip: user.vip,
+                        active: user.active,
+                        print: user.count,
+                        loadedPlan: true,
+                        user: user
+                    });
                     localStorage.setItem("user", JSON.stringify(response.data));
                     break;
                 case 401:
                     browserHistory.push('/sign-in');
                     break;
             }
-            var vip = false;
-            var active = false;
-            var print = 0;
-            try {
-              if (user.vip) {
-                vip = true;
-              }
-            } catch (e) {
-            }
-
-            try {
-              if (user.active) {
-                active = true;
-                print = 200;
-              } else {
-                print = 1;
-              }
-            } catch (e) {
-              print = 1;
-            }
-
-            if (!vip) {
-              var today = new Date();
-              var formattedToday = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-
-              if (localStorage.getItem("prints_" + user.pk + "_" + user.active + "_" + formattedToday) == null) {
-                localStorage.setItem("prints_" + user.pk + "_" + user.active + "_" + formattedToday, print);
-              } else {
-                print = localStorage.getItem("prints_" + user.pk + "_" + user.active + "_" + formattedToday);
-              }
-            }
-            _.setState({
-                vip: vip,
-                active: active,
-                print: print,
-                user: user,
-                formattedToday: formattedToday
-            });
 
         }).catch(function(error) {});
 
@@ -453,7 +421,6 @@ export default class Dashboard extends MixinAuth {
         var print = 0;
         if (_.state.vip == false) {
           print = (_.state.print - 1);
-          localStorage.setItem("prints_" +_.state.user.pk + "_" + _.state.user.active + "_" +  _.state.formattedToday, print);
         } else {
           print = _.state.print;
         }
@@ -564,6 +531,7 @@ export default class Dashboard extends MixinAuth {
                                                             </FormGroup>
                                                         </Col>
                                                         <Col md={12} className="actions">
+                                                            <Loader loaded={this.state.loadedPlan}>
                                                             <Row>
                                                                 <Col md={5} className="text-left">
                                                                     <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.resetKeywords}>
@@ -596,6 +564,7 @@ export default class Dashboard extends MixinAuth {
                                                                     : null}
                                                                 </Col>
                                                             </Row>
+                                                            </Loader>
                                                         </Col>
                                                     </Row>
 

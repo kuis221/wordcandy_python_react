@@ -7,9 +7,12 @@ from djstripe.settings import subscriber_request_callback
 
 from easy_thumbnails.files import get_thumbnailer
 from rest_framework import serializers
+from rest_framework_tracking.models import APIRequestLog
 
 from api.models import Shop, Template, Subscribe, Export
 from payment.models import Vip
+
+from datetime import datetime
 
 
 # Get the UserModel
@@ -22,6 +25,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     vip = serializers.SerializerMethodField()
     active = serializers.SerializerMethodField()
     plan = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
 
 
     def get_vip(self, obj):
@@ -63,9 +67,30 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         return True
 
 
+    def get_count(self, obj):
+        default = 1
+        plan = 200
+
+        today = APIRequestLog.objects.filter(path='/v1/dashboard/keywordtool/', user=obj, requested_at__date=datetime.today()).count()
+
+        if Vip.objects.filter(user=obj):
+            return 1000
+
+        customer, created = Customer.get_or_create(subscriber=obj)
+        try:
+            subscription = customer.current_subscription
+        except CurrentSubscription.DoesNotExist:
+            return default - today
+
+        if subscription.status != 'active':
+            return default - today
+
+        return plan - today
+
+
     class Meta:
         model = UserModel
-        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip', 'active', 'plan')
+        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'vip', 'active', 'plan', 'count')
         read_only_fields = ('email', )
 
 

@@ -52,11 +52,10 @@ export default class Dashboard extends MixinAuth {
         this.state = {
             tags: [],
             similars: [],
-            formattedToday: '',
             user: user,
-            vip: user.vip,
-            print: user.count,
-            active: user.active,
+            vip: false,
+            print: 0,
+            active: false,
             loadedPlan: false,
             stats: [],
             shops: [],
@@ -274,7 +273,6 @@ export default class Dashboard extends MixinAuth {
             switch (response.status) {
                 case 200:
                     var user = response.data;
-                    console.log(user);
                     _.setState({
                         vip: user.vip,
                         active: user.active,

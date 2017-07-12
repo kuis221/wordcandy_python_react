@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export let url = 'http://www.wordcandy.io/v1/';
+export let url = 'https://www.wordcandy.io/v1/';
 
 exports.apiDashboard = {
     exportTemplates: function(data) {

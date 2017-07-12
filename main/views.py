@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 
 
 class RobotsView(TemplateView):
-    template_name = "7E9A804C7C36FFC333B7794DECB893CF.txt"
+    template_name = "0DFD5E3CED717C269E2CC5AE45CA6410.txt"
 
 
 class IndexView(TemplateView):

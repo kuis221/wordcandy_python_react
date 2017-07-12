@@ -1,0 +1,46 @@
+.research-page {
+    color: #454656;
+    background-color: #454656;
+    padding-bottom: 60px;
+    height: 100%;
+
+    .btn-primary {
+        background-color: #839ff9;
+        border-color: #839ff9;
+    }
+
+    .btn-default {
+        background-color: #dbe4ff;
+        border-color: #dbe4ff;
+    }
+
+    input, textarea {
+        border-color: #dbd9ed;
+        background-color: #f5f6fc;
+    }
+
+    .panel-default {
+        .panel-heading {
+            border-bottom: none;
+            font-weight: bold;
+        }
+    }
+
+    .navbar-default {
+        background-color: #fff;
+        margin-left: -15px;
+        margin-right: -15px;
+
+        .logo {
+            img {
+                margin-top: -6px;
+            }
+        }
+
+        span {
+            color: #565763;
+            font-size: 16px;
+            margin-top: -5px;
+        }
+    }
+}

@@ -90,7 +90,18 @@ exports.apiDashboard = {
             });
     },
     trademarks: function(data) {
-        return axios.post("http://52.41.13.151/v1/api/search/", data)
+        return axios({
+                url: url + "dashboard/trademarks/",
+                method: 'post',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data,
+                validateStatus: function(status) {
+                    return status;
+                }
+            })
             .then(response => {
                 return response;
             }).catch(function(error) {

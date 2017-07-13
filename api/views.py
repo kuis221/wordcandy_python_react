@@ -24,13 +24,25 @@ from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 from openpyxl.writer.excel import save_virtual_workbook
 from trademark import marker
+import requests
 
 from rest_framework_tracking.mixins import LoggingMixin
 from rest_framework.authentication import TokenAuthentication
 
 
+class TrademarksView(GenericAPIView):
+
+    def post(self, request, format=None):
+        """
+        Return check trademarks
+        """
+        result = requests.post('http://52.41.13.151/v1/api/search/', data=request.data)
+        return Response(result.content)
+
+
 class SynonymsView(LoggingMixin, GenericAPIView):
-    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -54,7 +66,8 @@ class SynonymsView(LoggingMixin, GenericAPIView):
 
 
 class AntonymsView(LoggingMixin, GenericAPIView):
-    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -78,7 +91,8 @@ class AntonymsView(LoggingMixin, GenericAPIView):
 
 
 class KeywordToolView(LoggingMixin, GenericAPIView):
-    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -131,13 +145,15 @@ class KeywordToolView(LoggingMixin, GenericAPIView):
                             if 'volume' in sub_item and 'string' in sub_item:
                                 if sub_item['volume'] > 300 and not sub_item['string'] in list_keywords:
                                     list_keywords.append(sub_item['string'])
-                                    result['keywords'].append({'name': sub_item['string'].replace('[', '').replace(']', ''), 'volume': sub_item['volume'], 'trademark': False})
+                                    result['keywords'].append({'name': sub_item['string'].replace(
+                                        '[', '').replace(']', ''), 'volume': sub_item['volume'], 'trademark': False})
 
         return Response(result)
 
 
 class ExportTemplatesView(GenericAPIView):
-    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
     serializer_class = ExportSerializer
 
     def post(self, request, format=None):
@@ -183,7 +199,8 @@ class ExportTemplatesView(GenericAPIView):
                                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
             handle_xls = StringIO(save_virtual_workbook(wb))
-            xls_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
+            xls_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+                                      Key='exel/{0}.xlsx'.format(filename), Body=handle_xls.read())
             result = {
                 'data': serializer.data,
                 'file': '{0}exel/{1}.xlsx'.format(settings.AWS_S3_ROOT, filename)
@@ -199,10 +216,11 @@ class ExportKeywordsView(GenericAPIView):
     def post(self, request, format=None):
         filename = int(time.time())
         s3c = boto3.client('s3',
-                            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+                           aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
         handle_txt = StringIO(request.data.get('keywords', ''))
-        txt_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key='txt/{0}.txt'.format(filename), Body=handle_txt.read())
+        txt_file = s3c.put_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+                                  Key='txt/{0}.txt'.format(filename), Body=handle_txt.read())
         result = {
             'file': '{0}txt/{1}.txt'.format(settings.AWS_S3_ROOT, filename)
         }
@@ -211,7 +229,8 @@ class ExportKeywordsView(GenericAPIView):
 
 class ShopList(LoggingMixin, GenericAPIView):
     serializer_class = ShopSerializer
-    authentication_classes = (TokenAuthentication, BasicAuthentication,  SessionAuthentication)
+    authentication_classes = (
+        TokenAuthentication, BasicAuthentication,  SessionAuthentication)
 
     def get(self, request, format=None):
         """
@@ -221,7 +240,8 @@ class ShopList(LoggingMixin, GenericAPIView):
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
         shops = Shop.objects.filter(disabled=False)
-        serializer = self.serializer_class(shops, many=True, context={'request': request})
+        serializer = self.serializer_class(
+            shops, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -236,7 +256,6 @@ class ShopList(LoggingMixin, GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class SubscribeView(LoggingMixin, GenericAPIView):
@@ -255,7 +274,8 @@ class SubscribeView(LoggingMixin, GenericAPIView):
 
 
 class UserDetailsView(RetrieveUpdateAPIView):
-    authentication_classes = (BasicAuthentication, TokenAuthentication, SessionAuthentication)
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
     """
     Reads and updates UserModel fields

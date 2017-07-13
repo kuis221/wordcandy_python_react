@@ -90,7 +90,6 @@ exports.apiDashboard = {
             });
     },
     trademarks: function(data) {
-        axios.defaults.withCredentials = true;
         return axios.post("http://52.41.13.151/v1/api/search/", data)
             .then(response => {
                 return response;

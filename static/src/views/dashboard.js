@@ -44,9 +44,6 @@ export default class Dashboard extends MixinAuth {
 
     constructor(props) {
         super(props);
-        if (localStorage.getItem("user") == null) {
-          browserHistory.push('/sign-in');
-        }
         var user = JSON.parse(localStorage.getItem("user"));
 
         this.state = {

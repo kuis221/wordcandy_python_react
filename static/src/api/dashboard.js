@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export let url = 'http://www.wordcandy.io/v1/';
+export let url = 'http://0.0.0.0:8000/v1/';
 
 exports.apiDashboard = {
     exportTemplates: function(data) {
@@ -61,6 +61,26 @@ exports.apiDashboard = {
                 return error;
             });
     },
+    amazon: function(data) {
+        return axios({
+                url: url + "dashboard/amazon/?tags=iphone",
+                method: 'get',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('key')
+                },
+                //data: data,
+                validateStatus: function(status) {
+                    return status;
+                }
+            })
+            .then(response => {
+                return response;
+            }).catch(function(error) {
+                return error;
+            });
+    },
     newTemplates: function(data) {
         return axios({
                 url: url + "dashboard/templates/",
@@ -90,7 +110,18 @@ exports.apiDashboard = {
             });
     },
     trademarks: function(data) {
-        return axios.post("http://52.41.13.151/v1/api/search/", data)
+        return axios({
+                url: url + "dashboard/trademarks/",
+                method: 'post',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data,
+                validateStatus: function(status) {
+                    return status;
+                }
+            })
             .then(response => {
                 return response;
             }).catch(function(error) {

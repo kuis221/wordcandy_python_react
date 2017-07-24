@@ -44,9 +44,6 @@ export default class Dashboard extends MixinAuth {
 
     constructor(props) {
         super(props);
-        if (localStorage.getItem("user") == null) {
-          browserHistory.push('/sign-in');
-        }
         var user = JSON.parse(localStorage.getItem("user"));
 
         this.state = {
@@ -484,6 +481,7 @@ export default class Dashboard extends MixinAuth {
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                              <MenuItem disabled >Dashboard</MenuItem>
                              <MenuItem href="/profile/">Settings</MenuItem>
+                             <MenuItem href="/research-page/">Research page</MenuItem>
                              <MenuItem divider />
                              <MenuItem href="/">Exit</MenuItem>
                       </NavDropdown>

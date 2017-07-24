@@ -13,22 +13,23 @@ import {
     ControlLabel,
     FormControl,
     InputGroup,
-    OverlayTrigger,
-    Popover,
-    ButtonToolbar,
-    ButtonGroup,
-    Tabs,
     NavDropdown,
     MenuItem,
-    Tab,
-    ProgressBar
+    Table
 } from 'react-bootstrap';
 
 import {Link, browserHistory} from 'react-router';
 import React, {Component} from 'react';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import Loader from 'react-loader';
 
 import MixinAuth from '../mixins/auth';
 import {apiProfiles} from '../api/profiles';
+import {apiDashboard} from '../api/dashboard';
+
+function imageFormatter(cell, row) {
+    return <Image src={cell}/>;
+}
 
 export default class ResearchPage extends MixinAuth {
 
@@ -41,8 +42,11 @@ export default class ResearchPage extends MixinAuth {
 
         this.state = {
             user: user,
-            username: user.username
+            username: user.username,
+            products: [],
+            loadedResult: true
         };
+        this.search = this.search.bind(this);
     }
 
     componentDidMount() {
@@ -53,6 +57,22 @@ export default class ResearchPage extends MixinAuth {
                     var user = response.data;
                     _.setState({vip: user.vip, active: user.active, print: user.count, user: user, username: user.username});
                     localStorage.setItem("user", JSON.stringify(response.data));
+                    break;
+                case 401:
+                    browserHistory.push('/sign-in');
+                    break;
+            }
+
+        }).catch(function(error) {});
+    }
+
+    search() {
+        var _ = this;
+        _.setState({loadedResult: false});
+        apiDashboard.amazon({'tags': 'iphone'}).then(function(response) {
+            switch (response.status) {
+                case 200:
+                    _.setState({products: response.data['result'], loadedResult: true});
                     break;
                 case 401:
                     browserHistory.push('/sign-in');
@@ -86,9 +106,7 @@ export default class ResearchPage extends MixinAuth {
                 <div className="container">
                     <Row className="research-content">
                         <Col md={12}>
-                            <Panel header="Add your keywords" style={{
-                                height: 150
-                            }}>
+                            <Panel header="Add your keywords">
                                 <Row>
                                     <Col md={12}>
                                         <FormGroup>
@@ -97,7 +115,18 @@ export default class ResearchPage extends MixinAuth {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col md={8}></Col>
+                                    <Col md={8}>
+                                        <ul className="list-inline">
+                                            <li>
+                                                <span className="react-tagsinput-tag">iphone<a className="react-tagsinput-remove"></a>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span className="react-tagsinput-tag">apple<a className="react-tagsinput-remove"></a>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </Col>
                                     <Col md={4}>
                                         <ul className="list-inline">
                                             <li>
@@ -113,7 +142,7 @@ export default class ResearchPage extends MixinAuth {
                                                 </Button>
                                             </li>
                                             <li>
-                                                <Button bsStyle="primary">
+                                                <Button bsStyle="primary" onClick={this.search} disabled={!this.state.loadedResult}>
                                                     <i className="icon ion-ios-search"></i>
                                                     Search
                                                 </Button>
@@ -122,6 +151,20 @@ export default class ResearchPage extends MixinAuth {
                                     </Col>
                                 </Row>
                             </Panel>
+                        </Col>
+                        <Col md={12} className="amazon-result">
+                            <Loader loaded={this.state.loadedResult}>
+                                <Panel>
+                                    <BootstrapTable data={this.state.products} height='270' scrollTop={'Bottom'} pagination>
+                                        <TableHeaderColumn dataAlign='center' isKey dataField='small_image_url' dataFormat={imageFormatter}>Product</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' dataField='asin'>ASIN</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' dataField='sales_rank' dataSort={true}>Sales Rank</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' dataField='sales_estimate' dataSort={true}>Daily Sales Estimate</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' dataField='features'>Description</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' dataField='google_traffic' dataSort={true}>Google Traffic</TableHeaderColumn>
+                                    </BootstrapTable>
+                                </Panel>
+                            </Loader>
                         </Col>
                     </Row>
                 </div>

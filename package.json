@@ -28,6 +28,7 @@
     "react": "^15.5.4",
     "react-bootstrap": "^0.30.6",
     "react-bootstrap-maskedinput": "^0.2.1",
+    "react-bootstrap-table": "^3.4.6",
     "react-copy-to-clipboard": "^4.3.1",
     "react-dom": "^15.3.2",
     "react-dropzone": "^3.12.2",

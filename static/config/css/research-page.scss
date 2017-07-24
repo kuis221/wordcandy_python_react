@@ -14,15 +14,22 @@
         border-color: #dbe4ff;
     }
 
-    input, textarea {
+    input,
+    textarea {
         border-color: #dbd9ed;
         background-color: #f5f6fc;
+    }
+
+    .react-tagsinput-tag {
+      background-color: #b2c4ff;
+      padding: 8px;
     }
 
     .panel-default {
         .panel-heading {
             border-bottom: none;
             font-weight: bold;
+            font-size: 16px;
         }
     }
 
@@ -41,6 +48,37 @@
             color: #565763;
             font-size: 16px;
             margin-top: -5px;
+        }
+    }
+
+    .amazon-result {
+
+        .panel-body {
+            padding: 0;
+            color: #56576c;
+
+            .table {
+                margin-bottom: 0;
+
+                thead {
+                    th {
+                        border-bottom: 1px solid #dbdaed;
+                    }
+                }
+
+                tbody {
+                    background-color: #f5f6fc;
+
+                    td {
+
+                        border-top: 1px solid #aebce6;
+
+                        a {
+                          color: #7697ff;
+                        }
+                    }
+                }
+            }
         }
     }
 }

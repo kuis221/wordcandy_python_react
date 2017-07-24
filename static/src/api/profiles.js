@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export let url = 'http://www.wordcandy.io/v1/';
+export let url = 'http://0.0.0.0:8000/v1/';
 
 exports.apiProfiles = {
     signUp: function(data) {

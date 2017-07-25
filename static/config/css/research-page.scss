@@ -16,7 +16,7 @@
 
     .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
       background-color: #dbe4ff;
-      border-color: #dbe4ff;      
+      border-color: #dbe4ff;
     }
 
     input,
@@ -68,6 +68,7 @@
                 thead {
                     th {
                         border-bottom: 1px solid #dbdaed;
+                        font-size: small;
                     }
                 }
 

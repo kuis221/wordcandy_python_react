@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^sign-in/$', IndexView.as_view(), name="sign_in"),
     url(r'^sign-up/$', IndexView.as_view(), name="sign_up"),
     url(r'^profile/$', IndexView.as_view(), name="profile"),
+    url(r'^research-page/$', IndexView.as_view(), name="research-page"),
     url(r'^admin/', admin.site.urls),
     url(r'^docs/$', schema_view),
     url(r'^v1/', include('rest_auth.urls')),

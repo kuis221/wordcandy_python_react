@@ -1,3 +1,4 @@
+from __future__ import division
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -9,6 +10,9 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.core.cache import cache
 
+import math
+import random
+from amazon.api import AmazonAPI
 import time
 import requests
 from datetime import datetime
@@ -28,6 +32,65 @@ import requests
 
 from rest_framework_tracking.mixins import LoggingMixin
 from rest_framework.authentication import TokenAuthentication
+
+
+
+class AmazonProductsView(LoggingMixin, GenericAPIView):
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
+
+    def monthly_sales_estimate(self, bsr):
+        if bsr != None:
+            bsr = int(bsr)
+            if 10000000000 <= bsr >= 9180:
+                return int(math.ceil(1/30))
+
+            if 9179 <= bsr >= 6033:
+                return int(math.ceil(10/30))
+
+            if 6032 <= bsr >= 3545:
+                return int(math.ceil(random.randint(50, 100)/30))
+
+            if 3544 <= bsr >= 1714:
+                return int(math.ceil(random.randint(500, 1000)/30))
+
+            if 1713 <= bsr >= 541:
+                return int(math.ceil(random.randint(5000, 10000)/30))
+
+            if 540 <= bsr >= 35:
+                return int(math.ceil(random.randint(50000, 100000)/30))
+
+            if 34 <= bsr >= 28:
+                return int(math.ceil(random.randint(100000, 110000)/30))
+
+            if 27 <= bsr >= 7:
+                return int(math.ceil(random.randint(130000, 160000)/30))
+
+            return int(math.ceil(random.randint(165000, 170000)/30))
+        else:
+            return 0
+
+    def get(self, request, format=None):
+        """
+        Return amazon products
+        """
+        amazon = AmazonAPI(settings.AMAZON_ACCESS_KEY, settings.AMAZON_SECRET_KEY, settings.AMAZON_ASSOC_TAG)
+        data = {'result':[]}
+        tags = request.GET.get('tags', '')
+        for tag in tags.split(','):
+            products = amazon.search(Keywords='t-shirt {}'.format(tag), SearchIndex='Apparel')
+            for product in products:
+                data['result'].append({
+                    'title': product.title,
+                    'sales_rank': product.sales_rank,
+                    'monthly_sales_estimate': self.monthly_sales_estimate(product.sales_rank),
+                    'asin': product.asin,
+                    'small_image_url': product.small_image_url,
+                    'reviews': product.reviews,
+                    'title': product.title,
+                    'detail_page_url': product.detail_page_url,
+                })
+        return Response(data)
 
 
 class TrademarksView(GenericAPIView):

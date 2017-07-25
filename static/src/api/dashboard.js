@@ -61,6 +61,26 @@ exports.apiDashboard = {
                 return error;
             });
     },
+    amazon: function(data) {
+        return axios({
+                url: url + "dashboard/amazon/",
+                method: 'get',
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('key')
+                },
+                params: data,
+                validateStatus: function(status) {
+                    return status;
+                }
+            })
+            .then(response => {
+                return response;
+            }).catch(function(error) {
+                return error;
+            });
+    },
     newTemplates: function(data) {
         return axios({
                 url: url + "dashboard/templates/",

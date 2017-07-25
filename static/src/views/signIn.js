@@ -23,6 +23,7 @@ import Loader from 'react-loader';
 import {apiProfiles} from '../api/profiles';
 import ModalForgetPassword from '../modal/forgetPassword';
 
+
 class Forms extends Component {
     componentDidMount() {
         $('#sign-in').validator();
@@ -55,21 +56,14 @@ class Forms extends Component {
                             }
                             _.setState({error: true});
                             _.setState({errorText: errorText});
-                            _.setState({loaded: true});
                             break;
                         case 200:
                             localStorage.setItem('key', response.data['key']);
                             localStorage.setItem('username', data['username']);
-                            setTimeout(function() {
-                                _.setState({loaded: true});
-                                browserHistory.push('/dashboard');
-                            }, 1000);
-                            break;
-                        default:
-                            _.setState({loaded: true});
+                            browserHistory.push('/dashboard');
                             break;
                     }
-
+                    _.setState({loaded: true});
                 });
             }
             e.preventDefault();
@@ -92,23 +86,21 @@ class Forms extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                    <Col md={12} className="text-center" style={{
-                        paddingBottom: '5px'
-                    }}>
+                    <Col md={12} className="text-center"  style={{paddingBottom: '5px'}}>
                         <Loader loaded={this.state.loaded}>
-                            <Button type="submit" block bsStyle="secondary" onClick={this.signIn}>
-                                Login
-                            </Button>
+                          <Button type="submit" block bsStyle="secondary" onClick={this.signIn}>
+                              Login
+                          </Button>
                         </Loader>
                     </Col>
                     <Col md={12} className="forget-password">
-                        <ModalForgetPassword/>
+                      <ModalForgetPassword/>
                     </Col>
                     <Col md={12} className="text-center error-text">
                         {this.state.error
                             ? <p>
-                                    <i className="icon ion-android-alert"></i>{this.state.errorText}
-                                </p>
+                              <i className="icon ion-android-alert"></i>{this.state.errorText}
+                              </p>
                             : null}
                     </Col>
                 </FormGroup>
@@ -132,9 +124,7 @@ export default class SignIgn extends Component {
                     <Navbar>
                         <Navbar.Header>
                             <Navbar.Brand>
-                                <Link to="/"><Image style={{
-                width: '170px'
-            }} src="/static/images/logo.png"/></Link>
+                                <Link to="/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
                             </Navbar.Brand>
                         </Navbar.Header>
                         <Nav pullRight>

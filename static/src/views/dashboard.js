@@ -481,6 +481,7 @@ export default class Dashboard extends MixinAuth {
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                              <MenuItem disabled >Dashboard</MenuItem>
                              <MenuItem href="/profile/">Settings</MenuItem>
+                             <MenuItem href="/research-page/">Research page</MenuItem>
                              <MenuItem divider />
                              <MenuItem href="/">Exit</MenuItem>
                       </NavDropdown>

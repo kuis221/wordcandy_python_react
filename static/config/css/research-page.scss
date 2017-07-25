@@ -14,6 +14,11 @@
         border-color: #dbe4ff;
     }
 
+    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+      background-color: #dbe4ff;
+      border-color: #dbe4ff;      
+    }
+
     input,
     textarea {
         border-color: #dbd9ed;
@@ -67,11 +72,13 @@
                 }
 
                 tbody {
-                    background-color: #f5f6fc;
+                    background-color: #fff;
 
                     td {
 
                         border-top: 1px solid #aebce6;
+                        font-size: smaller;
+                        white-space: normal;
 
                         a {
                           color: #7697ff;

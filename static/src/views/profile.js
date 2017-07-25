@@ -120,6 +120,7 @@ export default class Profile extends MixinAuth {
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                              <MenuItem href="/dashboard/">Dashboard</MenuItem>
                              <MenuItem disabled>Settings</MenuItem>
+                             <MenuItem href="/research-page/">Research page</MenuItem>
                              <MenuItem divider />
                              <MenuItem href="/">Exit</MenuItem>
                       </NavDropdown>

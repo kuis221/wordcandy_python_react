@@ -45,7 +45,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         except CurrentSubscription.DoesNotExist:
             return 'FREE Plan'
 
-        if subscription.status != 'active':
+        if subscription.status != 'active' and subscription.status != 'trialing':
             return 'FREE Plan'
 
         return subscription.plan
@@ -61,7 +61,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         except CurrentSubscription.DoesNotExist:
             return False
 
-        if subscription.status != 'active':
+        if subscription.status != 'active' and subscription.status != 'trialing':
             return False
 
         return True
@@ -82,7 +82,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         except CurrentSubscription.DoesNotExist:
             return default - today
 
-        if subscription.status != 'active':
+        if subscription.status != 'active' and subscription.status != 'trialing':
             return default - today
 
         return plan - today

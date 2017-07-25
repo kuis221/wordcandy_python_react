@@ -553,7 +553,7 @@ export default class Dashboard extends MixinAuth {
                                                                 </Col>
                                                                 <Col md={3} className="text-right">
                                                                     {this.state.print > 0 ?
-                                                                      <Button disabled={this.state.tags.length == 0} bsStyle="primary" onClick={this.calculate}>
+                                                                      <Button disabled={this.state.tags.length == 0} className={"animated infinite " + (this.state.tags.length == 0 ? '' : 'pulse')} bsStyle="primary" onClick={this.calculate}>
                                                                           <i className="icon ion-calculator"></i>
                                                                           Calculate
                                                                       </Button>

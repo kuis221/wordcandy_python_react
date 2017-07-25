@@ -25,7 +25,7 @@ SECRET_KEY = '89-ybjdlkb35kx+tm)*tt#^1306%ff^ztp05y+h!yj!(c9-dc2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -254,4 +254,5 @@ MEDIA_ROOT = ''
 AWS_ACCESS_KEY_ID = "AKIAIOCAEG4U53J2G2KA"
 AWS_SECRET_ACCESS_KEY = "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"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (BASE_DIR, 'static')

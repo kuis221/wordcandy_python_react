@@ -107,6 +107,8 @@ export default class ResearchPage extends MixinAuth {
                 case 401:
                     browserHistory.push('/sign-in');
                     break;
+                default:
+                    _.setState({loadedResult: true});                
             }
 
         }).catch(function(error) {});

@@ -78,7 +78,7 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
         data = {'result':[]}
         tags = request.GET.get('tags', '')
         for tag in tags.split(','):
-            products = amazon.search(Keywords='t-shirt {}'.format(tag), SearchIndex='Apparel')
+            products = amazon.search(Keywords='t-shirt {}'.format(tag), SearchIndex='All')
             for product in products:
                 data['result'].append({
                     'title': product.title,

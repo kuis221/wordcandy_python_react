@@ -80,12 +80,21 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         try:
             subscription = customer.current_subscription
         except CurrentSubscription.DoesNotExist:
-            return default - today
+            if default - today > 0:
+                return default - today
+            else:
+                return 0
 
         if subscription.status != 'active' and subscription.status != 'trialing':
-            return default - today
+            if default - today > 0:
+                return default - today
+            else:
+                return 0
 
-        return plan - today
+        if plan - today > 0:
+            return plan - today
+        else:
+            return 0
 
 
     class Meta:

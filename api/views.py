@@ -43,30 +43,30 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
         if bsr != None:
             bsr = int(bsr)
             if 10000000000 <= bsr >= 9180:
-                return int(math.ceil(1/30))
+                return 1
 
             if 9179 <= bsr >= 6033:
-                return int(math.ceil(10/30))
+                return random.randint(2, 10)
 
             if 6032 <= bsr >= 3545:
-                return int(math.ceil(random.randint(50, 100)/30))
+                return random.randint(50, 100)
 
             if 3544 <= bsr >= 1714:
-                return int(math.ceil(random.randint(500, 1000)/30))
+                return random.randint(500, 1000)
 
             if 1713 <= bsr >= 541:
-                return int(math.ceil(random.randint(5000, 10000)/30))
+                return random.randint(5000, 10000)
 
             if 540 <= bsr >= 35:
-                return int(math.ceil(random.randint(50000, 100000)/30))
+                return random.randint(50000, 100000)
 
             if 34 <= bsr >= 28:
-                return int(math.ceil(random.randint(100000, 110000)/30))
+                return random.randint(100000, 110000)
 
             if 27 <= bsr >= 7:
-                return int(math.ceil(random.randint(130000, 160000)/30))
+                return random.randint(130000, 160000)
 
-            return int(math.ceil(random.randint(165000, 170000)/30))
+            return random.randint(165000, 170000)
         else:
             return 0
 

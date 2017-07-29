@@ -19,19 +19,70 @@ from datetime import datetime
 import boto3
 from cStringIO import StringIO
 import io
+import json
 import urllib3
 
 from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer, TemplateSerializer, SubscribeSerializer, ExportSerializer, UserDetailsSerializer
-from .models import Shop, Subscribe, Word
+from .models import Shop, Subscribe, Word, Product
 
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 from openpyxl.writer.excel import save_virtual_workbook
 from trademark import marker
 import requests
+import after_response
 
 from rest_framework_tracking.mixins import LoggingMixin
 from rest_framework.authentication import TokenAuthentication
+
+
+def monthly_sales_estimate(bsr):
+    if bsr != None:
+        bsr = int(bsr)
+        if 10000000000 <= bsr >= 9180:
+            return 1
+
+        if 9179 <= bsr >= 6033:
+            return random.randint(2, 10)
+
+        if 6032 <= bsr >= 3545:
+            return random.randint(50, 100)
+
+        if 3544 <= bsr >= 1714:
+            return random.randint(500, 1000)
+
+        if 1713 <= bsr >= 541:
+            return random.randint(5000, 10000)
+
+        if 540 <= bsr >= 35:
+            return random.randint(50000, 100000)
+
+        if 34 <= bsr >= 28:
+            return random.randint(100000, 110000)
+
+        if 27 <= bsr >= 7:
+            return random.randint(130000, 160000)
+
+        return random.randint(165000, 170000)
+    else:
+        return 0
+
+
+@after_response.enable
+def amazon_products(data):
+    for item in data['result']:
+        product = Product.objects.filter(asin=item['asin'])
+        if not product:
+            try:
+                Product.objects.create(title=item['title'],
+                                       sales_rank=item['sales_rank'],
+                                       monthly_sales_estimate=item['monthly_sales_estimate'],
+                                       asin=item['asin'],
+                                       small_image_url=item['small_image_url'],
+                                       reviews=item['reviews'],
+                                       detail_page_url=item['detail_page_url'])
+            except Exception as e:
+                pass
 
 
 
@@ -39,57 +90,44 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
     authentication_classes = (
         BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
-    def monthly_sales_estimate(self, bsr):
-        if bsr != None:
-            bsr = int(bsr)
-            if 10000000000 <= bsr >= 9180:
-                return 1
-
-            if 9179 <= bsr >= 6033:
-                return random.randint(2, 10)
-
-            if 6032 <= bsr >= 3545:
-                return random.randint(50, 100)
-
-            if 3544 <= bsr >= 1714:
-                return random.randint(500, 1000)
-
-            if 1713 <= bsr >= 541:
-                return random.randint(5000, 10000)
-
-            if 540 <= bsr >= 35:
-                return random.randint(50000, 100000)
-
-            if 34 <= bsr >= 28:
-                return random.randint(100000, 110000)
-
-            if 27 <= bsr >= 7:
-                return random.randint(130000, 160000)
-
-            return random.randint(165000, 170000)
-        else:
-            return 0
-
     def get(self, request, format=None):
         """
         Return amazon products
         """
-        amazon = AmazonAPI(settings.AMAZON_ACCESS_KEY, settings.AMAZON_SECRET_KEY, settings.AMAZON_ASSOC_TAG)
-        data = {'result':[]}
-        tags = request.GET.get('tags', '')
-        for tag in tags.split(','):
-            products = amazon.search(Keywords='t-shirt {}'.format(tag), SearchIndex='Apparel')
-            for product in products:
-                data['result'].append({
-                    'title': product.title,
-                    'sales_rank': product.sales_rank,
-                    'monthly_sales_estimate': self.monthly_sales_estimate(product.sales_rank),
-                    'asin': product.asin,
-                    'small_image_url': product.small_image_url,
-                    'reviews': product.reviews,
-                    'title': product.title,
-                    'detail_page_url': product.detail_page_url,
-                })
+        try:
+            amazon = AmazonAPI(settings.AMAZON_ACCESS_KEY,
+                               settings.AMAZON_SECRET_KEY, settings.AMAZON_ASSOC_TAG)
+            data = {'result': []}
+            tags = request.GET.get('tags', '')
+            for tag in tags.split(','):
+                products = amazon.search(
+                    Keywords='t-shirt {}'.format(tag), SearchIndex='Apparel')
+                for product in products:
+                    data['result'].append({
+                        'title': product.title,
+                        'sales_rank': product.sales_rank,
+                        'monthly_sales_estimate': monthly_sales_estimate(product.sales_rank),
+                        'asin': product.asin,
+                        'small_image_url': product.small_image_url,
+                        'reviews': product.reviews,
+                        'detail_page_url': product.detail_page_url,
+                    })
+            amazon_products.after_response(data)
+        except Exception as e:
+            data = {'result': []}
+            tags = request.GET.get('tags', '')
+            for tag in tags.split(','):
+                products = Product.objects.filter(title__icontains = tag)
+                for product in products:
+                    data['result'].append({
+                        'title': product.title,
+                        'sales_rank': product.sales_rank,
+                        'monthly_sales_estimate': monthly_sales_estimate(product.sales_rank),
+                        'asin': product.asin,
+                        'small_image_url': product.small_image_url,
+                        'reviews': product.reviews,
+                        'detail_page_url': product.detail_page_url,
+                    })
         return Response(data)
 
 
@@ -99,7 +137,8 @@ class TrademarksView(GenericAPIView):
         """
         Return check trademarks
         """
-        result = requests.post('http://52.41.13.151/v1/api/search/', data=request.data)
+        result = requests.post(
+            'http://52.41.13.151/v1/api/search/', data=request.data)
         return Response(result.content)
 
 

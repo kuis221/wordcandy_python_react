@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Template, Shop, Subscribe, Word, Export
+from .models import Template, Shop, Subscribe, Word, Export, Product
 
 
 class TemplateAdmin(admin.ModelAdmin):
@@ -8,6 +8,13 @@ class TemplateAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
 
 admin.site.register(Template, TemplateAdmin)
+
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['title', 'asin']
+    date_hierarchy = 'created_date'
+
+admin.site.register(Product, ProductAdmin)
 
 
 class ExportAdmin(admin.ModelAdmin):

@@ -23,11 +23,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '89-ybjdlkb35kx+tm)*tt#^1306%ff^ztp05y+h!yj!(c9-dc2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = ['*']
+
+ADMINS = [('Dmitry Kalinin', 'dmitry.kalinin.email@gmail.com'),]
+MANAGERS = ADMINS
 
 
 # Application definition
@@ -61,7 +64,8 @@ INSTALLED_APPS = [
     'api',
     'storages',
     'easy_thumbnails',
-    'dashboard'
+    'dashboard',
+    'after_response',
 ]
 
 SOCIALACCOUNT_EMAIL_VERIFICATION = False

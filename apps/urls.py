@@ -13,11 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import url, include, patterns
 from django.contrib import admin
-from main.views import  IndexView, ResetPasswordView, RobotsView
 from django.conf import settings
 from django.conf.urls.static import static
+from main.views import  IndexView, ResetPasswordView, RobotsView
 from django.views.generic import RedirectView
 
 admin.site.site_header = "WORDCANDY.IO"
@@ -47,5 +47,8 @@ urlpatterns = [
 ]
 
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += patterns('',
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.STATIC_ROOT,
+    }),
+)

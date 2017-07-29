@@ -7,6 +7,22 @@ from jsonfield import JSONField
 from easy_thumbnails.fields import ThumbnailerImageField
 
 
+class Product(models.Model):
+    title = models.CharField(max_length=512)
+    sales_rank = models.IntegerField()
+    monthly_sales_estimate = models.IntegerField()
+    asin = models.EmailField(max_length=256)
+    small_image_url = models.CharField(max_length=256)
+    reviews = JSONField()
+    detail_page_url = models.CharField(max_length=256)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.title
+
+
+
 class Subscribe(models.Model):
     email = models.EmailField(max_length=255)
     created_date = models.DateTimeField(auto_now_add=True)

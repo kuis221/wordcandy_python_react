@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
     url(r'^0DFD5E3CED717C269E2CC5AE45CA6410.txt$', RobotsView.as_view(), name='robots'),
     url(r'^dashboard/$', IndexView.as_view(), name="dashboard"),
+    url(r'^dashboard/$', IndexView.as_view(), name="home"),
     url(r'^sign-in/$', IndexView.as_view(), name="sign_in"),
     url(r'^sign-up/$', IndexView.as_view(), name="sign_up"),
     url(r'^profile/$', IndexView.as_view(), name="profile"),

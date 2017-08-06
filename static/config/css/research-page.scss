@@ -4,7 +4,13 @@
     padding-bottom: 60px;
     height: 100%;
 
-    .btn-primary {
+    .research-content {
+      .panel-body {
+        padding: 0px 15px 0px 15px;
+      }
+    }
+
+    .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
         background-color: #839ff9;
         border-color: #839ff9;
     }
@@ -14,9 +20,13 @@
         border-color: #dbe4ff;
     }
 
-    .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
-      background-color: #dbe4ff;
-      border-color: #dbe4ff;
+    .btn-outline.disabled,
+    .btn-outline[disabled],
+    fieldset[disabled] .btn-outline {
+      color: #839ff9;
+      border: 1px solid #839ff9;
+      background-color: #fff;
+      opacity: 0.7;
     }
 
     input,
@@ -34,7 +44,8 @@
         .panel-heading {
             border-bottom: none;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
+            color: #333333;
         }
     }
 
@@ -57,6 +68,7 @@
     }
 
     .amazon-result {
+        margin-top: -10px;
 
         .panel-body {
             padding: 0;

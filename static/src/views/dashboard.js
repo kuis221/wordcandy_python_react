@@ -114,6 +114,7 @@ export default class Dashboard extends MixinAuth {
     componentWillMount() {
         document.addEventListener("keydown", this.handleKeyDown.bind(this));
         document.addEventListener("keyup", this.handleKeyPress.bind(this));
+        document.body.style.backgroundColor = "#454656";
     }
 
     handleKeyDown(event) {

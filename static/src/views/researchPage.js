@@ -50,6 +50,10 @@ export default class ResearchPage extends MixinAuth {
         this.deleteKeywords = this.deleteKeywords.bind(this);
     }
 
+    componentWillMount() {
+      document.body.style.backgroundColor = "#454656";
+    }
+
     componentDidMount() {
         var _ = this;
         apiProfiles.getUser().then(function(response) {
@@ -108,7 +112,7 @@ export default class ResearchPage extends MixinAuth {
                     browserHistory.push('/sign-in');
                     break;
                 default:
-                    _.setState({loadedResult: true});                
+                    _.setState({loadedResult: true});
             }
 
         }).catch(function(error) {});
@@ -147,7 +151,7 @@ export default class ResearchPage extends MixinAuth {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col md={8}>
+                                    <Col md={7}>
                                         {this.state.tags.length > 0 ?
                                           <ul className="list-inline">
                                               <li>
@@ -157,13 +161,13 @@ export default class ResearchPage extends MixinAuth {
                                           </ul>
                                         : null}
                                     </Col>
-                                    <Col md={4}>
+                                    <Col md={5} className="text-right">
                                         <ul className="list-inline">
                                             <li>
-                                                <Button bsStyle="primary" onClick={this.deleteKeywords} disabled={this.state.tags.length == 0}>
-                                                    <i className="icon ion-ios-trash-outline"></i>
-                                                    Clear All
-                                                </Button>
+                                              <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.deleteKeywords}>
+                                                <i className="icon ion-backspace"></i>
+                                                Clear All
+                                              </a>
                                             </li>
                                             <li>
                                                 <Button bsStyle="primary" disabled={this.state.tags.length > 0} onClick={this.addKeywords}>
@@ -187,7 +191,7 @@ export default class ResearchPage extends MixinAuth {
                         <Col md={12} className="amazon-result">
                             <Loader loaded={this.state.loadedResult}>
                                 <Panel>
-                                    <BootstrapTable data={this.state.products} height='270' scrollTop={'Bottom'} pagination>
+                                    <BootstrapTable data={this.state.products} height="400px" scrollTop={'Bottom'} pagination>
                                         <TableHeaderColumn dataAlign='center' isKey dataField='small_image_url' dataFormat={this.imageFormatter}>Product</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='asin' dataFormat={this.asinFormatter}>ASIN</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='sales_rank' dataSort={true}>Sales Rank</TableHeaderColumn>

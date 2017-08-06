@@ -30,16 +30,15 @@ export default class Profile extends MixinAuth {
     constructor(props) {
         super(props);
         if (localStorage.getItem("user") == null) {
-          browserHistory.push('/sign-in');
+            browserHistory.push('/sign-in');
         }
         var user = JSON.parse(localStorage.getItem("user"));
         var vip = false;
         try {
-          if (user.vip) {
-            vip = true;
-          }
-        } catch (e) {
-        }
+            if (user.vip) {
+                vip = true;
+            }
+        } catch (e) {}
         this.state = {
             user: user,
             vip: vip,
@@ -62,6 +61,10 @@ export default class Profile extends MixinAuth {
         this.changeUsername = this.changeUsername.bind(this);
 
         this.updateProfile = this.updateProfile.bind(this);
+    }
+
+    componentWillMount() {
+        document.body.style.backgroundColor = "#454656";
     }
 
     updateProfile() {
@@ -113,17 +116,19 @@ export default class Profile extends MixinAuth {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link className="logo" to="/dashboard/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
+                            <Link className="logo" to="/dashboard/"><Image style={{
+                width: '170px'
+            }} src="/static/images/logo.png"/></Link>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
-                             <MenuItem href="/dashboard/">Dashboard</MenuItem>
-                             <MenuItem disabled>Settings</MenuItem>
-                             <MenuItem href="/research-page/">Research page</MenuItem>
-                             <MenuItem divider />
-                             <MenuItem href="/">Exit</MenuItem>
-                      </NavDropdown>
+                            <MenuItem href="/dashboard/">Dashboard</MenuItem>
+                            <MenuItem disabled>Settings</MenuItem>
+                            <MenuItem href="/research-page/">Research page</MenuItem>
+                            <MenuItem divider/>
+                            <MenuItem href="/">Exit</MenuItem>
+                        </NavDropdown>
                     </Nav>
                 </Navbar>
                 <div className="dashboard-content">
@@ -291,9 +296,9 @@ export default class Profile extends MixinAuth {
                                                     : null}
                                             </Col>
                                             <Col md={2} className="text-right">
-                                              {!this.state.vip ?
-                                                <a href="/payments/">Change</a>
-                                              : null}
+                                                {!this.state.vip
+                                                    ? <a href="/payments/">Change</a>
+                                                    : null}
                                             </Col>
                                         </Row>
                                     </Col>
@@ -371,7 +376,7 @@ export default class Profile extends MixinAuth {
 
                             <Nav style={{
                                 paddingRight: '20%'
-                              }} pullRight>
+                            }} pullRight>
                                 <NavItem>
                                     <Loader loaded={this.state.loaded}>
                                         <Button bsStyle="success" onClick={this.updateProfile}>

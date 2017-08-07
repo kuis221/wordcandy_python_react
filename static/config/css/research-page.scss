@@ -70,6 +70,10 @@
     .amazon-result {
         margin-top: -10px;
 
+        .spinner {
+          top: 100px !important;
+        }
+
         .panel-body {
             padding: 0;
             color: #56576c;

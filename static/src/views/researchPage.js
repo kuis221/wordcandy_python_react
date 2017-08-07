@@ -51,7 +51,7 @@ export default class ResearchPage extends MixinAuth {
     }
 
     componentWillMount() {
-      document.body.style.backgroundColor = "#454656";
+        document.body.style.backgroundColor = "#454656";
     }
 
     componentDidMount() {
@@ -72,16 +72,16 @@ export default class ResearchPage extends MixinAuth {
     }
 
     handleKeywords(event) {
-      this.setState({keywords: event.target.value});
+        this.setState({keywords: event.target.value});
     }
 
     deleteKeywords() {
-      this.setState({tags: ''});
+        this.setState({tags: ''});
     }
 
     addKeywords(event) {
-      var tags = this.state.tags;
-      this.setState({tags: this.state.keywords, keywords: ''});
+        var tags = this.state.tags;
+        this.setState({tags: this.state.keywords, keywords: ''});
     }
 
     imageFormatter(cell, row) {
@@ -89,15 +89,21 @@ export default class ResearchPage extends MixinAuth {
     }
 
     asinFormatter(cell, row) {
-      return(<a href={row.detail_page_url} target="_blank">{cell}</a>)
+        return (
+            <a href={row.detail_page_url} target="_blank">{cell}</a>
+        )
     }
 
     reviewsFormatter(cell, row) {
-      if (cell[0]) {
-        return(<a href={cell[1]} target="_blank">Look for reviews</a>)
-      } else {
-        return(<div>There are no reviews</div>)
-      }
+        if (cell[0]) {
+            return (
+                <a href={cell[1]} target="_blank">Look for reviews</a>
+            )
+        } else {
+            return (
+                <div>There are no reviews</div>
+            )
+        }
     }
 
     search() {
@@ -146,28 +152,29 @@ export default class ResearchPage extends MixinAuth {
                                 <Row>
                                     <Col md={12}>
                                         <FormGroup>
-                                            <FormControl type="text" placeholder="Enter keywords" onChange={this.handleKeywords} value={this.state.keywords} />
+                                            <FormControl type="text" placeholder="Enter keywords" onChange={this.handleKeywords} value={this.state.keywords}/>
                                         </FormGroup>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col md={7}>
-                                        {this.state.tags.length > 0 ?
-                                          <ul className="list-inline">
-                                              <li>
-                                                  <span className="react-tagsinput-tag">{this.state.tags}<a className="react-tagsinput-remove" onClick={this.deleteKeywords}></a>
-                                                  </span>
-                                              </li>
-                                          </ul>
-                                        : null}
+                                        {this.state.tags.length > 0
+                                            ? <ul className="list-inline">
+                                                    <li>
+                                                        <span className="react-tagsinput-tag">{this.state.tags}
+                                                            <a className="react-tagsinput-remove" onClick={this.deleteKeywords}></a>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            : null}
                                     </Col>
                                     <Col md={5} className="text-right">
                                         <ul className="list-inline">
                                             <li>
-                                              <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.deleteKeywords}>
-                                                <i className="icon ion-backspace"></i>
-                                                Clear All
-                                              </a>
+                                                <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.deleteKeywords}>
+                                                    <i className="icon ion-backspace"></i>
+                                                    Clear All
+                                                </a>
                                             </li>
                                             <li>
                                                 <Button bsStyle="primary" disabled={this.state.tags.length > 0} onClick={this.addKeywords}>
@@ -176,12 +183,10 @@ export default class ResearchPage extends MixinAuth {
                                                 </Button>
                                             </li>
                                             <li>
-                                                <Loader loaded={this.state.loadedResult}>
-                                                  <Button bsStyle="primary" onClick={this.search} disabled={this.state.tags.length == 0}>
-                                                      <i className="icon ion-ios-search"></i>
-                                                      Search
-                                                  </Button>
-                                                </Loader>
+                                                <Button bsStyle="primary" onClick={this.search} disabled={this.state.tags.length == 0 || !this.state.loadedResult}>
+                                                    <i className="icon ion-ios-search"></i>
+                                                    Search
+                                                </Button>
                                             </li>
                                         </ul>
                                     </Col>

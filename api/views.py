@@ -317,6 +317,9 @@ class ExportKeywordsView(GenericAPIView):
     serializer_class = ExportSerializer
 
     def post(self, request, format=None):
+        """
+        Save all keywrods to xls
+        """
         filename = int(time.time())
         s3c = boto3.client('s3',
                            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,

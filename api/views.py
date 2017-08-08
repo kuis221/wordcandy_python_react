@@ -22,7 +22,7 @@ import io
 import json
 import urllib3
 
-from .serializers import SynonymsSerializer, AntonymsSerializer, ShopSerializer, TemplateSerializer, SubscribeSerializer, ExportSerializer, UserDetailsSerializer
+from .serializers import *
 from .models import Shop, Subscribe, Word, Product
 
 from openpyxl import Workbook
@@ -131,7 +131,8 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
         return Response(data)
 
 
-class TrademarksView(GenericAPIView):
+class TrademarksView(LoggingMixin, GenericAPIView):
+    serializer_class = TrademarkSerializer
 
     def post(self, request, format=None):
         """

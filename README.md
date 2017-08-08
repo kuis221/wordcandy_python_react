@@ -13,10 +13,3 @@ Word candy
 ```bash
 npm start
 ```
-
-
-## Run django
-
-```bash
-ssh -i wordcandy.pem ubuntu@35.158.69.175
-```

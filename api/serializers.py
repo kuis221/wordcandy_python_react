@@ -157,6 +157,10 @@ class SynonymsSerializer(serializers.Serializer):
     word = serializers.CharField(max_length=255)
 
 
+class TrademarkSerializer(serializers.Serializer):
+    words = serializers.CharField(max_length=1024)
+
+
 class AntonymsSerializer(serializers.Serializer):
     word = serializers.CharField(max_length=255)
 

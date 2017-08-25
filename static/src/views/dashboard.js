@@ -21,7 +21,8 @@ import {
     NavDropdown,
     MenuItem,
     Tab,
-    ProgressBar
+    ProgressBar,
+    IndexLinkContainer
 } from 'react-bootstrap';
 
 import {Link, browserHistory} from 'react-router';
@@ -432,6 +433,7 @@ export default class Dashboard extends MixinAuth {
         });
 
         apiDashboard.synonyms(data).then(function(response) {
+            console.log(data, response);
             var similars = response.data.synonyms;
             _.setState({similars: similars})
             apiDashboard.antonyms(data).then(function(response) {
@@ -478,6 +480,10 @@ export default class Dashboard extends MixinAuth {
                             <Link className="logo" to="/dashboard/"><Image style={{width: '170px'}} src="/static/images/logo.png" /></Link>
                         </Navbar.Brand>
                     </Navbar.Header>
+                    <Nav>
+                        <MenuItem href="/dashboard/" className="active">Dashboard</MenuItem>
+                        <MenuItem href="/research-page/">Research</MenuItem>
+                    </Nav>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                              <MenuItem disabled >Dashboard</MenuItem>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export let url = 'https://wordcandy.io/v1/';
+//export let url = 'https://wordcandy.io/v1/';
+export let url = 'http://localhost:8000/v1/';
 
 exports.apiDashboard = {
     exportTemplates: function(data) {
@@ -62,6 +63,7 @@ exports.apiDashboard = {
             });
     },
     amazon: function(data) {
+        console.log("Getting response......");
         return axios({
                 url: url + "dashboard/amazon/",
                 method: 'get',
@@ -76,6 +78,7 @@ exports.apiDashboard = {
                 }
             })
             .then(response => {
+                console.log("Got respone////", response);
                 return response;
             }).catch(function(error) {
                 return error;

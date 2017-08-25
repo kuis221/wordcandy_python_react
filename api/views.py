@@ -80,10 +80,17 @@ def amazon_products(data):
                                        asin=item['asin'],
                                        small_image_url=item['small_image_url'],
                                        reviews=item['reviews'],
-                                       detail_page_url=item['detail_page_url'])
+                                       detail_page_url=item['detail_page_url'],
+                                       features=item['features'],
+                                       type=item['type'])
+
             except Exception as e:
                 pass
 
+        else:
+            product.features = item['features']
+            product.type = item['type']
+            product.save(['features', 'type'])
 
 
 class AmazonProductsView(LoggingMixin, GenericAPIView):
@@ -101,8 +108,16 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
             tags = request.GET.get('tags', '')
             for tag in tags.split(','):
                 products = amazon.search(
-                    Keywords='t-shirt {}'.format(tag), SearchIndex='Apparel')
+                    Keywords='{} merch t-shirt'.format(tag), SearchIndex='Apparel', BrowseNodes="2227030011,7147445011")
                 for product in products:
+                    product_type = 2
+                    for node in product.browse_nodes:
+                        print("    ", node.name)
+                        if node.name == "Women" or "women" in product.title.lower() or "woman" in product.title.lower():
+                            product_type = 1
+                        elif node.name == "Men" or "men" in product.title.lower() or "man" in product.title.lower():
+                            product_type = 0
+
                     data['result'].append({
                         'title': product.title,
                         'sales_rank': product.sales_rank,
@@ -111,9 +126,12 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
                         'small_image_url': product.small_image_url,
                         'reviews': product.reviews,
                         'detail_page_url': product.detail_page_url,
+                        'features': product.features,
+                        'type': product_type
                     })
             amazon_products.after_response(data)
         except Exception as e:
+            print("Exception occured", e)
             data = {'result': []}
             tags = request.GET.get('tags', '')
             for tag in tags.split(','):
@@ -127,6 +145,8 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
                         'small_image_url': product.small_image_url,
                         'reviews': product.reviews,
                         'detail_page_url': product.detail_page_url,
+                        'features': product.features,
+                        'type': product.type
                     })
         return Response(data)
 

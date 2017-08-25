@@ -13,10 +13,13 @@ class Product(models.Model):
     monthly_sales_estimate = models.IntegerField()
     asin = models.EmailField(max_length=256)
     small_image_url = models.CharField(max_length=256)
+    features = JSONField()
+    type = models.CharField(max_length=255, default='', blank=True, null=True)
     reviews = JSONField()
     detail_page_url = models.CharField(max_length=256)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
 
     def __unicode__(self):
         return self.title

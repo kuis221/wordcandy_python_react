@@ -1,108 +1,138 @@
-.research-page {
-    color: #454656;
-    background-color: #454656;
-    padding-bottom: 60px;
-    height: 100%;
+nav.navbar.navbar-default {
+    border-radius: 0px;
+    border-bottom: none;
 
-    .research-content {
-      .panel-body {
-        padding: 0px 15px 0px 15px;
-      }
+    .nav.navbar-nav > li.active > a {
+        background: transparent;
+        color: #839ff9;
+        border-bottom: 2px solid;
     }
+}
 
-    .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-        background-color: #839ff9;
-        border-color: #839ff9;
-    }
 
-    .btn-default {
-        background-color: #dbe4ff;
-        border-color: #dbe4ff;
-    }
+    .research-page {
+        color: #454656;
+        background-color: #454656;
+        padding-bottom: 60px;
+        height: 100%;
 
-    .btn-outline.disabled,
-    .btn-outline[disabled],
-    fieldset[disabled] .btn-outline {
-      color: #839ff9;
-      border: 1px solid #839ff9;
-      background-color: #fff;
-      opacity: 0.7;
-    }
+        .filter-buttons {
+            margin:5px;
 
-    input,
-    textarea {
-        border-color: #dbd9ed;
-        background-color: #f5f6fc;
-    }
-
-    .react-tagsinput-tag {
-      background-color: #b2c4ff;
-      padding: 8px;
-    }
-
-    .panel-default {
-        .panel-heading {
-            border-bottom: none;
-            font-weight: bold;
-            font-size: 15px;
-            color: #333333;
-        }
-    }
-
-    .navbar-default {
-        background-color: #fff;
-        margin-left: -15px;
-        margin-right: -15px;
-
-        .logo {
-            img {
-                margin-top: -6px;
+            .btn {
+                margin-right:5px;
+                &.btn-outline {
+                    color: #839ff9;
+                    border: 1px solid #839ff9;
+                    background: transparent;
+                }
             }
         }
 
-        span {
-            color: #565763;
-            font-size: 16px;
-            margin-top: -5px;
-        }
-    }
+        .research-content {
+            .panel-body {
+                padding: 0px 15px 0px 15px;
 
-    .amazon-result {
-        margin-top: -10px;
-
-        .spinner {
-          top: 100px !important;
-        }
-
-        .panel-body {
-            padding: 0;
-            color: #56576c;
-
-            .table {
-                margin-bottom: 0;
-
-                thead {
-                    th {
-                        border-bottom: 1px solid #dbdaed;
-                        font-size: small;
-                    }
+                .react-bs-table-pagination {
+                        padding: 15px 15px !important;
                 }
+            }
+        }
 
-                tbody {
-                    background-color: #fff;
+        .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: #839ff9;
+            border-color: #839ff9;
+        }
 
-                    td {
+        .btn-default {
+            background-color: #dbe4ff;
+            border-color: #dbe4ff;
+        }
 
-                        border-top: 1px solid #aebce6;
-                        font-size: smaller;
-                        white-space: normal;
+        .btn-outline.disabled,
+        .btn-outline[disabled],
+        fieldset[disabled] .btn-outline {
+            color: #839ff9;
+            border: 1px solid #839ff9;
+            background-color: #fff;
+            opacity: 0.7;
+        }
 
-                        a {
-                          color: #7697ff;
+        input,
+        textarea {
+            border-color: #dbd9ed;
+            background-color: #f5f6fc;
+        }
+
+        .react-tagsinput-tag {
+            background-color: #b2c4ff;
+            padding: 8px;
+        }
+
+        .panel-default {
+            .panel-heading {
+                border-bottom: none;
+                font-weight: bold;
+                font-size: 15px;
+                color: #333333;
+            }
+        }
+
+        .navbar-default {
+            background-color: #fff;
+            margin-left: -15px;
+            margin-right: -15px;
+
+            .logo {
+                img {
+                    margin-top: -6px;
+                }
+            }
+
+            span {
+                color: #565763;
+                font-size: 16px;
+                margin-top: -5px;
+            }
+        }
+
+        .amazon-result {
+            margin-top: -10px;
+
+            .spinner {
+                top: 100px !important;
+            }
+
+            .panel-body {
+                padding: 0;
+                color: #56576c;
+
+                .table {
+                    margin-bottom: 0;
+
+                    thead {
+                        th {
+                            border-bottom: 1px solid #dbdaed;
+                            font-size: small;
+                        }
+                    }
+
+                    tbody {
+                        background-color: #fff;
+
+                        td {
+
+                            border-top: 1px solid #aebce6;
+                            font-size: smaller;
+                            white-space: normal;
+
+                            a {
+                                color: #7697ff;
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
+

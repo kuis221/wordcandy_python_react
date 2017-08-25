@@ -27,7 +27,15 @@ import MixinAuth from '../mixins/auth';
 import {apiProfiles} from '../api/profiles';
 import {apiDashboard} from '../api/dashboard';
 
+const categoryType = {
+  0: 'mans',
+  1: 'womens',
+  2: 'all'
+};
+
 export default class ResearchPage extends MixinAuth {
+
+
 
     constructor(props) {
         super(props);
@@ -42,7 +50,8 @@ export default class ResearchPage extends MixinAuth {
             products: [],
             loadedResult: true,
             tags: '',
-            keywords: ''
+            keywords: '',
+            filter: 'all'
         };
         this.search = this.search.bind(this);
         this.handleKeywords = this.handleKeywords.bind(this);
@@ -106,6 +115,25 @@ export default class ResearchPage extends MixinAuth {
         }
     }
 
+    featuresFormatter(cell, row){
+        if(cell){
+            var count = 0;
+            var features = cell.map((item) => {
+                console.log("item", item);
+                if(count >= 3){
+                    return (
+                        <li>{item}</li>
+                    )
+                }
+                count++;
+            });
+
+            return (
+                <ul>{features}</ul>
+            )
+        }
+    }
+
     search() {
         var _ = this;
         _.setState({loadedResult: false});
@@ -124,6 +152,20 @@ export default class ResearchPage extends MixinAuth {
         }).catch(function(error) {});
     }
 
+    updateFilter(e){
+        this.setState({filter: $(e.currentTarget).data('option')});
+
+        var self = this;
+        // Gotta wait for the state to actually change.
+        setTimeout(function() {
+            self.refs.typeCol.applyFilter(self.state.filter);
+        }, 500);
+    }
+
+    formatCategory(cell, row, enumObject){
+        return enumObject[cell];
+    }
+
     render() {
         return (
             <Grid className="research-page" fluid={true}>
@@ -135,6 +177,10 @@ export default class ResearchPage extends MixinAuth {
             }} src="/static/images/logo.png"/></Link>
                         </Navbar.Brand>
                     </Navbar.Header>
+                    <Nav>
+                        <MenuItem href="/dashboard/">Dashboard</MenuItem>
+                        <MenuItem href="/research-page/" className="active">Research</MenuItem>
+                    </Nav>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                             <MenuItem href="/dashboard/">Dashboard</MenuItem>
@@ -196,13 +242,20 @@ export default class ResearchPage extends MixinAuth {
                         <Col md={12} className="amazon-result">
                             <Loader loaded={this.state.loadedResult}>
                                 <Panel>
+                                    <div className="filter-buttons">
+                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == '' ? 'btn btn-primary' : 'btn btn-outline'} data-option="">All</button>
+                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'mans' ? 'btn btn-primary' : 'btn btn-outline'} data-option="mans">Mens</button>
+                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'womens' ? 'btn btn-primary' : 'btn btn-outline'} data-option="womens">Womens</button>
+                                    </div>
                                     <BootstrapTable data={this.state.products} height="400px" scrollTop={'Bottom'} pagination>
                                         <TableHeaderColumn dataAlign='center' isKey dataField='small_image_url' dataFormat={this.imageFormatter}>Product</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='asin' dataFormat={this.asinFormatter}>ASIN</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='sales_rank' dataSort={true}>Sales Rank</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='monthly_sales_estimate' dataSort={true}>Monthly Sales Estimate</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='title'>Description</TableHeaderColumn>
-                                        <TableHeaderColumn dataAlign='center' dataField='reviews' dataFormat={this.reviewsFormatter}>Reviews</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' dataField='features' dataFormat={this.featuresFormatter}>Features</TableHeaderColumn>
+                                        <TableHeaderColumn hidden ref='typeCol' dataAlign="center" dataField='type' filterFormatted dataFormat={this.formatCategory}
+                                            formatExtraData={categoryType} filter={ {type: 'TextFilter', delay: 1000} }>Category</TableHeaderColumn>
                                     </BootstrapTable>
                                 </Panel>
                             </Loader>

@@ -25,11 +25,11 @@ SECRET_KEY = '89-ybjdlkb35kx+tm)*tt#^1306%ff^ztp05y+h!yj!(c9-dc2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 ALLOWED_HOSTS = ['*']
 
-ADMINS = [('Dmitry Kalinin', 'dmitry.kalinin.email@gmail.com'),]
+ADMINS = [('Nick Germaine', 'nickgermaine1024@gmail.com'),]
 MANAGERS = ADMINS
 
 

@@ -12,12 +12,21 @@ nav.navbar.navbar-default {
 
     .research-page {
         color: #454656;
-        background-color: #454656;
+        background-color: #eee;
         padding-bottom: 60px;
-        height: 100%;
+
+        .navbar.navbar-default {
+            position: fixed;
+            z-index: 500;
+            width: 100%;
+            border-bottom: 2px solid #eee;
+        }
+
 
         .filter-buttons {
             margin:5px;
+            text-align: right;
+            padding: 10px 0px;
 
             .btn {
                 margin-right:5px;
@@ -30,13 +39,70 @@ nav.navbar.navbar-default {
         }
 
         .research-content {
-            .panel-body {
-                padding: 0px 15px 0px 15px;
+                padding-top: 190px;
 
-                .react-bs-table-pagination {
+            .fixed-subheader {
+                position: fixed;
+                top: 53px;
+                width: 100%;
+                left: 0px;
+                z-index: 50;
+                margin-bottom: 250px;
+            }
+
+            .panel {
+                border-radius: 0px;
+                box-shadow: 0px 1px 3px rgba(0, 0, 0, .2);
+                border: none;
+
+                small.hint {
+                    margin-top: 5px;
+                    display: block;
+                    color: #aaa;
+                }
+
+                .form-group {
+                    .btn.btn-primary {
+                        position: absolute;
+                        margin-top: -34px;
+                        margin-left: 226px;
+                        padding: 4px 8px;
+                        text-align: center;
+                        border-top-left-radius: 0px;
+                        border-bottom-left-radius: 0px;
+
+                        .icon {
+                            display: inline;
+                            margin: auto;
+                            text-align: center;
+                            padding: 0px;
+                            font-size: 24px;
+                            color: #fff;
+                        }
+                    }
+                }
+
+                .panel-body {
+                    padding: 0px 15px 0px 15px;
+
+                    .react-bs-table-pagination {
                         padding: 15px 15px !important;
+                    }
+
+                    .react-bs-table {
+                        height:auto !important;
+                    }
+
+                    .react-bs-container-body {
+                        height: calc(100vh - 300px) !important;
+                        overflow: auto;
+                    }
                 }
             }
+        }
+
+        .container {
+            max-width:1280px;
         }
 
         .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {

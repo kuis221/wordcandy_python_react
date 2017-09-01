@@ -90,11 +90,38 @@ export default class ResearchPage extends MixinAuth {
 
     addKeywords(event) {
         var tags = this.state.tags;
+        console.log("tags", tags, "keywords:", this.state.keywords);
         this.setState({tags: this.state.keywords, keywords: ''});
     }
 
+    checkInput(e){
+        var self = this;
+
+        if (e.which == 13 || e.which == 188) {
+
+            e.preventDefault();
+
+            if(e.which == 13 && e.target.value == '' && self.state.tags != ''){
+                self.search();
+            }else {
+                console.log(e.target.value);
+                self.handleKeywords(e);
+                self.addKeywords(e);
+            }
+            return false;
+        }
+
+
+    }
+
     imageFormatter(cell, row) {
-        return <Image src={cell}/>;
+        console.log("row:", row);
+        return (
+            <div>
+                <Image src={cell} /><br />
+                <a href={row.detail_page_url} target="_blank">{row.asin}</a>
+            </div>
+        );
     }
 
     asinFormatter(cell, row) {
@@ -191,54 +218,63 @@ export default class ResearchPage extends MixinAuth {
                         </NavDropdown>
                     </Nav>
                 </Navbar>
-                <div className="container">
+
                     <Row className="research-content">
-                        <Col md={12}>
-                            <Panel header="Add your keywords">
-                                <Row>
-                                    <Col md={12}>
-                                        <FormGroup>
-                                            <FormControl type="text" placeholder="Enter keywords" onChange={this.handleKeywords} value={this.state.keywords}/>
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={7}>
-                                        {this.state.tags.length > 0
-                                            ? <ul className="list-inline">
+                        <div className="fixed-subheader">
+
+
+                                    <Panel>
+                                        <br />
+                                        <div className="container">
+                                        <Row>
+                                            <Col md={3}>
+                                                <FormGroup>
+                                                    <FormControl type="text" placeholder="Enter keywords" onKeyDown={(e) => this.checkInput(e)} onChange={this.handleKeywords} value={this.state.keywords}/>
+                                                    <Button bsStyle="primary" onClick={this.search} disabled={this.state.tags.length == 0 || !this.state.loadedResult}>
+                                                            <i className="icon ion-ios-search"></i>
+                                                        </Button>
+
+                                                    <small className="hint">Press the comma or enter key to add keyword</small>
+                                                </FormGroup>
+                                            </Col>
+
+                                            <Col md={5}>
+                                                {this.state.tags.length > 0
+                                                    ? <ul className="list-inline">
+                                                            <li>
+                                                                <span className="react-tagsinput-tag">{this.state.tags}
+                                                                    <a className="react-tagsinput-remove" onClick={this.deleteKeywords}></a>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    : null}
+                                            </Col>
+                                            <Col md={4} className="text-right">
+                                                <ul className="list-inline">
                                                     <li>
-                                                        <span className="react-tagsinput-tag">{this.state.tags}
-                                                            <a className="react-tagsinput-remove" onClick={this.deleteKeywords}></a>
-                                                        </span>
+                                                        <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.deleteKeywords}>
+                                                            <i className="icon ion-backspace"></i>
+                                                            Clear All
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <Button bsStyle="primary" disabled={this.state.tags.length > 0} onClick={this.addKeywords}>
+                                                            <i className="icon ion-ios-plus-outline"></i>
+                                                            Add keywords
+                                                        </Button>
+                                                    </li>
+                                                    <li>
+
                                                     </li>
                                                 </ul>
-                                            : null}
-                                    </Col>
-                                    <Col md={5} className="text-right">
-                                        <ul className="list-inline">
-                                            <li>
-                                                <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.deleteKeywords}>
-                                                    <i className="icon ion-backspace"></i>
-                                                    Clear All
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <Button bsStyle="primary" disabled={this.state.tags.length > 0} onClick={this.addKeywords}>
-                                                    <i className="icon ion-ios-plus-outline"></i>
-                                                    Add keywords
-                                                </Button>
-                                            </li>
-                                            <li>
-                                                <Button bsStyle="primary" onClick={this.search} disabled={this.state.tags.length == 0 || !this.state.loadedResult}>
-                                                    <i className="icon ion-ios-search"></i>
-                                                    Search
-                                                </Button>
-                                            </li>
-                                        </ul>
-                                    </Col>
-                                </Row>
-                            </Panel>
-                        </Col>
+                                            </Col>
+                                        </Row>
+                                        </div>
+                                    </Panel>
+
+
+                        </div>
+                        <div className="container">
                         <Col md={12} className="amazon-result">
                             <Loader loaded={this.state.loadedResult}>
                                 <Panel>
@@ -247,21 +283,21 @@ export default class ResearchPage extends MixinAuth {
                                         <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'mans' ? 'btn btn-primary' : 'btn btn-outline'} data-option="mans">Mens</button>
                                         <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'womens' ? 'btn btn-primary' : 'btn btn-outline'} data-option="womens">Womens</button>
                                     </div>
-                                    <BootstrapTable data={this.state.products} height="400px" scrollTop={'Bottom'} pagination>
+                                    <BootstrapTable data={this.state.products}>
                                         <TableHeaderColumn dataAlign='center' isKey dataField='small_image_url' dataFormat={this.imageFormatter}>Product</TableHeaderColumn>
-                                        <TableHeaderColumn dataAlign='center' dataField='asin' dataFormat={this.asinFormatter}>ASIN</TableHeaderColumn>
-                                        <TableHeaderColumn dataAlign='center' dataField='sales_rank' dataSort={true}>Sales Rank</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' width="110" dataField='sales_rank' dataSort={true}>Sales Rank</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='monthly_sales_estimate' dataSort={true}>Monthly Sales Estimate</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='title'>Description</TableHeaderColumn>
-                                        <TableHeaderColumn dataAlign='center' dataField='features' dataFormat={this.featuresFormatter}>Features</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='center' width="400" dataField='features' dataFormat={this.featuresFormatter}>Features</TableHeaderColumn>
                                         <TableHeaderColumn hidden ref='typeCol' dataAlign="center" dataField='type' filterFormatted dataFormat={this.formatCategory}
                                             formatExtraData={categoryType} filter={ {type: 'TextFilter', delay: 1000} }>Category</TableHeaderColumn>
                                     </BootstrapTable>
                                 </Panel>
                             </Loader>
                         </Col>
+                        </div>
                     </Row>
-                </div>
+
             </Grid>
         );
     }

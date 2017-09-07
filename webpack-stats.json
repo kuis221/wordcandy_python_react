@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"bundle.js","path":"/bundle.js"}]}}
+{"status":"done","error":"ModuleNotFoundError","file":"/Users/nickgermaine/PycharmProjects/wordcandy/node_modules/har-schema/lib/timings.json","message":"Module not found: Error: Cannot resolve module 'fs' in /Users/nickgermaine/PycharmProjects/wordcandy/static/src/views","chunks":{"main":[{"name":"bundle.js","path":"/Users/nickgermaine/PycharmProjects/wordcandy/static/bundles/bundle.js"}]}}

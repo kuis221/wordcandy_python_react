@@ -699,7 +699,7 @@ export default class Dashboard extends MixinAuth {
                                                             }}>{this.state.data.main_tags}</b>{' '}characters</div>
                                                           <ControlLabel>Description Bullet Point 2</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl componentClass="textarea" rows={2} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
+                                                            <FormControl componentClass="textarea" rows={4} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
                                                             <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>

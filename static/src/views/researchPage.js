@@ -51,7 +51,8 @@ export default class ResearchPage extends MixinAuth {
             loadedResult: true,
             tags: '',
             keywords: '',
-            filter: 'all'
+            filter: 'all',
+            range: ''
         };
         this.search = this.search.bind(this);
         this.handleKeywords = this.handleKeywords.bind(this);
@@ -90,21 +91,19 @@ export default class ResearchPage extends MixinAuth {
 
     addKeywords(event) {
         var tags = this.state.tags;
-        console.log("tags", tags, "keywords:", this.state.keywords);
         this.setState({tags: this.state.keywords, keywords: ''});
     }
 
     checkInput(e){
         var self = this;
 
-        if (e.which == 13 || e.which == 188) {
+        if (e.which == 13 || e.which == 188 || e.which == 9) {
 
             e.preventDefault();
 
             if(e.which == 13 && e.target.value == '' && self.state.tags != ''){
                 self.search();
             }else {
-                console.log(e.target.value);
                 self.handleKeywords(e);
                 self.addKeywords(e);
             }
@@ -115,11 +114,10 @@ export default class ResearchPage extends MixinAuth {
     }
 
     imageFormatter(cell, row) {
-        console.log("row:", row);
         return (
-            <div>
-                <Image src={cell} /><br />
-                <a href={row.detail_page_url} target="_blank">{row.asin}</a>
+            <div><a href={row.detail_page_url} target="_blank">
+                <Image src={cell} className="full-width-image"/><br />
+                {row.asin}</a>
             </div>
         );
     }
@@ -146,7 +144,6 @@ export default class ResearchPage extends MixinAuth {
         if(cell){
             var count = 0;
             var features = cell.map((item) => {
-                console.log("item", item);
                 if(count >= 3){
                     return (
                         <li>{item}</li>
@@ -164,7 +161,7 @@ export default class ResearchPage extends MixinAuth {
     search() {
         var _ = this;
         _.setState({loadedResult: false});
-        apiDashboard.amazon({'tags': _.state.tags}).then(function(response) {
+        apiDashboard.amazon({'tags': _.state.tags, 'range': _.state.range}).then(function(response) {
             switch (response.status) {
                 case 200:
                     _.setState({products: response.data['result'], loadedResult: true});
@@ -189,6 +186,11 @@ export default class ResearchPage extends MixinAuth {
         }, 500);
     }
 
+    updateRange(e){
+        this.setState({range: $(e.currentTarget).val()});
+        console.log(this.state.range);
+    }
+
     formatCategory(cell, row, enumObject){
         return enumObject[cell];
     }
@@ -207,6 +209,7 @@ export default class ResearchPage extends MixinAuth {
                     <Nav>
                         <MenuItem href="/dashboard/">Dashboard</MenuItem>
                         <MenuItem href="/research-page/" className="active">Research</MenuItem>
+
                     </Nav>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
@@ -220,25 +223,25 @@ export default class ResearchPage extends MixinAuth {
                 </Navbar>
 
                     <Row className="research-content">
-                        <div className="fixed-subheader">
+                        <div className="fixed-subheader unfixed">
 
 
-                                    <Panel>
+                                    <Panel header="Search Amazon">
                                         <br />
                                         <div className="container">
                                         <Row>
                                             <Col md={3}>
                                                 <FormGroup>
+                                                    <label>Enter Keywords</label>
                                                     <FormControl type="text" placeholder="Enter keywords" onKeyDown={(e) => this.checkInput(e)} onChange={this.handleKeywords} value={this.state.keywords}/>
-                                                    <Button bsStyle="primary" onClick={this.search} disabled={this.state.tags.length == 0 || !this.state.loadedResult}>
-                                                            <i className="icon ion-ios-search"></i>
-                                                        </Button>
 
-                                                    <small className="hint">Press the comma or enter key to add keyword</small>
+
+                                                    <small className="hint">Press the comma or enter key to add keyword.  Press enter again to search.</small>
                                                 </FormGroup>
                                             </Col>
 
-                                            <Col md={5}>
+                                            <Col md={3}>
+                                                <label>Keywords</label>
                                                 {this.state.tags.length > 0
                                                     ? <ul className="list-inline">
                                                             <li>
@@ -247,26 +250,29 @@ export default class ResearchPage extends MixinAuth {
                                                                 </span>
                                                             </li>
                                                         </ul>
-                                                    : null}
-                                            </Col>
-                                            <Col md={4} className="text-right">
-                                                <ul className="list-inline">
+                                                    : <span className="hint"><br />No keywords</span>}
+                                                    <ul className="list-inline tag-actions text-right">
                                                     <li>
-                                                        <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-outline" onClick={this.deleteKeywords}>
+                                                        <a disabled={this.state.tags.length == 0} className="reset-keywords btn btn-default hide" onClick={this.deleteKeywords}>
                                                             <i className="icon ion-backspace"></i>
                                                             Clear All
                                                         </a>
                                                     </li>
-                                                    <li>
-                                                        <Button bsStyle="primary" disabled={this.state.tags.length > 0} onClick={this.addKeywords}>
-                                                            <i className="icon ion-ios-plus-outline"></i>
-                                                            Add keywords
-                                                        </Button>
-                                                    </li>
-                                                    <li>
 
-                                                    </li>
                                                 </ul>
+                                            </Col>
+                                            <Col md={3} className="">
+                                                <label for="range">Search by Sales Rank</label><br />
+                                                <input className="form-check-input" checked={this.state.range == ''} onChange={(e) => this.updateRange(e)} type="radio" name="range" value="" /> Any<br />
+                                                <input className="form-check-input" checked={this.state.range == 'low'} onChange={(e) => this.updateRange(e)} type="radio" name="range" value="low" /> 1 - 100,000<br />
+                                                <input className="form-check-input" checked={this.state.range == 'high'} onChange={(e) => this.updateRange(e)}  type="radio" name="range" value="high" /> 100,000+<br />
+
+                                            </Col>
+                                            <Col md={3} className="text-right">
+                                                <br />
+                                                <Button bsStyle="primary" onClick={this.search} disabled={this.state.tags.length == 0 || !this.state.loadedResult}>
+                                                            <i className="icon ion-ios-search"></i> Search
+                                                        </Button>
                                             </Col>
                                         </Row>
                                         </div>
@@ -277,19 +283,19 @@ export default class ResearchPage extends MixinAuth {
                         <div className="container">
                         <Col md={12} className="amazon-result">
                             <Loader loaded={this.state.loadedResult}>
-                                <Panel>
+                                <Panel header="Results">
                                     <div className="filter-buttons">
-                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == '' ? 'btn btn-primary' : 'btn btn-outline'} data-option="">All</button>
-                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'mans' ? 'btn btn-primary' : 'btn btn-outline'} data-option="mans">Mens</button>
-                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'womens' ? 'btn btn-primary' : 'btn btn-outline'} data-option="womens">Womens</button>
+                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == '' ? 'btn btn-primary' : 'btn btn-default'} data-option="">All</button>
+                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'mans' ? 'btn btn-primary' : 'btn btn-default'} data-option="mans">Mens</button>
+                                        <button onClick={(e) => this.updateFilter(e)} className={this.state.filter == 'womens' ? 'btn btn-primary' : 'btn btn-default'} data-option="womens">Womens</button>
                                     </div>
-                                    <BootstrapTable data={this.state.products}>
-                                        <TableHeaderColumn dataAlign='center' isKey dataField='small_image_url' dataFormat={this.imageFormatter}>Product</TableHeaderColumn>
+                                    <BootstrapTable data={this.state.products} tableBodyClass="table table-striped">
+                                        <TableHeaderColumn width="200" dataAlign='center' isKey dataField='small_image_url' dataFormat={this.imageFormatter}>Product</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' width="110" dataField='sales_rank' dataSort={true}>Sales Rank</TableHeaderColumn>
                                         <TableHeaderColumn dataAlign='center' dataField='monthly_sales_estimate' dataSort={true}>Monthly Sales Estimate</TableHeaderColumn>
-                                        <TableHeaderColumn dataAlign='center' dataField='title'>Description</TableHeaderColumn>
-                                        <TableHeaderColumn dataAlign='center' width="400" dataField='features' dataFormat={this.featuresFormatter}>Features</TableHeaderColumn>
-                                        <TableHeaderColumn hidden ref='typeCol' dataAlign="center" dataField='type' filterFormatted dataFormat={this.formatCategory}
+                                        <TableHeaderColumn dataAlign='left' dataField='title'>Description</TableHeaderColumn>
+                                        <TableHeaderColumn dataAlign='left' width="400" dataField='features' dataFormat={this.featuresFormatter}>Features</TableHeaderColumn>
+                                        <TableHeaderColumn hidden ref='typeCol' dataAlign="left" dataField='type' filterFormatted dataFormat={this.formatCategory}
                                             formatExtraData={categoryType} filter={ {type: 'TextFilter', delay: 1000} }>Category</TableHeaderColumn>
                                     </BootstrapTable>
                                 </Panel>

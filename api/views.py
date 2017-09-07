@@ -12,7 +12,7 @@ from django.core.cache import cache
 
 import math
 import random
-from amazon.api import AmazonAPI
+from amazon.api import AmazonAPI, AmazonSearch
 import time
 import requests
 from datetime import datetime
@@ -21,6 +21,8 @@ from cStringIO import StringIO
 import io
 import json
 import urllib3
+import traceback
+from django.http import HttpResponseRedirect
 
 from .serializers import *
 from .models import Shop, Subscribe, Word, Product
@@ -34,6 +36,32 @@ import after_response
 
 from rest_framework_tracking.mixins import LoggingMixin
 from rest_framework.authentication import TokenAuthentication
+
+
+from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.tools import run_flow
+from oauth2client.file import Storage
+
+
+class OAuthView(LoggingMixin, GenericAPIView):
+    authentication_classes = (
+        BasicAuthentication, TokenAuthentication, SessionAuthentication)
+
+    def get(self, request):
+        CLIENT_ID = '753175684403-6tp6m9jplfhp8gbm38kms7kn8fgs18d0.apps.googleusercontent.com'
+        CLIENT_SECRET = 'z8dXwGeZDLXq9VMJGhZZf3NR'
+
+
+        flow = OAuth2WebServerFlow(client_id=CLIENT_ID,
+                                   client_secret=CLIENT_SECRET,
+                                   scope='https://spreadsheets.google.com/feeds https://docs.google.com/feeds',
+                                   redirect_uri='http://localhost:8000/profile/')
+
+        auth_uri = flow.step1_get_authorize_url()
+
+        print("access_token: {}".format(auth_uri))
+
+        return Response({'auth': auth_uri})
 
 
 def monthly_sales_estimate(bsr):
@@ -71,7 +99,8 @@ def monthly_sales_estimate(bsr):
 @after_response.enable
 def amazon_products(data):
     for item in data['result']:
-        product = Product.objects.filter(asin=item['asin'])
+        product = False
+        #Product.objects.filter(asin=item['asin'])
         if not product:
             try:
                 Product.objects.create(title=item['title'],
@@ -93,46 +122,109 @@ def amazon_products(data):
             product.save(['features', 'type'])
 
 
+
+
+
 class AmazonProductsView(LoggingMixin, GenericAPIView):
     authentication_classes = (
         BasicAuthentication, TokenAuthentication, SessionAuthentication)
 
-    def get(self, request, format=None):
-        """
-        Return amazon products
-        """
-        try:
-            amazon = AmazonAPI(settings.AMAZON_ACCESS_KEY,
-                               settings.AMAZON_SECRET_KEY, settings.AMAZON_ASSOC_TAG)
-            data = {'result': []}
-            tags = request.GET.get('tags', '')
-            for tag in tags.split(','):
+    def getProducts(self, request, format=None):
+        amazon = AmazonAPI(settings.AMAZON_ACCESS_KEY,
+                           settings.AMAZON_SECRET_KEY, settings.AMAZON_ASSOC_TAG)
+        data = {'result': []}
+        tags = request.GET.get('tags', '')
+        range = request.GET.get('range', '')
+
+        for tag in tags.split(','):
+            if range == 'low':
+                print("range", range)
+
                 products = amazon.search(
-                    Keywords='{} merch t-shirt'.format(tag), SearchIndex='Apparel', BrowseNodes="2227030011,7147445011")
+                    Keywords='{} shirt'.format(tag), SearchIndex='Apparel', BrowseNode="9056987011",
+                    ResponseGroup='Large', Sort='salesrank')
+
+
+                nodes = amazon.browse_node_lookup(ResponseGroup='TopSellers', BrowseNodeId='9103696011')
+                for n in nodes:
+                    print(n)
+
+
+            else:
+                products = amazon.search(
+                    Keywords='{} shirt'.format(tag), SearchIndex='Apparel', BrowseNode="9103696011",
+                    ResponseGroup='Large')
+
+            count = 0
+
+
+
+            for it in products.iterate_pages():
+
+                time.sleep(1)
+
                 for product in products:
+                    count += 1
+                    print("Getting product", count, product.asin, product.sales_rank)
+                    nodes = []
                     product_type = 2
+
+                    if not product.sales_rank:
+                        continue
+
+                    if range == 'low' and int(product.sales_rank) > 100000:
+                        continue
+
+                    if range == 'high' and product.sales_rank < 100000:
+                        continue
+
                     for node in product.browse_nodes:
-                        print("    ", node.name)
+                        for n in node.ancestors:
+                            nodes.append(n.name)
+                        nodes.append(node.name)
                         if node.name == "Women" or "women" in product.title.lower() or "woman" in product.title.lower():
                             product_type = 1
                         elif node.name == "Men" or "men" in product.title.lower() or "man" in product.title.lower():
                             product_type = 0
+
+                    if "Novelty" in nodes:
+                        pass
+                    else:
+                        continue
 
                     data['result'].append({
                         'title': product.title,
                         'sales_rank': product.sales_rank,
                         'monthly_sales_estimate': monthly_sales_estimate(product.sales_rank),
                         'asin': product.asin,
-                        'small_image_url': product.small_image_url,
+                        'small_image_url': product.large_image_url,
                         'reviews': product.reviews,
                         'detail_page_url': product.detail_page_url,
                         'features': product.features,
                         'type': product_type
                     })
+
             amazon_products.after_response(data)
+
+        return data
+
+    def get(self, request, format=None):
+        """
+        Return amazon products
+        """
+        try:
+            data = self.getProducts(request, format)
+
+
         except Exception as e:
+
             print("Exception occured", e)
+            traceback.print_exc()
+            time.sleep(2)
+            data = self.getProducts(request, format)
+
             data = {'result': []}
+            '''
             tags = request.GET.get('tags', '')
             for tag in tags.split(','):
                 products = Product.objects.filter(title__icontains = tag)
@@ -148,6 +240,8 @@ class AmazonProductsView(LoggingMixin, GenericAPIView):
                         'features': product.features,
                         'type': product.type
                     })
+            '''
+
         return Response(data)
 
 

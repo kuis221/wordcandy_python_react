@@ -25,6 +25,8 @@ import React, {Component} from 'react';
 import MixinAuth from '../mixins/auth';
 import {apiProfiles} from '../api/profiles';
 
+
+
 export default class Profile extends MixinAuth {
 
     constructor(props) {
@@ -65,6 +67,14 @@ export default class Profile extends MixinAuth {
 
     componentWillMount() {
         document.body.style.backgroundColor = "#454656";
+        let access_token = '';
+        let code = window.location.href.indexOf('code=4') > -1;
+
+        if(code){
+            let pre_access_token = window.location.href.split('/');
+            access_token = pre_access_token[pre_access_token.length - 1];
+            console.log("Access token is", access_token);
+        }
     }
 
     updateProfile() {
@@ -110,6 +120,19 @@ export default class Profile extends MixinAuth {
         this.setState({username: event.target.value});
     }
 
+    handleGoogleAuth(e){
+        $.ajax({
+            url: '/v1/dashboard/google_auth',
+            type: 'GET',
+            dataType: 'json',
+            success: function(res){
+                console.log(res);
+                let win = window.open(res.auth, '_blank');
+                win.focus();
+            }
+        });
+    }
+
     render() {
         return (
             <Grid className="profile-page" fluid={true}>
@@ -121,6 +144,11 @@ export default class Profile extends MixinAuth {
             }} src="/static/images/logo.png"/></Link>
                         </Navbar.Brand>
                     </Navbar.Header>
+                    <Nav>
+                        <MenuItem href="/dashboard/">Dashboard</MenuItem>
+                        <MenuItem href="/research-page/">Research</MenuItem>
+
+                    </Nav>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                             <MenuItem href="/dashboard/">Dashboard</MenuItem>
@@ -319,7 +347,7 @@ export default class Profile extends MixinAuth {
                                                 </Panel>
                                             </Col>
                                             <Col md={4}>
-                                                <Panel className="auth-block">
+                                                <Panel className="auth-block" onClick={(e) => this.handleGoogleAuth(e)}>
                                                     <ul className="list-inline">
                                                         <li><Image src="/static/images/profile/google.png" width={'20px'} height={'20px'}/></li>
                                                         <li className="google">Google</li>

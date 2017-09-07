@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^trademarks/$', TrademarksView.as_view(), name='trademarks'),
     url(r'^subscribe/$', SubscribeView.as_view(), name='subscribe'),
     url(r'^amazon/$', AmazonProductsView.as_view(), name='amazon'),
+    url(r'^google_auth/$', OAuthView.as_view(), name='oauth2google'),
 ]

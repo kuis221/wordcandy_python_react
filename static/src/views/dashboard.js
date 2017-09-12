@@ -483,6 +483,7 @@ export default class Dashboard extends MixinAuth {
                     <Nav>
                         <MenuItem href="/dashboard/" className="active">Dashboard</MenuItem>
                         <MenuItem href="/research-page/">Research</MenuItem>
+                        <MenuItem href="/keyword-suggestions/">Keywords</MenuItem>
                     </Nav>
                     <Nav pullRight>
                         <NavDropdown title={this.state.username} id="basic-nav-dropdown">
@@ -680,7 +681,7 @@ export default class Dashboard extends MixinAuth {
                                                             }}>{this.state.data.tags}</b>{' '}characters</div>
                                                           <ControlLabel>Description Bullet Point 1</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl componentClass="textarea" rows={2} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.tags}/>
+                                                            <FormControl componentClass="textarea" rows={6} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.tags}/>
                                                             <CopyToClipboard text={this.state.template.tags} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>
@@ -699,7 +700,7 @@ export default class Dashboard extends MixinAuth {
                                                             }}>{this.state.data.main_tags}</b>{' '}characters</div>
                                                           <ControlLabel>Description Bullet Point 2</ControlLabel>
                                                         <InputGroup>
-                                                            <FormControl componentClass="textarea" rows={4} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
+                                                            <FormControl componentClass="textarea" rows={6} onDragOver={this.preventDefault} onDrop={this.dropWord} data-type="main_tags" data-keypress="dashboard" placeholder="Add description" onChange={this.handleChangeForms} value={this.state.template.main_tags}/>
                                                             <CopyToClipboard text={this.state.template.main_tags} onCopy={() => this.setState({copied: true})}>
                                                                 <InputGroup.Addon>
                                                                     <span className="ion-clipboard"></span>

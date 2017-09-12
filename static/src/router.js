@@ -7,7 +7,7 @@ import Dashboard from './views/dashboard';
 import ResearchPage from './views/researchPage';
 import Landing from './views/landing';
 import Profile from './views/profile';
-import Synonyms from './views/synonyms.js';
+import KeywordsSuggestor from './views/keywords.js';
 import ResetPassword from './views/resetPassword';
 
 function run() {
@@ -20,7 +20,7 @@ function run() {
             <Route path="/profile" component={Profile}/>
             <Route path="/sign-in" component={SignIn}/>
             <Route path="/reset/:code" component={ResetPassword}/>
-            <Route path="/synonyms-suggestions" component={Synonyms} />
+            <Route path="/keyword-suggestions" component={KeywordsSuggestor} />
         </Router>
     ), document.getElementById('app'));
 }

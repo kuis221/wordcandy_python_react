@@ -147,6 +147,7 @@ export default class Profile extends MixinAuth {
                     <Nav>
                         <MenuItem href="/dashboard/">Dashboard</MenuItem>
                         <MenuItem href="/research-page/">Research</MenuItem>
+                        <MenuItem href="/keyword-suggestions/">Keywords</MenuItem>
 
                     </Nav>
                     <Nav pullRight>

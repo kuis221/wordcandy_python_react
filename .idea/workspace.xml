@@ -2,20 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4136df37-61e8-43f1-a171-d75ea853847d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/src/views/authentication.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/src/views/credentials.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/src/views/synonyms.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/static/src/views/synonyms.js" afterPath="$PROJECT_DIR$/static/src/views/keywords.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/urls.py" afterPath="$PROJECT_DIR$/api/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/urls.py" afterPath="$PROJECT_DIR$/apps/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/bundles/bundle.js" afterPath="$PROJECT_DIR$/static/bundles/bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/config/css/dashboard.scss" afterPath="$PROJECT_DIR$/static/config/css/dashboard.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/config/css/research-page.scss" afterPath="$PROJECT_DIR$/static/config/css/research-page.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/src/api/dashboard.js" afterPath="$PROJECT_DIR$/static/src/api/dashboard.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/src/router.js" afterPath="$PROJECT_DIR$/static/src/router.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/src/views/dashboard.js" afterPath="$PROJECT_DIR$/static/src/views/dashboard.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/src/views/profile.js" afterPath="$PROJECT_DIR$/static/src/views/profile.js" />
@@ -42,13 +33,15 @@
     <favorites_list name="wordcandy" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dashboard.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/config/css/dashboard.scss">
+    <leaf>
+      <file leaf-file-name="keywords.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/src/views/keywords.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="301" column="17" lean-forward="true" selection-start-line="301" selection-start-column="17" selection-end-line="301" selection-end-column="17" />
-              <folding />
+            <state relative-caret-position="300">
+              <caret line="277" column="72" lean-forward="true" selection-start-line="277" selection-start-column="72" selection-end-line="277" selection-end-column="72" />
+              <folding>
+                <element signature="e#0#257#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,6 +51,48 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-3171">
               <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="research-page.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/config/css/research-page.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="367">
+              <caret line="30" column="30" lean-forward="false" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dashboard.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/src/views/dashboard.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="93">
+              <caret line="485" column="24" lean-forward="false" selection-start-line="485" selection-start-column="24" selection-end-line="485" selection-end-column="82" />
+              <folding>
+                <element signature="e#0#365#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="researchPage.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/src/views/researchPage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="179">
+              <caret line="211" column="82" lean-forward="false" selection-start-line="211" selection-start-column="82" selection-end-line="211" selection-end-column="82" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="profile.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/src/views/profile.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="290">
+              <caret line="149" column="82" lean-forward="false" selection-start-line="149" selection-start-column="82" selection-end-line="149" selection-end-column="82" />
               <folding />
             </state>
           </provider>
@@ -89,20 +124,22 @@
       <list>
         <option value="$PROJECT_DIR$/api/models.py" />
         <option value="$PROJECT_DIR$/static/src/api/dashboard.js" />
-        <option value="$PROJECT_DIR$/static/config/css/research-page.scss" />
         <option value="$PROJECT_DIR$/static/src/api/synonyms.js" />
-        <option value="$PROJECT_DIR$/static/src/router.js" />
-        <option value="$PROJECT_DIR$/apps/urls.py" />
-        <option value="$PROJECT_DIR$/static/src/views/synonyms.js" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/api/urls.py" />
         <option value="$USER_HOME$/wc/lib/python2.7/site-packages/oauth2client/tools.py" />
         <option value="$PROJECT_DIR$/static/src/views/authentication.js" />
         <option value="$PROJECT_DIR$/api/views.py" />
+        <option value="$PROJECT_DIR$/static/config/css/dashboard.scss" />
+        <option value="$PROJECT_DIR$/userprofile/models.py" />
+        <option value="$PROJECT_DIR$/static/src/views/synonyms.js" />
+        <option value="$PROJECT_DIR$/static/src/router.js" />
+        <option value="$PROJECT_DIR$/apps/urls.py" />
+        <option value="$PROJECT_DIR$/static/config/css/research-page.scss" />
+        <option value="$PROJECT_DIR$/static/src/views/keywords.js" />
         <option value="$PROJECT_DIR$/static/src/views/dashboard.js" />
         <option value="$PROJECT_DIR$/static/src/views/researchPage.js" />
         <option value="$PROJECT_DIR$/static/src/views/profile.js" />
-        <option value="$PROJECT_DIR$/static/config/css/dashboard.scss" />
         <option value="$PROJECT_DIR$/apps/settings.py" />
       </list>
     </option>
@@ -124,8 +161,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="391" />
-    <option name="y" value="110" />
+    <option name="x" value="429" />
+    <option name="y" value="117" />
     <option name="width" value="1419" />
     <option name="height" value="836" />
   </component>
@@ -144,6 +181,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -154,22 +192,7 @@
             <path>
               <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
               <item name="wordcandy" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wordcandy" type="462c0819:PsiDirectoryNode" />
               <item name="apps" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wordcandy" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wordcandy" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
@@ -200,7 +223,7 @@
               <item name="wordcandy" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
@@ -209,11 +232,15 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="wordcandy" type="b2602c69:ProjectViewProjectNode" />
+              <item name="wordcandy" type="462c0819:PsiDirectoryNode" />
+              <item name="userprofile" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -513,7 +540,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="391" y="110" width="1419" height="836" extended-state="0" />
+    <frame x="429" y="117" width="1419" height="836" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17406625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -556,14 +583,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/src/api/dashboard.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -584,7 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -593,7 +611,7 @@
         <state relative-caret-position="855">
           <caret line="57" column="48" lean-forward="false" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -602,7 +620,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5730">
           <caret line="423" column="20" lean-forward="false" selection-start-line="423" selection-start-column="20" selection-end-line="423" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="e#0#365#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -643,7 +663,7 @@
         <state relative-caret-position="855">
           <caret line="57" column="48" lean-forward="true" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -652,7 +672,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5730">
           <caret line="423" column="20" lean-forward="false" selection-start-line="423" selection-start-column="20" selection-end-line="423" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="e#0#365#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -669,7 +691,7 @@
         <state relative-caret-position="2250">
           <caret line="150" column="29" lean-forward="true" selection-start-line="150" selection-start-column="29" selection-end-line="150" selection-end-column="29" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -678,7 +700,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6345">
           <caret line="423" column="20" lean-forward="true" selection-start-line="423" selection-start-column="20" selection-end-line="423" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="e#0#365#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -711,7 +735,7 @@
         <state relative-caret-position="1605">
           <caret line="107" column="39" lean-forward="false" selection-start-line="107" selection-start-column="39" selection-end-line="107" selection-end-column="39" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -780,7 +804,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -794,37 +817,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/config/css/research-page.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="8" lean-forward="false" selection-start-line="18" selection-start-column="8" selection-end-line="19" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="36" column="74" lean-forward="false" selection-start-line="36" selection-start-column="74" selection-end-line="36" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="466">
           <caret line="64" column="20" lean-forward="false" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/src/views/synonyms.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="129" column="30" lean-forward="false" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#247#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -832,17 +828,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
           <caret line="1706" column="36" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="2374" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/src/router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="22" column="34" lean-forward="false" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#26#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -858,7 +843,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -866,7 +850,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="332">
           <caret line="213" column="44" lean-forward="false" selection-start-line="213" selection-start-column="44" selection-end-line="213" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -874,7 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="305" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="429" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -882,7 +864,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -898,9 +879,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -908,9 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -919,7 +894,7 @@
         <state relative-caret-position="242">
           <caret line="57" column="79" lean-forward="false" selection-start-line="57" selection-start-column="79" selection-end-line="57" selection-end-column="79" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -940,37 +915,80 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/config/css/dashboard.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4515">
+          <caret line="301" column="17" lean-forward="false" selection-start-line="301" selection-start-column="17" selection-end-line="301" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="36" column="70" lean-forward="false" selection-start-line="36" selection-start-column="70" selection-end-line="36" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/userprofile/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="82" lean-forward="true" selection-start-line="9" selection-start-column="82" selection-end-line="9" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/src/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#26#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/config/css/research-page.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="30" column="30" lean-forward="false" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/src/views/dashboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="485" column="0" lean-forward="false" selection-start-line="485" selection-start-column="0" selection-end-line="485" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="93">
+          <caret line="485" column="24" lean-forward="false" selection-start-line="485" selection-start-column="24" selection-end-line="485" selection-end-column="82" />
+          <folding>
+            <element signature="e#0#365#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/src/views/researchPage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="208" column="20" lean-forward="false" selection-start-line="208" selection-start-column="20" selection-end-line="212" selection-end-column="26" />
+        <state relative-caret-position="179">
+          <caret line="211" column="82" lean-forward="false" selection-start-line="211" selection-start-column="82" selection-end-line="211" selection-end-column="82" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/src/views/profile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="148" column="56" lean-forward="false" selection-start-line="148" selection-start-column="56" selection-end-line="148" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#234#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="290">
+          <caret line="149" column="82" lean-forward="false" selection-start-line="149" selection-start-column="82" selection-end-line="149" selection-end-column="82" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/config/css/dashboard.scss">
+    <entry file="file://$PROJECT_DIR$/static/src/views/keywords.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="301" column="17" lean-forward="true" selection-start-line="301" selection-start-column="17" selection-end-line="301" selection-end-column="17" />
-          <folding />
+        <state relative-caret-position="300">
+          <caret line="277" column="72" lean-forward="true" selection-start-line="277" selection-start-column="72" selection-end-line="277" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#257#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

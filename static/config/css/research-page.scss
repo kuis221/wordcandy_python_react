@@ -19,6 +19,55 @@ nav.navbar.navbar-default {
         $primary: #708ce6;
         $primary-dark: darken($primary, 5);
 
+        h3 {
+            color: #444;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .loadedContent {
+            min-height: 400px;
+        }
+
+        .minus-button {
+            background: #d84343;
+            border-color: transparent;
+            color: #fff;
+            border-radius: 2px;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            font-size: 14px;
+            margin: 5px 5px 5px 0;
+        }
+
+        .bottom-actions {
+            margin: 0px -15px;
+            padding: 15px;
+            box-shadow: 0px -2px 5px rgba(0,0,0,.2);
+            position: relative;
+        }
+
+
+        .suggestions {
+            height: calc(100vh - 500px);
+            overflow: auto;
+            min-height: 400px;
+
+            .btn-container {
+                margin-top: 0px;
+                position: relative;
+                display: inline-block;
+            }
+        }
+
+        #copiedText, #exportedText {
+            display:none;
+        }
+
+
         .form-control {
             box-shadow: none;
             border-radius: 2px;

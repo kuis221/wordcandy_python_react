@@ -209,6 +209,7 @@ export default class ResearchPage extends MixinAuth {
                     <Nav>
                         <MenuItem href="/dashboard/">Dashboard</MenuItem>
                         <MenuItem href="/research-page/" className="active">Research</MenuItem>
+                        <MenuItem href="/keyword-suggestions/">Keywords</MenuItem>
 
                     </Nav>
                     <Nav pullRight>

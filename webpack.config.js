@@ -10,7 +10,7 @@ module.exports = {
                 include: [
                     path.resolve(__dirname, "static/src"),
                 ],
-                test: /\.jsx?$/,
+                test: /\.(js|jsx)$/,
                 query: {
                     plugins: ['transform-runtime'],
                     presets: ['es2015', 'stage-0', 'react'],
@@ -43,6 +43,8 @@ module.exports = {
         filename: "bundle.js",
     },
     plugins: [
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         new ExtractTextPlugin('bundle.css'),
         new BundleTracker({filename: './webpack-stats.json'}),
         new webpack.ProvidePlugin({
@@ -51,17 +53,19 @@ module.exports = {
             "window.jQuery": "jquery",
             jQuery: "jquery"
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        })
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compressor: {
+        //         warnings: false
+        //     }
+        // })
     ],
     watch: true,
     devServer: {
         host: '0.0.0.0',
         inline: true,
-        port: 8080
+        port: 8080,
+        hot: true,
+        historyApiFallback: true
     },
     entry: [
         'babel-polyfill',

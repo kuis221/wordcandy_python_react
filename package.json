@@ -4,7 +4,8 @@
   "description": "",
   "main": "./assets/src/router.js",
   "scripts": {
-    "start": "webpack-dev-server --watch-poll --inline --content-base . --history-api-fallback"
+    "start": "webpack-dev-server --watch-poll --inline --content-base . --history-api-fallback",
+    "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "animate.css": "^3.5.2",

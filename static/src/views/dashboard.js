@@ -46,7 +46,6 @@ export default class Dashboard extends MixinAuth {
     constructor(props) {
         super(props);
         var user = JSON.parse(localStorage.getItem("user"));
-
         this.state = {
             tags: [],
             similars: [],

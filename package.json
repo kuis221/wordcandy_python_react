@@ -25,7 +25,7 @@
     "install": "^0.8.7",
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.4",
-    "npm": "^4.5.0",
+    "npm": "^6.13.4",
     "react-bootstrap": "^0.30.6",
     "react-bootstrap-maskedinput": "^0.2.1",
     "react-bootstrap-table": "^3.4.6",

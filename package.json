@@ -19,7 +19,7 @@
     "chart.js": "^2.5.0",
     "file-loader": "^0.9.0",
     "google-auth-library": "^0.11.0",
-    "googleapis": "^21.3.0",
+    "googleapis": "^39.1.0",
     "i": "^0.3.5",
     "imports-loader": "^0.7.1",
     "install": "^0.8.7",
